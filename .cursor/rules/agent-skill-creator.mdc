@@ -1,0 +1,40 @@
+---
+description: 当用户提到"创建 skill"、"新建技能"、"制作 skill"、"写一个 skill"、"帮我创建一个技能"、"create skill"、"make a skill"、"build a skill"、"create agent"、"automate workflow"、"create a cross-platform skill"、"把工作流做成 skill"、"自动化流程"时，自动调用 agent-skill-creator 来生成标准化的 SKILL.md 技能文件。
+globs: 
+alwaysApply: false
+---
+
+# Agent Skill Creator
+
+当用户提到创建 skill、新建技能、自动化工作流，或希望将某个流程封装为可复用 AI 技能时，调用 `agent-skill-creator` 技能。
+
+## 触发关键词
+
+中文触发词：
+- 创建 skill / 新建 skill / 写一个 skill
+- 制作技能 / 新建技能 / 帮我做个 skill
+- 把这个做成 skill / 封装成技能
+- 自动化这个流程 / 把工作流做成 skill
+
+英文触发词：
+- create skill / make a skill / build a skill
+- create agent / automate workflow
+- create a cross-platform skill / turn into skill
+- /agent-skill-creator
+
+## 执行步骤
+
+读取并遵循以下技能文件的完整指引：
+
+```
+.cursor/rules/agent-skill-creator/SKILL.md
+```
+
+该技能文件位于：`C:\Users\Mayn\.cursor\skills\agent-skill-creator\SKILL.md`
+
+## 生成的 Skill 安装位置
+
+- **个人全局（推荐）**：`C:\Users\Mayn\.cursor\skills\<skill-name>\`
+- **当前项目**：`D:\UIUX\.cursor\skills\<skill-name>\`
+
+生成后告知用户完整的调用方式，例如：`/skill-name 你的请求`
