@@ -1,0 +1,53 @@
+{
+  "templateId": "luma",
+  "name": "Luma 海报",
+  "width": 1080,
+  "height": 1080,
+  "figmaNodeId": "4388:3583",
+  "figmaKvSectionNodeId": "4388:3422",
+  "slots": {
+    "background": {
+      "type": "gradient",
+      "value": "linear-gradient(165deg, #1a0a2e 0%, #0d0d1a 50%, #0a0a12 100%)"
+    },
+    "logo": {
+      "hostLabel": "HOST",
+      "brandText": "HackQuest × EDU Chain",
+      "images": [
+        "http://localhost:3845/assets/362f21aad83e327fc5ef0b5a8357d7e397b959c3.svg",
+        "http://localhost:3845/assets/d448a519c3ff1e3057723057eb08c741147c2d91.png"
+      ]
+    },
+    "mainTitle": {
+      "text": "EDU Chain X HackQuest Mega Co-Learning Camp 2024"
+    },
+    "subTitle": {
+      "text": "Bangalore, India"
+    },
+    "date": {
+      "text": "3rd - 5th December"
+    },
+    "date2": {
+      "text": "Yello Living, Bangalore, India"
+    },
+    "hero": {
+      "images": [
+        "http://localhost:3845/assets/ec1a5ae6e72d38dba80ec2349366ddbcc8c7d7a3.svg",
+        "http://localhost:3845/assets/7fa184ad1ed566961c09203c099c4cd0488dc34e.svg",
+        "http://localhost:3845/assets/04cf5caa02fe0f618905d3ea15409e7340423f4b.svg"
+      ],
+      "placeholder": true
+    },
+    "partner": {
+      "label": "PARTNER",
+      "text": "合作品牌",
+      "images": [
+        "http://localhost:3845/assets/8f01fa8de05d3394bc80e24a8db7fd51b40ea5e4.png",
+        "http://localhost:3845/assets/e07fb7064b2e11b63e2d996a2a232df2e2822121.png",
+        "http://localhost:3845/assets/b8a44c5a8826cae673475921eb0df407eb172b38.png"
+      ]
+    },
+    "cta": { "text": "JOIN EDU CHAIN HACKATHON" },
+    "placeholder": { "text": "照片 / 姓名" }
+  }
+}

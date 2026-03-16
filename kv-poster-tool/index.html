@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KV 海报工厂 — 4 模板</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #111;
+      --surface: #1c1c1e;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #666;
+      --blue: #0a84ff;
+      --green: #30d158;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(17,17,17,.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+    .topbar h1 { font-size: 1rem; font-weight: 600; color: #fff; }
+    .tag { padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; background: var(--blue); color: #fff; letter-spacing: .04em; }
+    .topbar-right { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.875rem; font-weight: 500;
+      cursor: pointer; border: 1px solid var(--border); background: var(--surface);
+      color: var(--text); transition: background .15s, border-color .15s;
+    }
+    .btn:hover { background: #2a2a2a; border-color: #444; }
+    .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .btn.primary:hover { background: #0070e0; }
+    .btn.green { background: var(--green); border-color: var(--green); color: #000; }
+    .btn.green:hover { background: #28c04e; }
+
+    /* ── Component pill bar ── */
+    .slot-bar {
+      display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .slot-pill {
+      padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+      background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+      cursor: pointer; transition: all .15s; user-select: none;
+    }
+    .slot-pill:hover { border-color: #555; color: var(--text); }
+    .slot-pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    /* ── Component preview ── */
+    .slot-preview {
+      padding: 14px 32px 0;
+      display: none;
+    }
+    .slot-preview.visible { display: block; }
+    .slot-preview-inner {
+      padding: 16px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+    .slot-preview-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: .08em;
+      color: var(--muted); text-transform: uppercase; margin-bottom: 8px;
+    }
+    .slot-preview-bg-swatch { height: 48px; border-radius: 6px; }
+    .slot-preview-logo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .slot-preview-logo .host-tag {
+      padding: 4px 10px; border-radius: 5px; font-size: 12px; font-weight: 700;
+      background: rgba(255,255,255,.18); color: #fff;
+    }
+    .slot-preview-logo .brand-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .slot-preview-logo img { height: 28px; width: auto; }
+    .slot-preview-text { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .slot-preview-text.small { font-size: 0.9rem; font-weight: 400; color: #aaa; }
+    .slot-preview-hero { display: flex; gap: 8px; flex-wrap: wrap; }
+    .slot-preview-hero img { height: 64px; width: auto; border-radius: 4px; }
+    .slot-preview-partner { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .slot-preview-partner .partner-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+    .slot-preview-partner img { height: 18px; width: auto; }
+    .slot-preview-cta { display: inline-block; padding: 8px 16px; border-radius: 6px; background: var(--green); color: #000; font-size: 0.78rem; font-weight: 700; }
+
+    /* ── Grid of 4 posters ── */
+    .poster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 32px;
+      padding: 32px;
+    }
+    .poster-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .poster-card-label {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .poster-card-name { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+    .poster-card-size { font-size: 0.7rem; color: #444; }
+    .poster-card-actions { display: flex; gap: 8px; }
+    .poster-card-actions .btn { padding: 5px 10px; font-size: 0.75rem; }
+
+    /* ── Canvas wrapper ── */
+    .canvas-outer {
+      width: 100%;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 24px rgba(0,0,0,.6);
+    }
+    /* scale poster to fit 100% width using padding-bottom aspect trick */
+    .canvas-scaler {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .poster-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      transform-origin: top left;
+    }
+
+    /* ── LUMA poster canvas (1080×1080) ── */
+    .poster-canvas.luma {
+      width: 1080px; height: 1080px;
+      background: #060612;
+      font-family: 'Inter', sans-serif;
+    }
+    .luma .pc-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 140% 100% at 50% 120%, #2a0a5e 0%, #0d0024 45%, #020210 100%);
+    }
+    .luma .pc-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(80,40,160,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80,40,160,.08) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+    .luma .pc-hero {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -38%);
+      width: 820px; height: 540px;
+      background: radial-gradient(ellipse at 50% 60%, rgba(120,60,255,.18) 0%, transparent 70%);
+    }
+    .luma .pc-hero img {
+      width: 100%; height: 100%; object-fit: contain; position: relative;
+    }
+    .luma .pc-hero-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(100,60,200,.22) 0%, rgba(60,180,200,.12) 100%);
+      border-radius: 24px;
+      border: 1px solid rgba(120,80,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.2); font-size: 18px;
+    }
+    .luma .pc-logo {
+      position: absolute;
+      top: 52px; left: 56px; right: 56px;
+      display: flex; align-items: center; gap: 14px; height: 44px;
+    }
+    .luma .pc-logo .host-tag {
+      padding: 6px 14px; border-radius: 7px;
+      font-size: 13px; font-weight: 700;
+      background: rgba(255,255,255,.1); color: #fff;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .luma .pc-logo .brand { font-size: 17px; font-weight: 700; color: rgba(255,255,255,.9); }
+    .luma .pc-logo img { height: 36px; width: auto; display: block; }
+    .luma .pc-mainTitle {
+      position: absolute;
+      left: 56px; right: 56px; top: 162px;
+      font-size: 60px; font-weight: 900; line-height: 1.1;
+      color: #fff; letter-spacing: -0.03em; text-transform: uppercase;
+      outline: none;
+    }
+    .luma .pc-subTitle {
+      position: absolute;
+      left: 56px; right: 56px;
+      bottom: 340px;
+      font-size: 22px; font-weight: 400; color: rgba(255,255,255,.55);
+      outline: none;
+    }
+    .luma .pc-date-row {
+      position: absolute;
+      left: 56px; right: 56px; bottom: 260px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .luma .pc-date-row .divider { width: 1px; height: 16px; background: rgba(255,255,255,.2); }
+    .luma .pc-date2 { font-size: 18px; font-weight: 500; color: rgba(255,255,255,.6); outline: none; }
+    .luma .pc-date2::before { content: "📍 "; font-size: 14px; }
+    .luma .pc-date { font-size: 18px; font-weight: 500; color: rgba(255,255,255,.6); outline: none; }
+    .luma .pc-date::before { content: "📅 "; font-size: 14px; }
+    .luma .pc-partner {
+      position: absolute;
+      bottom: 48px; left: 56px; right: 56px;
+      display: flex; align-items: center; gap: 10px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 24px;
+    }
+    .luma .pc-partner .p-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.3); letter-spacing: .1em; text-transform: uppercase; }
+    .luma .pc-partner img { height: 20px; width: auto; opacity: .7; }
+    .luma .pc-accent-line {
+      position: absolute;
+      bottom: 220px; left: 56px;
+      width: 64px; height: 4px; border-radius: 2px;
+      background: linear-gradient(90deg, #7c3aed, #06b6d4);
+    }
+
+    /* ── ID CARD poster canvas (600×900) ── */
+    .poster-canvas.idcard {
+      width: 600px; height: 900px;
+      background: #0a0a12;
+      font-family: 'Inter', sans-serif;
+    }
+    .idcard .pc-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #1a1040 0%, #080818 60%, #0a1020 100%);
+    }
+    .idcard .pc-bg-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(120,80,255,.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .idcard .pc-logo {
+      position: absolute;
+      top: 36px; left: 36px; right: 36px;
+      display: flex; align-items: center; gap: 10px; height: 36px;
+    }
+    .idcard .pc-logo .host-tag {
+      padding: 4px 10px; border-radius: 5px;
+      font-size: 11px; font-weight: 700;
+      background: rgba(255,255,255,.1); color: #fff;
+    }
+    .idcard .pc-logo .brand { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.9); }
+    .idcard .pc-logo img { height: 28px; width: auto; display: block; }
+    .idcard .pc-mainTitle {
+      position: absolute;
+      left: 36px; right: 36px; top: 104px;
+      font-size: 28px; font-weight: 900; line-height: 1.15;
+      color: #fff; letter-spacing: -0.02em; text-transform: uppercase;
+      outline: none;
+    }
+    .idcard .pc-cta {
+      position: absolute;
+      left: 36px; top: 264px;
+      display: inline-block;
+      padding: 10px 18px; border-radius: 7px;
+      font-size: 12px; font-weight: 700; color: #000;
+      background: var(--green);
+      outline: none; cursor: pointer;
+    }
+    .idcard .pc-placeholder {
+      position: absolute;
+      left: 36px; right: 36px;
+      top: 330px; bottom: 230px;
+      border-radius: 14px;
+      border: 1.5px dashed rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      color: rgba(255,255,255,.25); font-size: 14px;
+    }
+    .idcard .pc-placeholder-icon { font-size: 32px; }
+    .idcard .pc-subTitle {
+      position: absolute;
+      left: 36px; right: 36px; bottom: 190px;
+      font-size: 14px; color: rgba(255,255,255,.45); outline: none;
+    }
+    .idcard .pc-date-row {
+      position: absolute;
+      left: 36px; right: 36px; bottom: 136px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .idcard .pc-date2 { font-size: 13px; color: rgba(255,255,255,.55); outline: none; }
+    .idcard .pc-date { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.75); outline: none; }
+    .idcard .pc-hero {
+      position: absolute;
+      right: 0; bottom: 0; left: 0; height: 120px;
+      overflow: hidden;
+    }
+    .idcard .pc-hero img { width: 100%; height: 100%; object-fit: cover; opacity: .3; }
+    .idcard .pc-partner {
+      position: absolute;
+      bottom: 32px; left: 36px; right: 36px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .idcard .pc-partner .p-label { font-size: 9px; font-weight: 600; color: rgba(255,255,255,.25); letter-spacing: .08em; text-transform: uppercase; }
+    .idcard .pc-partner img { height: 14px; width: auto; opacity: .45; }
+
+    /* ── EDU 盾旗 poster canvas (600×1000) ── */
+    .poster-canvas.edu-shield {
+      width: 600px; height: 1000px;
+      background: #f4f5ff;
+      font-family: 'Inter', sans-serif;
+    }
+    .edu-shield .pc-bg { position: absolute; inset: 0; background: #f4f5ff; }
+    .edu-shield .pc-bg-accent {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 120% 60% at 50% 0%, rgba(80,0,255,.08) 0%, transparent 60%);
+    }
+    .edu-shield .pc-logo {
+      position: absolute;
+      top: 36px; left: 36px; right: 36px;
+      display: flex; align-items: center; gap: 10px; height: 36px;
+    }
+    .edu-shield .pc-logo .host-tag {
+      padding: 4px 10px; border-radius: 5px;
+      font-size: 11px; font-weight: 700;
+      background: #1e1e2e; color: #fff;
+    }
+    .edu-shield .pc-logo .brand { font-size: 14px; font-weight: 700; color: #1e1e2e; }
+    .edu-shield .pc-logo img { height: 28px; width: auto; display: block; filter: invert(1); }
+    .edu-shield .pc-mainTitle {
+      position: absolute;
+      left: 36px; right: 36px; top: 108px;
+      font-size: 38px; font-weight: 900; line-height: 1.1;
+      color: #0b0c2e; letter-spacing: -0.03em; text-transform: uppercase;
+      outline: none;
+    }
+    .edu-shield .pc-subTitle {
+      position: absolute;
+      left: 36px; right: 36px; top: 310px;
+      font-size: 15px; font-weight: 500; color: #555;
+      outline: none;
+    }
+    .edu-shield .pc-cta {
+      position: absolute;
+      left: 36px; top: 366px;
+      display: inline-block;
+      padding: 10px 20px; border-radius: 7px;
+      font-size: 12px; font-weight: 700; color: #fff;
+      background: #1e1e2e;
+      outline: none; cursor: pointer;
+    }
+    .edu-shield .pc-hero {
+      position: absolute;
+      left: 0; right: 0;
+      top: 430px; bottom: 100px;
+      overflow: hidden;
+    }
+    .edu-shield .pc-hero img { width: 100%; height: 100%; object-fit: contain; }
+    .edu-shield .pc-hero-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(80,60,200,.08) 0%, rgba(60,180,200,.06) 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(0,0,0,.15); font-size: 16px;
+    }
+    .edu-shield .pc-date-row {
+      position: absolute;
+      left: 36px; right: 36px; bottom: 52px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .edu-shield .pc-date2 { font-size: 12px; color: #888; outline: none; }
+    .edu-shield .pc-date { font-size: 12px; font-weight: 600; color: #555; outline: none; }
+    .edu-shield .pc-partner {
+      position: absolute;
+      bottom: 16px; left: 36px; right: 36px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .edu-shield .pc-partner .p-label { font-size: 9px; font-weight: 600; color: #aaa; letter-spacing: .08em; text-transform: uppercase; }
+    .edu-shield .pc-partner img { height: 14px; width: auto; opacity: .6; }
+
+    /* ── EDU 方旗 poster canvas (600×1000) ── */
+    .poster-canvas.edu-fangqi {
+      width: 600px; height: 1000px;
+      background: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+    .edu-fangqi .pc-bg { position: absolute; inset: 0; background: #fff; }
+    .edu-fangqi .pc-bg-stripe {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, #1e1e2e 0%, #3b35cc 50%, #06b6d4 100%);
+    }
+    .edu-fangqi .pc-logo {
+      position: absolute;
+      top: 36px; left: 36px; right: 36px;
+      display: flex; align-items: center; gap: 10px; height: 36px;
+    }
+    .edu-fangqi .pc-logo .host-tag {
+      padding: 4px 10px; border-radius: 5px;
+      font-size: 11px; font-weight: 700;
+      background: #1e1e2e; color: #fff;
+    }
+    .edu-fangqi .pc-logo .brand { font-size: 14px; font-weight: 700; color: #1e1e2e; }
+    .edu-fangqi .pc-logo img { height: 28px; width: auto; display: block; filter: invert(1); }
+    .edu-fangqi .pc-mainTitle {
+      position: absolute;
+      left: 36px; right: 36px; top: 108px;
+      font-size: 38px; font-weight: 900; line-height: 1.1;
+      color: #1e1e2e; letter-spacing: -0.03em; text-transform: uppercase;
+      outline: none;
+    }
+    .edu-fangqi .pc-subTitle {
+      position: absolute;
+      left: 36px; right: 36px; top: 312px;
+      font-size: 14px; font-weight: 400; color: #777;
+      outline: none;
+    }
+    .edu-fangqi .pc-cta {
+      position: absolute;
+      left: 36px; top: 358px;
+      display: inline-block;
+      padding: 10px 20px; border-radius: 7px;
+      font-size: 12px; font-weight: 700; color: #fff;
+      background: #3b35cc;
+      outline: none; cursor: pointer;
+    }
+    .edu-fangqi .pc-hero {
+      position: absolute;
+      left: 0; right: 0;
+      top: 424px; bottom: 90px;
+      overflow: hidden;
+    }
+    .edu-fangqi .pc-hero img { width: 100%; height: 100%; object-fit: contain; }
+    .edu-fangqi .pc-hero-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(60,52,204,.07) 0%, rgba(6,182,212,.05) 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(0,0,0,.12); font-size: 14px;
+    }
+    .edu-fangqi .pc-date-row {
+      position: absolute;
+      left: 36px; right: 36px; bottom: 44px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .edu-fangqi .pc-date2 { font-size: 12px; color: #aaa; outline: none; }
+    .edu-fangqi .pc-date { font-size: 12px; font-weight: 600; color: #777; outline: none; }
+    .edu-fangqi .pc-partner {
+      position: absolute;
+      bottom: 14px; left: 36px; right: 36px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .edu-fangqi .pc-partner .p-label { font-size: 9px; font-weight: 600; color: #ccc; letter-spacing: .08em; text-transform: uppercase; }
+    .edu-fangqi .pc-partner img { height: 14px; width: auto; opacity: .5; }
+
+    /* ── Editable hint ── */
+    [contenteditable="true"] { outline: none; cursor: text; }
+    [contenteditable="true"]:empty::before { content: attr(data-placeholder); opacity: .3; }
+    [contenteditable="true"]:hover, [contenteditable="true"]:focus {
+      outline: 1.5px dashed rgba(10,132,255,.45);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      padding: 10px 20px; background: #2a2a2a; border: 1px solid #444;
+      border-radius: 8px; font-size: 0.875rem; z-index: 999; opacity: 0;
+      pointer-events: none; transition: opacity .2s; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar-left">
+    <h1>KV 海报工厂</h1>
+    <span class="tag">4 模板</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" id="btnRedefineKv">🔄 重新定义 KV</button>
+    <button class="btn green" id="btnDownloadAll">⬇ 下载全部 JPEG</button>
+  </div>
+</header>
+
+<!-- Component pill bar -->
+<div class="slot-bar" id="slotBar">
+  <span class="slot-pill" data-slot="background">背景</span>
+  <span class="slot-pill" data-slot="logo">Logo</span>
+  <span class="slot-pill" data-slot="mainTitle">主标题</span>
+  <span class="slot-pill" data-slot="subTitle">副标题</span>
+  <span class="slot-pill" data-slot="cta">CTA 按钮</span>
+  <span class="slot-pill" data-slot="date">日期</span>
+  <span class="slot-pill" data-slot="date2">地点</span>
+  <span class="slot-pill" data-slot="hero">主视觉</span>
+  <span class="slot-pill" data-slot="partner">合作方</span>
+</div>
+
+<!-- Component preview strip -->
+<div class="slot-preview" id="slotPreview">
+  <div class="slot-preview-inner" id="slotPreviewInner"></div>
+</div>
+
+<!-- 4-up poster grid -->
+<main class="poster-grid" id="posterGrid">
+
+  <!-- ① Luma 1080×1080 -->
+  <div class="poster-card" id="card-luma">
+    <div class="poster-card-label">
+      <span class="poster-card-name">Luma</span>
+      <span class="poster-card-size">1080 × 1080</span>
+    </div>
+    <div class="canvas-outer">
+      <div class="canvas-scaler" style="padding-bottom:100%">
+        <div class="poster-canvas luma" id="canvas-luma">
+          <div class="pc-bg"></div>
+          <div class="pc-bg-grid"></div>
+          <div class="pc-hero" id="luma-hero">
+            <div class="pc-hero-placeholder">主视觉插图</div>
+          </div>
+          <div class="pc-logo" id="luma-logo">
+            <span class="host-tag">HOST</span>
+            <span class="brand">HackQuest × EDU Chain</span>
+          </div>
+          <div class="pc-mainTitle" contenteditable="true" data-field="mainTitle" data-placeholder="主标题" id="luma-mainTitle">
+            EDU Chain X HackQuest Mega Co-Learning Camp 2024
+          </div>
+          <div class="pc-subTitle" contenteditable="true" data-field="subTitle" data-placeholder="副标题" id="luma-subTitle">
+            Bangalore, India
+          </div>
+          <div class="pc-accent-line"></div>
+          <div class="pc-date-row">
+            <div class="pc-date2" contenteditable="true" data-field="date2" data-placeholder="地点" id="luma-date2">Yello Living, Bangalore, India</div>
+            <div class="divider"></div>
+            <div class="pc-date" contenteditable="true" data-field="date" data-placeholder="日期" id="luma-date">3rd - 5th December</div>
+          </div>
+          <div class="pc-partner" id="luma-partner">
+            <span class="p-label">PARTNER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="poster-card-actions">
+      <button class="btn primary" onclick="dlJpeg('canvas-luma','luma')">⬇ JPEG</button>
+      <button class="btn" onclick="dlPdf('canvas-luma','luma',1080,1080)">⬇ PDF</button>
+    </div>
+  </div>
+
+  <!-- ② ID Card 600×900 -->
+  <div class="poster-card" id="card-idcard">
+    <div class="poster-card-label">
+      <span class="poster-card-name">ID card</span>
+      <span class="poster-card-size">600 × 900</span>
+    </div>
+    <div class="canvas-outer">
+      <div class="canvas-scaler" style="padding-bottom:150%">
+        <div class="poster-canvas idcard" id="canvas-idcard">
+          <div class="pc-bg"></div>
+          <div class="pc-bg-dots"></div>
+          <div class="pc-logo" id="idcard-logo">
+            <span class="host-tag">HOST</span>
+            <span class="brand">HackQuest × EDU Chain</span>
+          </div>
+          <div class="pc-mainTitle" contenteditable="true" data-field="mainTitle" data-placeholder="主标题" id="idcard-mainTitle">
+            EDU Chain X HackQuest Mega Co-Learning Camp 2024
+          </div>
+          <div class="pc-cta" contenteditable="true" data-field="cta" data-placeholder="CTA" id="idcard-cta">JOIN EDU CHAIN HACKATHON</div>
+          <div class="pc-placeholder">
+            <div class="pc-placeholder-icon">🖼</div>
+            <div>照片 / 姓名</div>
+          </div>
+          <div class="pc-subTitle" contenteditable="true" data-field="subTitle" data-placeholder="副标题" id="idcard-subTitle">Bangalore, India</div>
+          <div class="pc-date-row">
+            <div class="pc-date2" contenteditable="true" data-field="date2" data-placeholder="地点" id="idcard-date2">Yello Living, Bangalore, India</div>
+            <div class="pc-date" contenteditable="true" data-field="date" data-placeholder="日期" id="idcard-date">3rd - 5th December</div>
+          </div>
+          <div class="pc-hero" id="idcard-hero"></div>
+          <div class="pc-partner" id="idcard-partner">
+            <span class="p-label">PARTNER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="poster-card-actions">
+      <button class="btn primary" onclick="dlJpeg('canvas-idcard','id-card')">⬇ JPEG</button>
+      <button class="btn" onclick="dlPdf('canvas-idcard','id-card',600,900)">⬇ PDF</button>
+    </div>
+  </div>
+
+  <!-- ③ EDU 盾旗 600×1000 -->
+  <div class="poster-card" id="card-edu-shield">
+    <div class="poster-card-label">
+      <span class="poster-card-name">EDU 盾旗</span>
+      <span class="poster-card-size">600 × 1000</span>
+    </div>
+    <div class="canvas-outer">
+      <div class="canvas-scaler" style="padding-bottom:166.67%">
+        <div class="poster-canvas edu-shield" id="canvas-edu-shield">
+          <div class="pc-bg"></div>
+          <div class="pc-bg-accent"></div>
+          <div class="pc-logo" id="shield-logo">
+            <span class="host-tag">HOST</span>
+            <span class="brand">HackQuest × EDU Chain</span>
+          </div>
+          <div class="pc-mainTitle" contenteditable="true" data-field="mainTitle" data-placeholder="主标题" id="shield-mainTitle">
+            EDU Chain X HackQuest Mega Co-Learning Camp 2024
+          </div>
+          <div class="pc-subTitle" contenteditable="true" data-field="subTitle" data-placeholder="副标题" id="shield-subTitle">Bangalore, India</div>
+          <div class="pc-cta" contenteditable="true" data-field="cta" data-placeholder="CTA" id="shield-cta">JOIN EDU CHAIN HACKATHON</div>
+          <div class="pc-hero" id="shield-hero">
+            <div class="pc-hero-placeholder">主视觉插图</div>
+          </div>
+          <div class="pc-date-row">
+            <div class="pc-date2" contenteditable="true" data-field="date2" data-placeholder="地点" id="shield-date2">Yello Living, Bangalore, India</div>
+            <div class="pc-date" contenteditable="true" data-field="date" data-placeholder="日期" id="shield-date">3rd - 5th December</div>
+          </div>
+          <div class="pc-partner" id="shield-partner">
+            <span class="p-label">PARTNER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="poster-card-actions">
+      <button class="btn primary" onclick="dlJpeg('canvas-edu-shield','edu-shield')">⬇ JPEG</button>
+      <button class="btn" onclick="dlPdf('canvas-edu-shield','edu-shield',600,1000)">⬇ PDF</button>
+    </div>
+  </div>
+
+  <!-- ④ EDU 方旗 600×1000 -->
+  <div class="poster-card" id="card-edu-fangqi">
+    <div class="poster-card-label">
+      <span class="poster-card-name">EDU 方旗</span>
+      <span class="poster-card-size">600 × 1000</span>
+    </div>
+    <div class="canvas-outer">
+      <div class="canvas-scaler" style="padding-bottom:166.67%">
+        <div class="poster-canvas edu-fangqi" id="canvas-edu-fangqi">
+          <div class="pc-bg"></div>
+          <div class="pc-bg-stripe"></div>
+          <div class="pc-logo" id="fangqi-logo">
+            <span class="host-tag">HOST</span>
+            <span class="brand">HackQuest × EDU Chain</span>
+          </div>
+          <div class="pc-mainTitle" contenteditable="true" data-field="mainTitle" data-placeholder="主标题" id="fangqi-mainTitle">
+            EDU Chain X HackQuest Mega Co-Learning Camp 2024
+          </div>
+          <div class="pc-subTitle" contenteditable="true" data-field="subTitle" data-placeholder="副标题" id="fangqi-subTitle">Bangalore, India</div>
+          <div class="pc-cta" contenteditable="true" data-field="cta" data-placeholder="CTA" id="fangqi-cta">JOIN EDU CHAIN HACKATHON</div>
+          <div class="pc-hero" id="fangqi-hero">
+            <div class="pc-hero-placeholder">主视觉插图</div>
+          </div>
+          <div class="pc-date-row">
+            <div class="pc-date2" contenteditable="true" data-field="date2" data-placeholder="地点" id="fangqi-date2">Yello Living, Bangalore, India</div>
+            <div class="pc-date" contenteditable="true" data-field="date" data-placeholder="日期" id="fangqi-date">3rd - 5th December</div>
+          </div>
+          <div class="pc-partner" id="fangqi-partner">
+            <span class="p-label">PARTNER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="poster-card-actions">
+      <button class="btn primary" onclick="dlJpeg('canvas-edu-fangqi','edu-fangqi')">⬇ JPEG</button>
+      <button class="btn" onclick="dlPdf('canvas-edu-fangqi','edu-fangqi',600,1000)">⬇ PDF</button>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ── Scale posters to fit column width ── */
+  function scalePosters() {
+    document.querySelectorAll(".canvas-scaler").forEach(scaler => {
+      const canvas = scaler.querySelector(".poster-canvas");
+      if (!canvas) return;
+      const nativeW = parseFloat(canvas.style.width || getComputedStyle(canvas).width);
+      const displayW = scaler.clientWidth;
+      const scale = displayW / nativeW;
+      canvas.style.transform = `scale(${scale})`;
+    });
+  }
+  window.addEventListener("resize", scalePosters);
+  window.addEventListener("load", scalePosters);
+
+  /* ── KV config ── */
+  const DEFAULT_KV = {
+    slots: {
+      background: { type: "gradient", value: "radial-gradient(ellipse 140% 100% at 50% 120%, #2a0a5e 0%, #0d0024 45%, #020210 100%)" },
+      logo: {
+        hostLabel: "HOST",
+        brandText: "HackQuest × EDU Chain",
+        images: [
+          "http://localhost:3845/assets/362f21aad83e327fc5ef0b5a8357d7e397b959c3.svg",
+          "http://localhost:3845/assets/d448a519c3ff1e3057723057eb08c741147c2d91.png"
+        ]
+      },
+      mainTitle: { text: "EDU Chain X HackQuest Mega Co-Learning Camp 2024" },
+      subTitle: { text: "Bangalore, India" },
+      date: { text: "3rd - 5th December" },
+      date2: { text: "Yello Living, Bangalore, India" },
+      cta: { text: "JOIN EDU CHAIN HACKATHON" },
+      hero: {
+        images: [
+          "http://localhost:3845/assets/ec1a5ae6e72d38dba80ec2349366ddbcc8c7d7a3.svg",
+          "http://localhost:3845/assets/7fa184ad1ed566961c09203c099c4cd0488dc34e.svg",
+          "http://localhost:3845/assets/04cf5caa02fe0f618905d3ea15409e7340423f4b.svg"
+        ],
+        placeholder: true
+      },
+      partner: {
+        label: "PARTNER",
+        images: [
+          "http://localhost:3845/assets/8f01fa8de05d3394bc80e24a8db7fd51b40ea5e4.png",
+          "http://localhost:3845/assets/e07fb7064b2e11b63e2d996a2a232df2e2822121.png",
+          "http://localhost:3845/assets/b8a44c5a8826cae673475921eb0df407eb172b38.png"
+        ]
+      }
+    }
+  };
+  let KV = JSON.parse(JSON.stringify(DEFAULT_KV));
+
+  /* ── Apply KV components to all 4 templates ── */
+  const TEMPLATE_IDS = [
+    { prefix: "luma",     canvas: "canvas-luma" },
+    { prefix: "idcard",   canvas: "canvas-idcard" },
+    { prefix: "shield",   canvas: "canvas-edu-shield" },
+    { prefix: "fangqi",   canvas: "canvas-edu-fangqi" }
+  ];
+
+  function applyKvToAll(kv) {
+    const s = kv.slots || {};
+    TEMPLATE_IDS.forEach(({ prefix, canvas }) => {
+      applyKvToTemplate(prefix, canvas, s);
+    });
+    scalePosters();
+  }
+
+  function applyKvToTemplate(prefix, canvasId, s) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    /* mainTitle */
+    const mt = canvas.querySelector("[data-field='mainTitle']");
+    if (mt && s.mainTitle) mt.textContent = s.mainTitle.text || "";
+
+    /* subTitle */
+    const st = canvas.querySelector("[data-field='subTitle']");
+    if (st && s.subTitle) st.textContent = s.subTitle.text || "";
+
+    /* date */
+    const d = canvas.querySelector("[data-field='date']");
+    if (d && s.date) d.textContent = s.date.text || "";
+
+    /* date2 */
+    const d2 = canvas.querySelector("[data-field='date2']");
+    if (d2 && s.date2) d2.textContent = s.date2.text || "";
+
+    /* cta */
+    const cta = canvas.querySelector("[data-field='cta']");
+    if (cta && s.cta) cta.textContent = s.cta.text || "";
+
+    /* logo */
+    const logoEl = canvas.querySelector("[id$='-logo'], [id$='logo']");
+    if (logoEl && s.logo) {
+      const hostEl = logoEl.querySelector(".host-tag");
+      if (hostEl) hostEl.textContent = s.logo.hostLabel || "HOST";
+      const brandEl = logoEl.querySelector(".brand");
+      if (brandEl) brandEl.textContent = s.logo.brandText || "";
+      /* inject logo images if any (they need cors-compatible src) */
+      logoEl.querySelectorAll("img").forEach(img => img.remove());
+      (s.logo.images || []).forEach(src => {
+        const img = document.createElement("img");
+        img.src = src; img.alt = "";
+        img.style.cssText = "height:28px;width:auto;display:block;";
+        logoEl.appendChild(img);
+      });
+    }
+
+    /* hero */
+    const heroEl = canvas.querySelector("[id$='-hero'], [class*='pc-hero']:not(.pc-hero-placeholder)");
+    if (heroEl && s.hero) {
+      if (s.hero.images && s.hero.images.length) {
+        heroEl.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = s.hero.images[0]; img.alt = "";
+        heroEl.appendChild(img);
+      } else {
+        /* keep placeholder */
+      }
+    }
+
+    /* partner */
+    const partnerEl = canvas.querySelector("[id$='-partner'], .pc-partner");
+    if (partnerEl && s.partner) {
+      partnerEl.innerHTML = "";
+      const lbl = document.createElement("span");
+      lbl.className = "p-label";
+      lbl.textContent = s.partner.label || "PARTNER";
+      partnerEl.appendChild(lbl);
+      (s.partner.images || []).forEach(src => {
+        const img = document.createElement("img");
+        img.src = src; img.alt = "";
+        partnerEl.appendChild(img);
+      });
+    }
+  }
+
+  /* ── Component pill preview ── */
+  document.querySelectorAll(".slot-pill").forEach(pill => {
+    pill.addEventListener("click", function () {
+      const active = this.classList.toggle("active");
+      document.querySelectorAll(".slot-pill").forEach(p => { if (p !== this) p.classList.remove("active"); });
+      const slotId = this.dataset.slot;
+      const preview = document.getElementById("slotPreview");
+      const inner = document.getElementById("slotPreviewInner");
+      if (!active) { preview.classList.remove("visible"); inner.innerHTML = ""; return; }
+      preview.classList.add("visible");
+      inner.innerHTML = buildSlotPreview(slotId, KV.slots[slotId]);
+    });
+  });
+
+  function buildSlotPreview(slotId, slot) {
+    const labels = {
+      background:"背景", logo:"Logo", mainTitle:"主标题", subTitle:"副标题",
+      cta:"CTA 按钮", date:"日期", date2:"地点", hero:"主视觉", partner:"合作方"
+    };
+    let body = "";
+    switch (slotId) {
+      case "background":
+        body = slot && slot.value
+          ? `<div class="slot-preview-bg-swatch" style="background:${slot.value}"></div>`
+          : `<div class="slot-preview-bg-swatch" style="background:#1a0a2e"></div>`;
+        break;
+      case "logo":
+        if (!slot) { body = "—"; break; }
+        const imgs = (slot.images || []).map(s => `<img src="${s}" alt="" />`).join("");
+        body = `<div class="slot-preview-logo"><span class="host-tag">${slot.hostLabel||"HOST"}</span><span class="brand-name">${slot.brandText||""}</span>${imgs}</div>`;
+        break;
+      case "mainTitle":
+        body = `<div class="slot-preview-text">${(slot && slot.text) || ""}</div>`;
+        break;
+      case "subTitle":
+        body = `<div class="slot-preview-text small">${(slot && slot.text) || ""}</div>`;
+        break;
+      case "cta":
+        body = `<div class="slot-preview-cta">${(slot && slot.text) || "JOIN EDU CHAIN HACKATHON"}</div>`;
+        break;
+      case "date":
+      case "date2":
+        body = `<div class="slot-preview-text small">${(slot && slot.text) || ""}</div>`;
+        break;
+      case "hero":
+        body = `<div class="slot-preview-hero">${(slot && slot.images || []).map(s=>`<img src="${s}" alt="" />`).join("")}</div>`;
+        break;
+      case "partner":
+        if (!slot) { body = "—"; break; }
+        const pimgs = (slot.images || []).map(s => `<img src="${s}" alt="" />`).join("");
+        body = `<div class="slot-preview-partner"><span class="partner-label">${slot.label||"PARTNER"}</span>${pimgs}</div>`;
+        break;
+      default:
+        body = "—";
+    }
+    return `<div class="slot-preview-label">${labels[slotId]||slotId}</div>${body}`;
+  }
+
+  /* ── Redefine KV ── */
+  document.getElementById("btnRedefineKv").addEventListener("click", () => {
+    fetch("kv-config.json")
+      .then(r => r.json())
+      .then(data => {
+        KV = data;
+        applyKvToAll(KV);
+        /* refresh active pill preview */
+        const active = document.querySelector(".slot-pill.active");
+        if (active) {
+          document.getElementById("slotPreviewInner").innerHTML =
+            buildSlotPreview(active.dataset.slot, KV.slots[active.dataset.slot]);
+        }
+        toast("✅ 已从 kv-config.json 重新定义 KV，4 个模板已更新。");
+      })
+      .catch(() => toast("❌ 无法加载 kv-config.json，请先用 Figma MCP 更新该文件。"));
+  });
+
+  /* ── Download JPEG ── */
+  function dlJpeg(canvasId, name) {
+    const el = document.getElementById(canvasId);
+    if (!el) return;
+    const origTransform = el.style.transform;
+    el.style.transform = "none";
+    import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm")
+      .then(({ default: html2canvas }) =>
+        html2canvas(el, { scale: 2, useCORS: true, allowTaint: true })
+      ).then(c => {
+        el.style.transform = origTransform;
+        const a = document.createElement("a");
+        a.download = name + ".jpg";
+        a.href = c.toDataURL("image/jpeg", 0.92);
+        a.click();
+      }).catch(() => { el.style.transform = origTransform; alert("请联网后重试。"); });
+  }
+
+  /* ── Download PDF ── */
+  function dlPdf(canvasId, name, w, h) {
+    const el = document.getElementById(canvasId);
+    if (!el) return;
+    const origTransform = el.style.transform;
+    el.style.transform = "none";
+    Promise.all([
+      import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm"),
+      import("https://cdn.jsdelivr.net/npm/jspdf@2.5.2/+esm")
+    ]).then(([{ default: html2canvas }, { jsPDF }]) =>
+      html2canvas(el, { scale: 2, useCORS: true, allowTaint: true })
+        .then(c => {
+          el.style.transform = origTransform;
+          const img = c.toDataURL("image/jpeg", 0.92);
+          const pdf = new jsPDF.jsPDF({ unit: "px", format: [w, h], hotfixes: ["px_scaling"] });
+          pdf.addImage(img, "JPEG", 0, 0, w, h);
+          pdf.save(name + ".pdf");
+        })
+    ).catch(() => { el.style.transform = origTransform; alert("请联网后重试。"); });
+  }
+
+  /* ── Download all ── */
+  document.getElementById("btnDownloadAll").addEventListener("click", async () => {
+    const list = [
+      ["canvas-luma","luma"], ["canvas-idcard","id-card"],
+      ["canvas-edu-shield","edu-shield"], ["canvas-edu-fangqi","edu-fangqi"]
+    ];
+    const { default: html2canvas } = await import("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm").catch(() => ({ default: null }));
+    if (!html2canvas) { alert("请联网后重试。"); return; }
+    for (const [cid, name] of list) {
+      const el = document.getElementById(cid);
+      if (!el) continue;
+      const origT = el.style.transform; el.style.transform = "none";
+      const c = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true });
+      el.style.transform = origT;
+      const a = document.createElement("a"); a.download = name + ".jpg";
+      a.href = c.toDataURL("image/jpeg", 0.92); a.click();
+      await new Promise(r => setTimeout(r, 300));
+    }
+    toast("✅ 全部下载完成");
+  });
+
+  /* ── Toast ── */
+  function toast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg; el.classList.add("show");
+    clearTimeout(window._tt);
+    window._tt = setTimeout(() => el.classList.remove("show"), 3000);
+  }
+
+  /* ── Initial apply ── */
+  applyKvToAll(KV);
+</script>
+</body>
+</html>
