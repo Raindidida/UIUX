@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Swords, Timer } from 'lucide-react';
+import { Swords, Timer, Wifi } from 'lucide-react';
 
 export type Difficulty = 'easy' | 'normal' | 'hard';
 
@@ -20,12 +20,14 @@ export const DIFFICULTY_CONFIG: Record<Difficulty, {
 
 interface Props {
   onStart: (difficulty: Difficulty) => void;
+  onOnlineMatch: (playerName: string, difficulty: Difficulty) => void;
   bestRecord: { rounds: number; accuracy: number } | null;
 }
 
-const HomeScreen: React.FC<Props> = ({ onStart, bestRecord }) => {
+const HomeScreen: React.FC<Props> = ({ onStart, onOnlineMatch, bestRecord }) => {
   const [dateStr, setDateStr] = useState('');
   const [selected, setSelected] = useState<Difficulty>('normal');
+  const [playerName, setPlayerName] = useState(() => localStorage.getItem('idiom_player_name') ?? '');
 
   useEffect(() => {
     const update = () => {
@@ -42,6 +44,12 @@ const HomeScreen: React.FC<Props> = ({ onStart, bestRecord }) => {
   }, []);
 
   const difficulties: Difficulty[] = ['easy', 'normal', 'hard'];
+
+  const handleOnlineMatch = () => {
+    const name = playerName.trim() || '匿名侠客';
+    localStorage.setItem('idiom_player_name', name);
+    onOnlineMatch(name, selected);
+  };
 
   return (
     <div className="min-h-screen bg-[#0a1410] text-emerald-400 flex flex-col font-cn select-none">
@@ -143,6 +151,27 @@ const HomeScreen: React.FC<Props> = ({ onStart, bestRecord }) => {
           </div>
         </div>
 
+        {/* ── 玩家名称输入 ── */}
+        <div className="w-full max-w-sm flex flex-col gap-1.5">
+          <label className="font-pixel text-[8px] text-emerald-700 tracking-widest flex items-center gap-2">
+            <Wifi size={10} className="text-emerald-700" />
+            PLAYER NAME（联网对战用）
+          </label>
+          <input
+            type="text"
+            maxLength={12}
+            value={playerName}
+            onChange={e => setPlayerName(e.target.value)}
+            placeholder="输入昵称（最多12字）"
+            className="
+              w-full px-3 py-2 bg-black/40 border border-emerald-900
+              text-emerald-300 text-sm placeholder:text-zinc-700
+              focus:outline-none focus:border-emerald-600
+              font-cn tracking-wide
+            "
+          />
+        </div>
+
         {/* ── 开始按钮 ── */}
         <div className="w-full max-w-sm flex flex-col gap-3">
           <button
@@ -160,20 +189,22 @@ const HomeScreen: React.FC<Props> = ({ onStart, bestRecord }) => {
             挑 战 电 脑
           </button>
 
-          {/* 玩家匹配 Coming Soon */}
+          {/* 联网对战按钮 */}
           <button
-            disabled
+            onClick={handleOnlineMatch}
             className="
               w-full py-3 px-6 text-base tracking-[0.2em] font-bold
-              bg-[#111] text-zinc-600
-              border-2 border-zinc-800
-              cursor-not-allowed opacity-50
+              bg-violet-900/30 text-violet-300
+              border-2 border-violet-700
+              hover:bg-violet-900/50 hover:brightness-125
+              active:scale-95 transition-all duration-100
               before:content-['⚔_'] before:mr-1
             "
+            style={{ boxShadow: '0 0 0 1px #0a1410, 0 0 14px rgba(139,92,246,0.25)' }}
           >
-            玩家匹配
-            <span className="ml-3 font-pixel text-[8px] text-yellow-600 border border-yellow-800 px-1.5 py-0.5 align-middle">
-              COMING SOON
+            联 网 对 战
+            <span className="ml-3 font-pixel text-[7px] text-violet-500 border border-violet-800 px-1.5 py-0.5 align-middle">
+              ONLINE
             </span>
           </button>
         </div>

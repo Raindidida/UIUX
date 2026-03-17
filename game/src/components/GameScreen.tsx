@@ -15,6 +15,8 @@ interface Props {
   aiSlots?: BulletSlot[];
   onCorrect: (input: Idiom) => void;
   onPenalty: (type: 'not-idiom' | 'wrong-chain' | 'timeout') => void;
+  isOnlineMode?: boolean;
+  isYourTurn?: boolean;
 }
 
 // 子弹槽可视化组件
@@ -76,6 +78,8 @@ const GameScreen: React.FC<Props> = ({
   aiSlots,
   onCorrect,
   onPenalty,
+  isOnlineMode = false,
+  isYourTurn = true,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [timeLeft, setTimeLeft] = useState(timerMax);
@@ -260,6 +264,22 @@ const GameScreen: React.FC<Props> = ({
 
   return (
     <div className="min-h-screen bg-[#0a1410] text-emerald-400 flex flex-col font-cn">
+
+      {/* 联网模式标识栏 */}
+      {isOnlineMode && (
+        <div className={`
+          flex items-center justify-center gap-2 px-3 py-1.5
+          border-b text-[9px] font-pixel tracking-widest
+          ${isYourTurn
+            ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-500'
+            : 'bg-violet-950/40 border-violet-800/50 text-violet-600 animate-pulse'
+          }
+        `}>
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+          {isYourTurn ? '⚔ 你的回合 — 输入成语' : `⏳ 等待 ${opponentName} 接龙…`}
+          <span className="ml-auto opacity-50">ONLINE</span>
+        </div>
+      )}
 
       {/* ── 顶部信息栏 ── */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-emerald-900/50 bg-black/50 shrink-0 gap-3">

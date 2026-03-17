@@ -1,13 +1,32 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import HomeScreen, { Difficulty, DIFFICULTY_CONFIG } from './components/HomeScreen';
 import GameScreen from './components/GameScreen';
 import RouletteScreen from './components/RouletteScreen';
 import ResultScreen, { GameStats, loadBestRecord } from './components/ResultScreen';
+import MatchmakingScreen from './components/MatchmakingScreen';
 import {
   Idiom,
   getRandomStartIdiom,
   getChainCandidates,
 } from './data/idioms';
+import {
+  connectSocket,
+  disconnectSocket,
+  emitMatchJoin,
+  emitMatchCancel,
+  emitGameSubmit,
+  emitGameTimeout,
+  onMatchFound,
+  onMatchCancelled,
+  onGameRoulette,
+  onGameOver,
+  onGameStateUpdate,
+  onGameError,
+  MatchFoundPayload,
+  GameRoulettePayload,
+  GameOverPayload,
+  GameStateUpdatePayload,
+} from './socket/socketClient';
 
 // ── AI 难度配置 ──
 interface AILevel {
@@ -61,12 +80,22 @@ function fireOnce(slots: BulletSlot[]): { nextSlots: BulletSlot[]; hit: boolean;
 
 type Screen =
   | 'home'
+  | 'online-matching'
+  | 'online-game'
   | 'game'
   | 'ai-turn'
   | 'roulette-player'
   | 'roulette-ai'
   | 'ai-killed'
   | 'result';
+
+interface OnlineState {
+  roomId: string;
+  opponentName: string;
+  yourTurn: boolean;
+  playerName: string;
+  difficulty: Difficulty;
+}
 
 interface AppState {
   screen: Screen;
@@ -84,6 +113,10 @@ interface AppState {
   // 轮盘结果（传给 RouletteScreen 直接展示，不再自己随机）
   pendingRouletteHit?: boolean;
   pendingRouletteChamber?: number;
+  // 联网模式
+  online?: OnlineState;
+  onlineWinner?: 'you' | 'opponent' | 'draw';
+  onlineEndReason?: 'roulette' | 'opponent-left';
 }
 
 // ── AI 回合 Overlay（3s上限 + 结果展示） ──
@@ -260,6 +293,102 @@ const App: React.FC = () => {
 
   const bestRecord = loadBestRecord();
 
+  // ── 联网模式：Socket 事件监听 ──
+  // 用 ref 存储当前 appState，避免事件回调中闭包过期
+  const appStateRef = useRef(appState);
+  useEffect(() => { appStateRef.current = appState; }, [appState]);
+
+  // 存储 pending 的联网 playerName（在匹配成功前保留）
+  const pendingOnlineRef = useRef<{ playerName: string; difficulty: Difficulty } | null>(null);
+
+  useEffect(() => {
+    // 匹配成功
+    const offFound = onMatchFound((data: MatchFoundPayload) => {
+      const pn = pendingOnlineRef.current?.playerName ?? '我';
+      setAppState(prev => ({
+        ...prev,
+        screen: 'online-game',
+        currentIdiom: data.currentIdiom,
+        round: 1,
+        correctCount: 0,
+        wrongCount: 0,
+        chainHistory: [data.currentIdiom.text],
+        difficulty: data.difficulty,
+        playerSlots: data.playerSlots as BulletSlot[],
+        aiSlots: data.opponentSlots as BulletSlot[],  // aiSlots 复用为 opponentSlots
+        online: {
+          roomId: data.roomId,
+          opponentName: data.opponentName,
+          yourTurn: data.firstTurn,
+          playerName: pn,
+          difficulty: data.difficulty,
+        },
+      }));
+    });
+
+    // 轮盘赌结果（服务端仲裁）
+    const offRoulette = onGameRoulette((data: GameRoulettePayload) => {
+      setAppState(prev => {
+        const screen: Screen = data.target === 'you' ? 'roulette-player' : 'roulette-ai';
+        return {
+          ...prev,
+          screen,
+          playerSlots: data.playerSlots as BulletSlot[],
+          aiSlots: data.opponentSlots as BulletSlot[],
+          pendingRouletteHit: data.hit,
+          pendingRouletteChamber: data.chamber,
+        };
+      });
+    });
+
+    // 游戏结束
+    const offOver = onGameOver((data: GameOverPayload) => {
+      setAppState(prev => ({
+        ...prev,
+        screen: 'result',
+        isVictory: data.winner === 'you',
+        chainHistory: data.stats.chainHistory,
+        round: data.stats.rounds,
+        onlineWinner: data.winner,
+        onlineEndReason: data.reason,
+      }));
+    });
+
+    // 服务端游戏状态同步
+    const offUpdate = onGameStateUpdate((data: GameStateUpdatePayload) => {
+      setAppState(prev => ({
+        ...prev,
+        currentIdiom: data.currentIdiom,
+        round: data.round,
+        playerSlots: data.playerSlots as BulletSlot[],
+        aiSlots: data.opponentSlots as BulletSlot[],
+        online: prev.online
+          ? { ...prev.online, yourTurn: data.yourTurn }
+          : prev.online,
+      }));
+    });
+
+    // 服务端错误
+    const offError = onGameError((data) => {
+      console.warn('[GameError]', data.message);
+    });
+
+    // 匹配取消
+    const offCancelled = onMatchCancelled(() => {
+      setAppState(prev => ({ ...prev, screen: 'home' }));
+      disconnectSocket();
+    });
+
+    return () => {
+      offFound();
+      offRoulette();
+      offOver();
+      offUpdate();
+      offError();
+      offCancelled();
+    };
+  }, []);
+
   const handleStart = useCallback((difficulty: Difficulty) => {
     const start = getRandomStartIdiom();
     setAppState({
@@ -276,6 +405,63 @@ const App: React.FC = () => {
       playerSlots: freshBulletSlots(),
       aiSlots: freshBulletSlots(),
     });
+  }, []);
+
+  // ── 联网模式：开始匹配 ──
+  const handleOnlineMatch = useCallback((playerName: string, difficulty: Difficulty) => {
+    pendingOnlineRef.current = { playerName, difficulty };
+    connectSocket();
+    emitMatchJoin(playerName, difficulty);
+    setAppState(prev => ({
+      ...prev,
+      screen: 'online-matching',
+      difficulty,
+    }));
+  }, []);
+
+  // ── 联网模式：取消匹配 ──
+  const handleCancelMatch = useCallback(() => {
+    emitMatchCancel();
+    disconnectSocket();
+    pendingOnlineRef.current = null;
+    setAppState(prev => ({ ...prev, screen: 'home' }));
+  }, []);
+
+  // ── 联网模式：玩家提交成语（发送给服务端验证） ──
+  const handleOnlineCorrect = useCallback((inputIdiom: Idiom) => {
+    const state = appStateRef.current;
+    if (!state.online) return;
+    // 更新本地状态（乐观更新），等待服务端确认
+    emitGameSubmit(state.online.roomId, inputIdiom.text);
+    setAppState(prev => ({
+      ...prev,
+      correctCount: prev.correctCount + 1,
+      chainHistory: [...prev.chainHistory, inputIdiom.text],
+      online: prev.online ? { ...prev.online, yourTurn: false } : prev.online,
+    }));
+  }, []);
+
+  // ── 联网模式：超时惩罚 ──
+  const handleOnlinePenalty = useCallback((_type: 'not-idiom' | 'wrong-chain' | 'timeout') => {
+    const state = appStateRef.current;
+    if (!state.online) return;
+    emitGameTimeout(state.online.roomId);
+    setAppState(prev => ({
+      ...prev,
+      wrongCount: prev.wrongCount + 1,
+    }));
+  }, []);
+
+  // ── 联网模式：轮盘结果（仅动画展示，服务端已仲裁，此处不影响状态） ──
+  const handleOnlineRouletteResult = useCallback((_survived: boolean) => {
+    // 结果已由服务端通过 game:over 或 game:state_update 告知
+    // 此回调只需切回游戏界面等待下一步（若未结束）
+    setAppState(prev => ({
+      ...prev,
+      screen: prev.screen === 'roulette-player' || prev.screen === 'roulette-ai'
+        ? 'online-game'
+        : prev.screen,
+    }));
   }, []);
 
   const handlePlayerCorrect = useCallback((inputIdiom: Idiom) => {
@@ -377,12 +563,23 @@ const App: React.FC = () => {
   }, []);
 
   const handleRetry = useCallback(() => {
-    handleStart(appState.difficulty);
-  }, [handleStart, appState.difficulty]);
+    if (appState.online) {
+      // 联网模式结束后重新匹配
+      const { playerName, difficulty } = appState.online;
+      handleOnlineMatch(playerName, difficulty);
+    } else {
+      handleStart(appState.difficulty);
+    }
+  }, [handleStart, handleOnlineMatch, appState.difficulty, appState.online]);
 
   const handleHome = useCallback(() => {
-    setAppState(prev => ({ ...prev, screen: 'home' }));
-  }, []);
+    // 如果是联网模式，断开连接
+    if (appState.online || appState.screen === 'online-matching' || appState.screen === 'online-game') {
+      disconnectSocket();
+      pendingOnlineRef.current = null;
+    }
+    setAppState(prev => ({ ...prev, screen: 'home', online: undefined }));
+  }, [appState.online, appState.screen]);
 
   const currentAI = AI_LEVELS[appState.aiLevelIndex] ?? AI_LEVELS[AI_LEVELS.length - 1];
   const currentFailRate = computeFailRate(appState.killCount);
@@ -398,7 +595,39 @@ const App: React.FC = () => {
 
   switch (appState.screen) {
     case 'home':
-      return <HomeScreen onStart={handleStart} bestRecord={bestRecord} />;
+      return (
+        <HomeScreen
+          onStart={handleStart}
+          onOnlineMatch={handleOnlineMatch}
+          bestRecord={bestRecord}
+        />
+      );
+
+    case 'online-matching':
+      return (
+        <MatchmakingScreen
+          playerName={pendingOnlineRef.current?.playerName ?? '匿名侠客'}
+          difficulty={appState.difficulty}
+          onCancel={handleCancelMatch}
+        />
+      );
+
+    case 'online-game':
+      return (
+        <GameScreen
+          currentIdiom={appState.currentIdiom}
+          round={appState.round}
+          opponentName={appState.online?.opponentName ?? '对手'}
+          timerMax={DIFFICULTY_CONFIG[appState.difficulty].seconds}
+          frozen={!appState.online?.yourTurn}
+          playerSlots={appState.playerSlots}
+          aiSlots={appState.aiSlots}
+          onCorrect={handleOnlineCorrect}
+          onPenalty={handleOnlinePenalty}
+          isOnlineMode={true}
+          isYourTurn={appState.online?.yourTurn ?? false}
+        />
+      );
 
     case 'game':
       return (
@@ -443,12 +672,12 @@ const App: React.FC = () => {
       return (
         <RouletteScreen
           target="player"
-          opponentName={currentAI.name}
+          opponentName={appState.online?.opponentName ?? currentAI.name}
           presetHit={appState.pendingRouletteHit}
           presetChamber={appState.pendingRouletteChamber}
           playerSlots={appState.playerSlots}
           aiSlots={appState.aiSlots}
-          onResult={handlePlayerRouletteResult}
+          onResult={appState.online ? handleOnlineRouletteResult : handlePlayerRouletteResult}
         />
       );
 
@@ -456,12 +685,12 @@ const App: React.FC = () => {
       return (
         <RouletteScreen
           target="ai"
-          opponentName={currentAI.name}
+          opponentName={appState.online?.opponentName ?? currentAI.name}
           presetHit={appState.pendingRouletteHit}
           presetChamber={appState.pendingRouletteChamber}
           playerSlots={appState.playerSlots}
           aiSlots={appState.aiSlots}
-          onResult={handleAIRouletteResult}
+          onResult={appState.online ? handleOnlineRouletteResult : handleAIRouletteResult}
         />
       );
 
@@ -480,9 +709,20 @@ const App: React.FC = () => {
     case 'result':
       return (
         <ResultScreen
-          stats={gameStats}
+          stats={appState.online
+            ? {
+                rounds: appState.round,
+                correctCount: appState.correctCount,
+                wrongCount: appState.wrongCount,
+                isVictory: appState.isVictory,
+                opponentName: `${appState.online.opponentName}（联网）`,
+                chainHistory: appState.chainHistory.slice(1),
+              }
+            : gameStats
+          }
           onRetry={handleRetry}
           onHome={handleHome}
+          onlineEndReason={appState.onlineEndReason}
         />
       );
 

@@ -13,6 +13,7 @@ interface Props {
   stats: GameStats;
   onRetry: () => void;
   onHome: () => void;
+  onlineEndReason?: 'roulette' | 'opponent-left';
 }
 
 const STORAGE_KEY = 'idiom_best_record';
@@ -36,7 +37,7 @@ function saveBestRecord(stats: GameStats) {
   }
 }
 
-const ResultScreen: React.FC<Props> = ({ stats, onRetry, onHome }) => {
+const ResultScreen: React.FC<Props> = ({ stats, onRetry, onHome, onlineEndReason }) => {
   const [newBest, setNewBest] = useState(false);
 
   useEffect(() => {
@@ -73,7 +74,9 @@ const ResultScreen: React.FC<Props> = ({ stats, onRetry, onHome }) => {
                 胜 利
               </div>
               <div className="text-emerald-600 mt-2 text-sm">
-                {stats.opponentName} 已被送进棺材
+                {onlineEndReason === 'opponent-left'
+                  ? `${stats.opponentName} 断线逃跑了`
+                  : `${stats.opponentName} 已被送进棺材`}
               </div>
             </>
           ) : (
@@ -83,7 +86,9 @@ const ResultScreen: React.FC<Props> = ({ stats, onRetry, onHome }) => {
                 阵 亡
               </div>
               <div className="text-zinc-500 mt-2 text-sm">
-                被 {stats.opponentName} 送走了
+                {onlineEndReason === 'opponent-left'
+                  ? '对手已断线（算平局）'
+                  : `被 ${stats.opponentName} 送走了`}
               </div>
             </>
           )}
