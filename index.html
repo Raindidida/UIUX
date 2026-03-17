@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉字死斗 · HANZI DEATHMATCH</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   全局 CRT 像素风基础
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a1410;
+  --bg2:       #0d1f18;
+  --panel:     #0f2a1e;
+  --border:    #2a6b4a;
+  --border2:   #1a4030;
+  --green:     #4dffb4;
+  --green-dim: #2a8c60;
+  --green-hi:  #a0ffc8;
+  --yellow:    #ffe066;
+  --red:       #ff3355;
+  --red-dim:   #8b1a2a;
+  --gray:      #3a5248;
+  --gray-dim:  #1e3028;
+  --white:     #c8ffe0;
+  --font-px:   'Press Start 2P', monospace;
+  --font-cn:   'Noto Sans SC', sans-serif;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--green);
+  font-family: var(--font-cn);
+  overflow: hidden;
+  cursor: default;
+  image-rendering: pixelated;
+}
+
+/* CRT 扫描线 */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0,0,0,0.18) 2px,
+    rgba(0,0,0,0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* CRT 边缘暗角 */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 60%,
+    rgba(0,0,0,0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* 像素双线边框 mixin */
+.pxborder {
+  border: 2px solid var(--border);
+  box-shadow:
+    0 0 0 1px var(--bg),
+    0 0 0 3px var(--border2),
+    inset 0 0 0 1px var(--border2);
+  background: var(--panel);
+}
+
+.pxborder-bright {
+  border: 2px solid var(--green);
+  box-shadow:
+    0 0 0 1px var(--bg),
+    0 0 0 3px var(--green-dim),
+    0 0 12px rgba(77,255,180,0.15),
+    inset 0 0 0 1px var(--green-dim);
+  background: var(--panel);
+}
+
+/* 通用按钮 */
+.btn {
+  font-family: var(--font-cn);
+  font-size: 16px;
+  letter-spacing: 4px;
+  padding: 14px 28px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  text-align: center;
+  transition: all 0.08s;
+  user-select: none;
+  position: relative;
+}
+
+.btn-green {
+  background: var(--panel);
+  color: var(--green-hi);
+  border: 2px solid var(--green);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--green-dim), 0 0 16px rgba(77,255,180,0.2);
+}
+.btn-green::before { content: '▶ '; }
+.btn-green:hover {
+  background: rgba(77,255,180,0.12);
+  color: #fff;
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--green), 0 0 28px rgba(77,255,180,0.4);
+  transform: translateY(-1px);
+}
+.btn-green:active { transform: translateY(1px); }
+
+.btn-disabled {
+  background: var(--gray-dim);
+  color: var(--gray);
+  border: 2px solid var(--gray);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px #111;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.btn-disabled::before { content: '⚔ '; }
+
+/* 屏幕容器 */
+.screen {
+  position: fixed; inset: 0;
+  display: none;
+  flex-direction: column;
+}
+.screen.active { display: flex; }
+
+/* ═══════════════════════════════════════
+   顶部/底部状态栏
+═══════════════════════════════════════ */
+.statusbar {
+  font-family: var(--font-px);
+  font-size: 8px;
+  color: var(--green-dim);
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border2);
+  background: var(--bg);
+  flex-shrink: 0;
+  letter-spacing: 1px;
+}
+
+.bottombar {
+  font-family: var(--font-px);
+  font-size: 8px;
+  color: var(--green-dim);
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border2);
+  background: var(--bg);
+  flex-shrink: 0;
+  letter-spacing: 1px;
+}
+
+.hearts { color: var(--red); letter-spacing: 3px; font-size: 10px; }
+.heart-empty { color: var(--gray); }
+
+/* ═══════════════════════════════════════
+   首页 - HOMEPAGE
+═══════════════════════════════════════ */
+#screen-home {
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+}
+
+.home-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 20px;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 标题区 */
+.home-title-wrap {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.home-title-cn {
+  font-family: var(--font-cn);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--green-hi);
+  letter-spacing: 8px;
+  text-shadow:
+    0 0 10px rgba(160,255,200,0.6),
+    0 0 30px rgba(77,255,180,0.3);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  animation: titleGlow 2.4s ease-in-out infinite;
+}
+
+.home-title-en {
+  font-family: var(--font-px);
+  font-size: 9px;
+  color: var(--green-dim);
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+
+.home-subtitle {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+  margin-top: 10px;
+}
+
+@keyframes titleGlow {
+  0%, 100% { text-shadow: 0 0 10px rgba(160,255,200,0.6), 0 0 30px rgba(77,255,180,0.3); }
+  50% { text-shadow: 0 0 20px rgba(160,255,200,0.9), 0 0 50px rgba(77,255,180,0.6); }
+}
+
+/* 像素装饰线 */
+.pixel-divider {
+  width: 100%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--border) 0px, var(--border) 4px,
+    transparent 4px, transparent 8px
+  );
+  margin: 20px 0;
+  opacity: 0.6;
+}
+
+/* 菜单按钮区 */
+.home-menu {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* Coming Soon 徽章 */
+.coming-soon-badge {
+  display: inline-block;
+  font-family: var(--font-px);
+  font-size: 7px;
+  color: var(--yellow);
+  border: 1px solid var(--yellow);
+  padding: 2px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+/* 最高记录 */
+.home-record {
+  font-family: var(--font-cn);
+  font-size: 12px;
+  color: var(--green-dim);
+  text-align: center;
+  letter-spacing: 2px;
+  padding: 10px 20px;
+  border: 1px solid var(--border2);
+  background: rgba(0,0,0,0.3);
+}
+.home-record span { color: var(--yellow); }
+
+/* 闪烁光标 */
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+  font-family: var(--font-px);
+  color: var(--green);
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* 像素装饰角色（首页左右装饰） */
+.home-deco {
+  font-family: var(--font-px);
+  font-size: 7px;
+  color: var(--border);
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 1px;
+  margin-top: 16px;
+}
+
+/* ═══════════════════════════════════════
+   游戏场景 - GAME SCENE
+═══════════════════════════════════════ */
+#screen-game {
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.game-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px;
+  border-bottom: 2px solid var(--border2);
+  background: var(--bg);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.game-topbar-left {
+  font-family: var(--font-px);
+  font-size: 7px;
+  color: var(--green-dim);
+  letter-spacing: 1px;
+}
+
+.game-topbar-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.timer-label {
+  font-family: var(--font-px);
+  font-size: 7px;
+  color: var(--green-dim);
+  letter-spacing: 1px;
+}
+
+.timer-bar-wrap {
+  width: 200px;
+  height: 12px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: var(--green);
+  transition: width 1s linear, background 0.3s;
+  box-shadow: 0 0 8px rgba(77,255,180,0.6);
+}
+
+.timer-bar.danger { background: var(--red); box-shadow: 0 0 8px rgba(255,51,85,0.8); }
+
+.timer-num {
+  font-family: var(--font-px);
+  font-size: 9px;
+  color: var(--green-hi);
+  min-width: 28px;
+  text-align: center;
+}
+
+.game-topbar-right {
+  font-family: var(--font-cn);
+  font-size: 11px;
+  color: var(--green-dim);
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+/* 主视角区域 */
+.game-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 房间背景 */
+.room-scene {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* 房间顶部（对手一侧） */
+.room-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  background:
+    linear-gradient(to bottom, var(--bg) 0%, var(--bg2) 100%);
+  position: relative;
+}
+
+/* 桌面分隔线 */
+.table-edge {
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(to bottom, #1a3020, #0f2018);
+  border-top: 3px solid #2a5040;
+  border-bottom: 2px solid #0a1410;
+  flex-shrink: 0;
+  position: relative;
+}
+.table-edge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0px, transparent 12px,
+    rgba(42,96,64,0.3) 12px, rgba(42,96,64,0.3) 13px
+  );
+}
+
+/* 玩家视角桌面（下方） */
+.room-bottom {
+  background: linear-gradient(to bottom, #111f18, var(--bg));
+  padding: 10px 0 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ──────────────────
+   对手角色（CSS像素画）
+────────────────── */
+.opponent-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.opponent-name {
+  font-family: var(--font-cn);
+  font-size: 11px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.opponent-status {
+  font-family: var(--font-px);
+  font-size: 7px;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+}
+.status-thinking { color: var(--yellow); border-color: var(--yellow); }
+.status-correct  { color: var(--green);  border-color: var(--green); }
+.status-wrong    { color: var(--red);    border-color: var(--red); }
+.status-dead     { color: var(--gray);   border-color: var(--gray); }
+
+/* CSS 像素人物（戴头套） */
+.pixel-character {
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.pixel-char-svg {
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.7));
+}
+
+/* 对手状态叠加 */
+.opponent-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.opponent-overlay.show { opacity: 1; }
+
+/* ──────────────────
+   题目区
+────────────────── */
+.question-panel {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 16px 10px;
+}
+
+.question-box {
+  border: 2px solid var(--border);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--border2);
+  background: var(--panel);
+  padding: 14px 18px 12px;
+}
+
+.question-type-tag {
+  font-family: var(--font-px);
+  font-size: 7px;
+  color: var(--green-dim);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  display: inline-block;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.question-text {
+  font-family: var(--font-cn);
+  font-size: 18px;
+  color: var(--green-hi);
+  letter-spacing: 3px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  text-shadow: 0 0 8px rgba(160,255,200,0.4);
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.option-btn {
+  font-family: var(--font-cn);
+  font-size: 14px;
+  letter-spacing: 2px;
+  padding: 10px 14px;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--white);
+  border: 2px solid var(--border2);
+  text-align: left;
+  transition: all 0.08s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: rgba(77,255,180,0.08);
+  border-color: var(--green-dim);
+  color: var(--green-hi);
+}
+
+.option-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.option-btn:disabled { cursor: not-allowed; }
+
+.option-btn .opt-key {
+  font-family: var(--font-px);
+  font-size: 9px;
+  color: var(--green-dim);
+  min-width: 14px;
+  flex-shrink: 0;
+}
+
+.option-btn.correct {
+  background: rgba(77,255,180,0.15);
+  border-color: var(--green);
+  color: var(--green-hi);
+  animation: flashCorrect 0.4s;
+}
+
+.option-btn.wrong {
+  background: rgba(255,51,85,0.15);
+  border-color: var(--red);
+  color: var(--red);
+  animation: flashWrong 0.4s;
+}
+
+@keyframes flashCorrect {
+  0% { background: rgba(77,255,180,0.5); }
+  100% { background: rgba(77,255,180,0.15); }
+}
+@keyframes flashWrong {
+  0% { background: rgba(255,51,85,0.5); }
+  100% { background: rgba(255,51,85,0.15); }
+}
+
+/* ──────────────────
+   像素键盘（底部装饰）
+────────────────── */
+.pixel-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 20px;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+.kb-row {
+  display: flex;
+  gap: 3px;
+}
+
+.kb-key {
+  font-family: var(--font-px);
+  font-size: 6px;
+  width: 22px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d2018;
+  border: 1px solid var(--border2);
+  color: var(--green-dim);
+  box-shadow: 0 2px 0 #071008;
+}
+
+.kb-key.wide { width: 34px; }
+.kb-key.space { width: 120px; }
+
+/* ═══════════════════════════════════════
+   轮盘赌界面 - ROULETTE
+═══════════════════════════════════════ */
+#screen-roulette {
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+}
+
+.roulette-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+}
+
+.roulette-title {
+  font-family: var(--font-cn);
+  font-size: 22px;
+  color: var(--red);
+  letter-spacing: 4px;
+  text-shadow: 0 0 16px rgba(255,51,85,0.7);
+  text-align: center;
+  animation: dangerPulse 0.8s ease-in-out infinite;
+}
+
+.roulette-sub {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+@keyframes dangerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* 弹仓 SVG 区域 */
+.cylinder-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cylinder-svg {
+  filter: drop-shadow(0 0 16px rgba(77,255,180,0.2));
+}
+
+.cylinder-msg {
+  font-family: var(--font-cn);
+  font-size: 15px;
+  color: var(--yellow);
+  letter-spacing: 3px;
+  text-align: center;
+  min-height: 24px;
+}
+
+.roulette-fire-btn {
+  font-family: var(--font-cn);
+  font-size: 18px;
+  letter-spacing: 6px;
+  padding: 16px 48px;
+  cursor: pointer;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 2px solid var(--red);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px #600, 0 0 20px rgba(255,51,85,0.3);
+  transition: all 0.1s;
+  text-shadow: 0 0 10px rgba(255,51,85,0.8);
+  animation: fireBtn 1.5s ease-in-out infinite;
+}
+.roulette-fire-btn:hover {
+  background: rgba(255,51,85,0.25);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--red), 0 0 32px rgba(255,51,85,0.6);
+}
+.roulette-fire-btn:active { transform: scale(0.97); }
+.roulette-fire-btn:disabled { cursor: not-allowed; opacity: 0.5; animation: none; }
+
+@keyframes fireBtn {
+  0%, 100% { box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px #600, 0 0 20px rgba(255,51,85,0.3); }
+  50% { box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px #aa0, 0 0 30px rgba(255,51,85,0.55); }
+}
+
+/* 枪械 CSS 图形 */
+.gun-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px 0;
+}
+
+/* ═══════════════════════════════════════
+   结算页 - RESULT
+═══════════════════════════════════════ */
+#screen-result {
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+}
+
+.result-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.result-title {
+  font-family: var(--font-cn);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-align: center;
+  line-height: 1.3;
+}
+.result-title.win  { color: var(--yellow); text-shadow: 0 0 20px rgba(255,224,102,0.7); }
+.result-title.lose { color: var(--red);    text-shadow: 0 0 20px rgba(255,51,85,0.7); }
+
+.result-stats {
+  width: 100%;
+  border: 2px solid var(--border);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--border2);
+  background: var(--panel);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border2);
+  padding-bottom: 8px;
+}
+.stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.stat-label {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+}
+
+.stat-value {
+  font-family: var(--font-cn);
+  font-size: 15px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.result-new-record {
+  font-family: var(--font-px);
+  font-size: 8px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  border: 1px solid var(--yellow);
+  padding: 4px 10px;
+  animation: blink 0.8s step-end infinite;
+  display: none;
+}
+
+.result-btns {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ═══════════════════════════════════════
+   AI 参赛者状态栏（右侧面板）
+═══════════════════════════════════════ */
+.ai-panel {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+
+.ai-card {
+  width: 58px;
+  border: 1px solid var(--border2);
+  background: var(--bg);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: all 0.3s;
+}
+
+.ai-card.dead {
+  opacity: 0.25;
+  filter: grayscale(1);
+  border-color: var(--gray);
+}
+
+.ai-card-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.ai-card-name {
+  font-family: var(--font-cn);
+  font-size: 9px;
+  color: var(--green-dim);
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.ai-card-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--green-dim);
+}
+.ai-card.active .ai-card-indicator { background: var(--green); box-shadow: 0 0 6px rgba(77,255,180,0.8); }
+.ai-card.dead .ai-card-indicator { background: var(--red-dim); }
+
+/* ═══════════════════════════════════════
+   全局特效动画
+═══════════════════════════════════════ */
+/* 屏幕抖动 */
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  10%  { transform: translate(-4px, -2px); }
+  20%  { transform: translate(4px, 2px); }
+  30%  { transform: translate(-3px, 3px); }
+  40%  { transform: translate(3px, -3px); }
+  50%  { transform: translate(-2px, 2px); }
+  60%  { transform: translate(2px, -2px); }
+  70%  { transform: translate(-1px, 1px); }
+  80%  { transform: translate(1px, -1px); }
+}
+
+/* 红色闪屏（中弹） */
+@keyframes redFlash {
+  0% { background: rgba(255,51,85,0.6); }
+  100% { background: transparent; }
+}
+
+.screen-flash {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  animation: redFlash 0.5s ease-out forwards;
+  display: none;
+}
+
+/* 打字光标动画 */
+@keyframes typeCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 弹仓转动 */
+@keyframes cylinderSpin {
+  0%   { transform: rotate(0deg); }
+  60%  { transform: rotate(720deg); }
+  80%  { transform: rotate(700deg); }
+  90%  { transform: rotate(710deg); }
+  100% { transform: rotate(720deg); }
+}
+
+.spinning { animation: cylinderSpin 1.5s cubic-bezier(0.2, 0, 0.3, 1) forwards; }
+
+/* 淘汰爆炸 */
+@keyframes kaboom {
+  0%   { transform: scale(1); opacity: 1; }
+  30%  { transform: scale(1.4); opacity: 0.8; }
+  60%  { transform: scale(0.7); opacity: 0.4; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+.kaboom { animation: kaboom 0.6s ease-out forwards; }
+
+/* 对手待机晃动 */
+@keyframes idleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.idle-anim { animation: idleFloat 3s ease-in-out infinite; }
+
+/* 像素噪点（首页） */
+@keyframes noiseShift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+/* 消息滚动 */
+.ticker {
+  font-family: var(--font-px);
+  font-size: 7px;
+  color: var(--green-dim);
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  margin: 0 12px;
+}
+.ticker-inner {
+  display: inline-block;
+  animation: tickerScroll 20s linear infinite;
+}
+@keyframes tickerScroll {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+</style>
+</head>
+<body>
+
+<!-- 红色闪屏层 -->
+<div class="screen-flash" id="screenFlash"></div>
+
+<!-- ═══════════════════════════════════════
+     首页 HOMEPAGE
+═══════════════════════════════════════ -->
+<div class="screen active" id="screen-home">
+  <div class="statusbar">
+    <span id="homeDate">DATE 20XX-XX-XX ▓</span>
+    <div class="ticker"><span class="ticker-inner">※ 汉字死斗 · HANZI DEATHMATCH &nbsp;&nbsp;&nbsp; 考验你的汉字实力 &nbsp;&nbsp;&nbsp; 答不出来？扣下扳机吧 &nbsp;&nbsp;&nbsp; 6发弹仓，2发子弹，命由天定 &nbsp;&nbsp;&nbsp;</span></div>
+    <span class="cursor-blink">█</span>
+  </div>
+
+  <div class="home-main">
+    <div class="home-title-wrap">
+      <div class="home-title-cn">汉字死斗</div>
+      <div class="home-title-en">HANZI  DEATHMATCH</div>
+      <div class="home-subtitle">—— 文以载死，字以定命 ——</div>
+    </div>
+
+    <div class="pixel-divider"></div>
+
+    <div class="home-menu">
+      <button class="btn btn-green" id="btnStartGame" onclick="startGame()">挑 战 电 脑</button>
+      <button class="btn btn-disabled" disabled>
+        玩家匹配
+        <span class="coming-soon-badge">COMING SOON</span>
+      </button>
+    </div>
+
+    <div class="home-record" id="homeRecord">
+      最高记录：<span id="recordText">尚无记录</span>
+    </div>
+
+    <div class="home-deco">
+      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░<br>
+      ☠  答错必须扣扳机  ·  6发2真  ·  命由天定  ☠
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <span>♥ ♥ ♥ ♥ ♥ ♥ ♥ ♡</span>
+    <span>█ NEW GAME &nbsp; RECORD &nbsp; QUIT</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     游戏场景 GAME SCENE
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-game">
+  <div class="game-topbar">
+    <div class="game-topbar-left">
+      回合&nbsp;<span id="roundNum">01</span><br>
+      <span id="aliveCount">存活 10</span>
+    </div>
+    <div class="game-topbar-center">
+      <div class="timer-label">剩余时间</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="timer-bar-wrap">
+          <div class="timer-bar" id="timerBar" style="width:100%"></div>
+        </div>
+        <div class="timer-num" id="timerNum">20</div>
+      </div>
+    </div>
+    <div class="game-topbar-right">
+      <span id="playerHearts">♥ ♥ ♥</span><br>
+      <span id="playerName" style="font-size:10px;color:var(--green-dim);">你</span>
+    </div>
+  </div>
+
+  <div class="game-viewport">
+    <div class="room-scene">
+      <!-- 房间顶部：对手 -->
+      <div class="room-top" id="roomTop">
+        <!-- 远处墙壁暗光 -->
+        <div style="position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(to bottom,rgba(10,30,20,0.9),transparent);pointer-events:none;"></div>
+
+        <div class="opponent-wrap" id="opponentWrap">
+          <div class="opponent-name">
+            <span id="opponentNameText">进士·墨魂</span>
+            <span class="opponent-status status-thinking" id="opponentStatus">···思考中</span>
+          </div>
+
+          <!-- 对手像素人物 -->
+          <div class="pixel-character idle-anim" id="opponentChar">
+            <svg class="pixel-char-svg" width="110" height="160" viewBox="0 0 110 160" xmlns="http://www.w3.org/2000/svg">
+              <!-- 头套（麻袋风格） -->
+              <rect x="30" y="10" width="50" height="60" fill="#1a3028" stroke="#2a5040" stroke-width="2"/>
+              <!-- 头套纹理 -->
+              <rect x="34" y="14" width="6" height="2" fill="#2a5040"/>
+              <rect x="44" y="20" width="4" height="2" fill="#2a5040"/>
+              <rect x="54" y="14" width="8" height="2" fill="#2a5040"/>
+              <rect x="66" y="20" width="5" height="2" fill="#2a5040"/>
+              <rect x="38" y="28" width="5" height="2" fill="#2a5040"/>
+              <rect x="60" y="30" width="6" height="2" fill="#2a5040"/>
+              <rect x="48" y="38" width="4" height="2" fill="#2a5040"/>
+              <rect x="70" y="36" width="4" height="2" fill="#2a5040"/>
+              <!-- 眼孔（黑暗的） -->
+              <rect x="40" y="30" width="10" height="8" fill="#050f0a" stroke="#1a3028" stroke-width="1"/>
+              <rect x="62" y="30" width="10" height="8" fill="#050f0a" stroke="#1a3028" stroke-width="1"/>
+              <!-- 眼孔发光 -->
+              <rect x="42" y="32" width="4" height="4" fill="#1a6040" opacity="0.7"/>
+              <rect x="64" y="32" width="4" height="4" fill="#1a6040" opacity="0.7"/>
+              <!-- 身体 -->
+              <rect x="25" y="70" width="60" height="70" fill="#0f2018" stroke="#2a5040" stroke-width="2"/>
+              <!-- 领口 -->
+              <rect x="45" y="68" width="20" height="6" fill="#1a3028"/>
+              <!-- 左臂 -->
+              <rect x="5" y="72" width="22" height="40" fill="#0f2018" stroke="#2a5040" stroke-width="1"/>
+              <!-- 右臂 -->
+              <rect x="83" y="72" width="22" height="40" fill="#0f2018" stroke="#2a5040" stroke-width="1"/>
+              <!-- 左手 -->
+              <rect x="8" y="110" width="16" height="12" fill="#1a3028"/>
+              <!-- 右手 -->
+              <rect x="86" y="110" width="16" height="12" fill="#1a3028"/>
+              <!-- 衣服装饰 -->
+              <rect x="48" y="80" width="14" height="2" fill="#2a5040"/>
+              <rect x="48" y="86" width="14" height="2" fill="#2a5040"/>
+              <rect x="48" y="92" width="14" height="2" fill="#2a5040"/>
+            </svg>
+            <div class="opponent-overlay" id="opponentOverlay"></div>
+          </div>
+        </div>
+
+        <!-- AI 参赛者状态栏（右侧） -->
+        <div class="ai-panel" id="aiPanel"></div>
+      </div>
+
+      <!-- 桌面边缘 -->
+      <div class="table-edge"></div>
+
+      <!-- 题目区域（桌面上） -->
+      <div class="room-bottom">
+        <div class="question-panel">
+          <div class="question-box">
+            <div class="question-type-tag" id="questionTypeTag">LOADING...</div>
+            <div class="question-text" id="questionText">正在加载题目...</div>
+            <div class="options-grid" id="optionsGrid">
+              <button class="option-btn" id="opt0"><span class="opt-key">A</span><span id="optText0"></span></button>
+              <button class="option-btn" id="opt1"><span class="opt-key">B</span><span id="optText1"></span></button>
+              <button class="option-btn" id="opt2"><span class="opt-key">C</span><span id="optText2"></span></button>
+              <button class="option-btn" id="opt3"><span class="opt-key">D</span><span id="optText3"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 像素键盘装饰 -->
+        <div class="pixel-keyboard">
+          <div class="kb-row">
+            <div class="kb-key">Q</div><div class="kb-key">W</div><div class="kb-key">E</div>
+            <div class="kb-key">R</div><div class="kb-key">T</div><div class="kb-key">Y</div>
+            <div class="kb-key">U</div><div class="kb-key">I</div><div class="kb-key">O</div>
+            <div class="kb-key">P</div>
+          </div>
+          <div class="kb-row">
+            <div class="kb-key wide">CAPS</div>
+            <div class="kb-key">A</div><div class="kb-key">S</div><div class="kb-key">D</div>
+            <div class="kb-key">F</div><div class="kb-key">G</div><div class="kb-key">H</div>
+            <div class="kb-key">J</div><div class="kb-key">K</div><div class="kb-key">L</div>
+          </div>
+          <div class="kb-row">
+            <div class="kb-key space">S P A C E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <span class="hearts" id="bottomHearts">♥ ♥ ♥</span>
+    <div class="ticker"><span class="ticker-inner" id="gameTicker">正在对决中… 集中注意力！</span></div>
+    <span style="font-family:var(--font-px);font-size:7px;color:var(--green-dim);">█ ESC 退出</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     轮盘赌 ROULETTE
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-roulette">
+  <div class="statusbar">
+    <span style="color:var(--red)">! PENALTY !</span>
+    <div class="ticker"><span class="ticker-inner" style="color:var(--red)">答错了！！必须接受惩罚 … 转动弹仓 … 命由天定 …</span></div>
+    <span class="cursor-blink" style="color:var(--red)">█</span>
+  </div>
+
+  <div class="roulette-main">
+    <div class="roulette-title" id="rouletteTitle">
+      ！ 回答错误 ！<br>
+      <span style="font-size:14px;letter-spacing:2px;margin-top:8px;display:block;">接受命运的审判</span>
+    </div>
+
+    <div class="roulette-sub">
+      弹仓：6发 &nbsp;｜&nbsp; 子弹：2发 &nbsp;｜&nbsp; 中弹概率：33%
+    </div>
+
+    <!-- 弹仓 SVG -->
+    <div class="cylinder-wrap">
+      <svg class="cylinder-svg" id="cylinderSvg" width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- 弹仓外圈 -->
+        <circle cx="80" cy="80" r="70" fill="#0a1a10" stroke="#2a6b4a" stroke-width="3"/>
+        <circle cx="80" cy="80" r="65" fill="none" stroke="#1a3020" stroke-width="1"/>
+        <!-- 6个弹槽（围成圆形） -->
+        <g id="cylSlots">
+          <!-- 槽0 - 上 -->
+          <circle id="slot0" cx="80" cy="22" r="12" fill="#050f08" stroke="#2a5040" stroke-width="2"/>
+          <!-- 槽1 - 右上 -->
+          <circle id="slot1" cx="132" cy="50" r="12" fill="#050f08" stroke="#2a5040" stroke-width="2"/>
+          <!-- 槽2 - 右下 -->
+          <circle id="slot2" cx="132" cy="110" r="12" fill="#050f08" stroke="#2a5040" stroke-width="2"/>
+          <!-- 槽3 - 下 -->
+          <circle id="slot3" cx="80" cy="138" r="12" fill="#050f08" stroke="#2a5040" stroke-width="2"/>
+          <!-- 槽4 - 左下 -->
+          <circle id="slot4" cx="28" cy="110" r="12" fill="#050f08" stroke="#2a5040" stroke-width="2"/>
+          <!-- 槽5 - 左上 -->
+          <circle id="slot5" cx="28" cy="50" r="12" fill="#050f08" stroke="#2a5040" stroke-width="2"/>
+        </g>
+        <!-- 中心 -->
+        <circle cx="80" cy="80" r="18" fill="#0a1a10" stroke="#2a5040" stroke-width="2"/>
+        <circle cx="80" cy="80" r="8"  fill="#1a3020" stroke="#2a6b4a" stroke-width="1"/>
+        <!-- 指针（当前发射槽） -->
+        <polygon id="firingPin" points="80,62 76,74 84,74" fill="#4dffb4" opacity="0.9"/>
+      </svg>
+      <div class="cylinder-msg" id="cylinderMsg">按下扳机…</div>
+    </div>
+
+    <!-- 手枪简笔画 -->
+    <div class="gun-wrap">
+      <svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+        <!-- 枪管 -->
+        <rect x="60" y="28" width="110" height="14" fill="#1a3020" stroke="#2a5040" stroke-width="2" rx="0"/>
+        <!-- 枪口 -->
+        <rect x="168" y="24" width="20" height="22" fill="#0f2018" stroke="#2a5040" stroke-width="2"/>
+        <!-- 枪身 -->
+        <rect x="60" y="28" width="50" height="30" fill="#1a3020" stroke="#2a5040" stroke-width="2"/>
+        <!-- 握把 -->
+        <polygon points="72,58 88,58 82,78 66,78" fill="#1a3020" stroke="#2a5040" stroke-width="2"/>
+        <!-- 弹仓位置 -->
+        <circle cx="95" cy="35" r="14" fill="#0a1a10" stroke="#2a5040" stroke-width="2"/>
+        <circle cx="95" cy="35" r="6"  fill="#1a3020" stroke="#2a6b4a" stroke-width="1"/>
+        <!-- 扳机 -->
+        <path d="M 82 56 Q 76 62 78 68" fill="none" stroke="#2a5040" stroke-width="3"/>
+        <!-- 发光效果 -->
+        <rect x="60" y="32" width="2" height="6" fill="#4dffb4" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <button class="roulette-fire-btn" id="rouletteFireBtn" onclick="pullTrigger()">
+      ！ 扣 下 扳 机 ！
+    </button>
+  </div>
+
+  <div class="bottombar">
+    <span style="color:var(--red);font-family:var(--font-px);font-size:7px;">☠ DANGER ☠</span>
+    <div class="ticker"><span class="ticker-inner" style="color:var(--red-dim)">中弹概率 33% … 空枪继续 … 祈祷吧 …</span></div>
+    <span style="font-family:var(--font-px);font-size:7px;color:var(--red-dim);">█</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     结算页 RESULT
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-result">
+  <div class="statusbar">
+    <span id="resultDate">DATE 20XX-XX-XX</span>
+    <div class="ticker"><span class="ticker-inner" id="resultTicker">游戏结束…</span></div>
+    <span class="cursor-blink">█</span>
+  </div>
+
+  <div class="result-main">
+    <div class="result-title" id="resultTitle">游戏结束</div>
+
+    <div class="result-new-record" id="newRecordBadge">★ NEW RECORD ★</div>
+
+    <div class="result-stats">
+      <div class="stat-row">
+        <span class="stat-label">存活回合数</span>
+        <span class="stat-value" id="statRound">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">正确回答</span>
+        <span class="stat-value" id="statCorrect">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">正确率</span>
+        <span class="stat-value" id="statAccuracy">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">轮盘赌次数</span>
+        <span class="stat-value" id="statRoulette">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">最终结局</span>
+        <span class="stat-value" id="statEnding">—</span>
+      </div>
+    </div>
+
+    <div class="result-btns">
+      <button class="btn btn-green" onclick="restartGame()">再 来 一 局</button>
+      <button class="btn btn-disabled" style="background:var(--panel);color:var(--green-dim);border-color:var(--border);cursor:pointer;" onclick="goHome()">返 回 首 页</button>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <span id="resultHearts">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♡</span>
+    <span style="font-family:var(--font-px);font-size:7px;color:var(--green-dim);">█ SAVE LOAD CONFIG TITLE</span>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   题库数据
+═══════════════════════════════════════════════════════════ */
+const QUESTIONS = [
+  // ── 成语释义（type: 'idiom'）──
+  {type:'idiom', q:'"一石二鸟"的意思是：', opts:['做一件事达到两个目的','两块石头打一只鸟','一只鸟飞过石头','投石问路'], ans:0},
+  {type:'idiom', q:'"杯弓蛇影"形容：', opts:['杯中有蛇','疑神疑鬼自己吓自己','弓箭射影','喝酒误事'], ans:1},
+  {type:'idiom', q:'"守株待兔"比喻：', opts:['守护田地','不劳而获靠运气等待','等待猎物','保守固执不变通'], ans:3},
+  {type:'idiom', q:'"画蛇添足"的意思是：', opts:['蛇的脚很多','做多余无用之事','画技精湛','做事细心'], ans:1},
+  {type:'idiom', q:'"亡羊补牢"的意思是：', opts:['羊死了就放弃','出了问题及时补救','修补牢笼','丢失财物'], ans:1},
+  {type:'idiom', q:'"掩耳盗铃"比喻：', opts:['偷铃铛技术','自欺欺人','耳聋的人','掩盖错误'], ans:1},
+  {type:'idiom', q:'"狐假虎威"的意思是：', opts:['狐狸很狡猾','借助别人权势吓唬人','老虎和狐狸合作','动物世界'], ans:1},
+  {type:'idiom', q:'"对牛弹琴"比喻：', opts:['牛喜欢音乐','在野外演奏','对不懂的人讲道理','牛的智慧'], ans:2},
+  {type:'idiom', q:'"叶公好龙"比喻：', opts:['叶公养了龙','喜欢龙的人','表里不一口是心非','叶姓人家'], ans:2},
+  {type:'idiom', q:'"揠苗助长"的意思是：', opts:['帮助小苗生长','违背规律急于求成','拔草除根','农业技术'], ans:1},
+  {type:'idiom', q:'"三人成虎"的意思是：', opts:['三个人抓一只虎','谎言重复多了就被信以为真','三人合力打老虎','人多力量大'], ans:1},
+  {type:'idiom', q:'"一鸣惊人"形容：', opts:['鸟叫声响亮','平时默默无闻突然做出惊人事','吓到了人','一声惊叫'], ans:1},
+  {type:'idiom', q:'"班门弄斧"比喻：', opts:['在技艺高超者面前卖弄技巧','斧头工艺','木匠师傅','弄坏了斧头'], ans:0},
+  {type:'idiom', q:'"滥竽充数"的意思是：', opts:['吹竽技术好','无真才实学混在其中','竽的数量多','乐队太大'], ans:1},
+  {type:'idiom', q:'"塞翁失马"说明：', opts:['边塞丢了马','祸福可以互相转化','马跑到塞外','失去才能珍惜'], ans:1},
+  {type:'idiom', q:'"邯郸学步"比喻：', opts:['去邯郸旅行','学别人长处结果丢了本来','走路姿势优美','模仿能力强'], ans:1},
+  {type:'idiom', q:'"刻舟求剑"比喻：', opts:['在船上找剑','不懂变通思想方法僵化','雕刻工艺','剑掉入水中'], ans:1},
+  {type:'idiom', q:'"纸上谈兵"比喻：', opts:['用纸做的兵器','只会空谈缺乏实践经验','讨论兵法','纸质地图'], ans:1},
+  {type:'idiom', q:'"破釜沉舟"表示：', opts:['打破锅沉船','下定决心不留退路','消灭敌人','破坏装备'], ans:1},
+  {type:'idiom', q:'"完璧归赵"的意思是：', opts:['完整地归还原物','宝玉回到赵国','完成任务','赵国故事'], ans:0},
+  {type:'idiom', q:'"闻鸡起舞"形容：', opts:['听到鸡叫就跳舞','勤奋刻苦努力上进','鸡的叫声','早起锻炼'], ans:1},
+  {type:'idiom', q:'"负荆请罪"的意思是：', opts:['背着荆条去认罪道歉','被荆棘刺伤','逃跑请罪','荆棘丛中'], ans:0},
+  {type:'idiom', q:'"程门立雪"形容：', opts:['在雪中等待老师','雪很大','门口积雪','尊师重道'], ans:3},
+  {type:'idiom', q:'"凿壁偷光"说明：', opts:['破坏墙壁','借光刻苦学习','偷窃行为','房屋建筑'], ans:1},
+  {type:'idiom', q:'"囊萤映雪"形容：', opts:['用萤火虫照明读书','雪地里学习','袋子里有虫','刻苦求学'], ans:3},
+  {type:'idiom', q:'"机不可失"的意思是：', opts:['机器不能丢失','好的机会不能错过','机会很少','不可能失败'], ans:1},
+  {type:'idiom', q:'"失之交臂"的意思是：', opts:['手臂受伤','错失良机与人交错而过','失去朋友','交换手臂'], ans:1},
+  {type:'idiom', q:'"两袖清风"形容：', opts:['为官廉洁不贪污','秋天风大','衣服宽松','行走飘逸'], ans:0},
+  {type:'idiom', q:'"悬梁刺股"形容：', opts:['危险行为','刻苦学习发奋读书','用绳子绑着','针刺治病'], ans:1},
+  {type:'idiom', q:'"胸有成竹"的意思是：', opts:['喜欢竹子','胸口有竹叶','做事前已有成熟的计划','胸口疼痛'], ans:2},
+  // ── 诗词填空（type: 'poem'）──
+  {type:'poem', q:'"床前明月光，疑是地上___"', opts:['白雪','霜','冰','雨水'], ans:1},
+  {type:'poem', q:'"春眠不觉晓，处处___啼鸟"', opts:['闻','听','有','见'], ans:0},
+  {type:'poem', q:'"举头望明月，___思故乡"', opts:['抬头','低头','仰头','举目'], ans:1},
+  {type:'poem', q:'"窗含西岭千秋___，门泊东吴万里船"', opts:['雪','云','山','风'], ans:0},
+  {type:'poem', q:'"独在异乡为异客，每逢___倍思亲"', opts:['中秋','除夕','佳节','清明'], ans:2},
+  {type:'poem', q:'"春风又绿江南岸，明月何时照___还"', opts:['我','吾','君','汝'], ans:0},
+  {type:'poem', q:'"欲穷千里目，更上___楼"', opts:['一层','高处','此','顶'], ans:0},
+  {type:'poem', q:'"两岸猿声啼不住，轻舟已过___山"', opts:['高','万重','千重','险'], ans:1},
+  {type:'poem', q:'"朝辞白帝彩云间，___里江陵一日还"', opts:['千','万','百','十'], ans:0},
+  {type:'poem', q:'"故人西辞黄鹤楼，烟花三月下___州"', opts:['广','扬','杭','苏'], ans:1},
+  {type:'poem', q:'"飞流直下三千尺，疑是银河落___天"', opts:['半','九','三','千'], ans:1},
+  {type:'poem', q:'"春色满园关不住，一枝红杏出___来"', opts:['园','墙','外','林'], ans:2},
+  {type:'poem', q:'"接天莲叶无穷碧，映日荷花别样___"', opts:['香','美','红','艳'], ans:2},
+  {type:'poem', q:'"停车坐爱枫林晚，霜叶红于___月花"', opts:['二','三','七','十'], ans:1},
+  {type:'poem', q:'"离离原上草，一岁一枯___"', opts:['死','荣','生','黄'], ans:1},
+  {type:'poem', q:'"野火烧不尽，春风吹又___"', opts:['起','发','生','来'], ans:2},
+  {type:'poem', q:'"海内存知己，天涯若___邻"', opts:['近','比','比','比'], ans:1},
+  {type:'poem', q:'"莫愁前路无知己，天下谁人不识___"', opts:['你','我','君','汝'], ans:2},
+  {type:'poem', q:'"劝君更尽一杯酒，西出阳关无___故人"', opts:['旧','老','多','千'], ans:0},
+  {type:'poem', q:'"但使龙城飞将在，不教___马度阴山"', opts:['蒙古','匈奴','胡','敌'], ans:2},
+  {type:'poem', q:'"秦时明月汉时___，万里长征人未还"', opts:['星','关','云','光'], ans:1},
+  {type:'poem', q:'"烽火连三月，家书抵___金"', opts:['千','百','万','十'], ans:2},
+  {type:'poem', q:'"白日依山尽，黄河入海___"', opts:['去','流','奔','涌'], ans:1},
+  {type:'poem', q:'"人生自古谁无死，留取丹心照___篇"', opts:['史','汗','青','诗'], ans:2},
+  {type:'poem', q:'"山重水复疑无路，柳暗花明___一村"', opts:['有','又','再','见'], ans:1},
+  {type:'poem', q:'"横看成岭侧成峰，远近高低各不___"', opts:['一','同','似','如'], ans:1},
+  {type:'poem', q:'"不识庐山真面目，只缘身在___山中"', opts:['深','此','高','远'], ans:1},
+  {type:'poem', q:'"春蚕到死丝方尽，蜡炬成灰泪始___"', opts:['尽','流','干','枯'], ans:2},
+  {type:'poem', q:'"沉舟侧畔千帆过，病树前头万木___"', opts:['逢春','枯萎','新生','发芽'], ans:0},
+  {type:'poem', q:'"商女不知亡国恨，隔江犹唱___花"', opts:['桃','梅','后庭','杏'], ans:2},
+  // ── 汉字辨形（type: 'hanzi'）──
+  {type:'hanzi', q:'以下哪个字是"精力充沛"的正确写法？', opts:['精力充佩','精力充沛','精力充配','精力充备'], ans:1},
+  {type:'hanzi', q:'以下哪个字写法正确？', opts:['再接再励','再接再历','再接再厉','再接再力'], ans:2},
+  {type:'hanzi', q:'"共勉"的"勉"正确写法是：', opts:['勉','免','勉','冕'], ans:0},
+  {type:'hanzi', q:'"骄傲"的"骄"正确写法是：', opts:['娇傲','骄傲','矫傲','乔傲'], ans:1},
+  {type:'hanzi', q:'"誓言"的"誓"正确写法是：', opts:['誓','折','誓','折'], ans:0},
+  {type:'hanzi', q:'以下哪个词语写法正确？', opts:['凑合','凑和','奏合','奏和'], ans:0},
+  {type:'hanzi', q:'以下哪个词语写法正确？', opts:['暄嚣','喧嚣','喧嚣','暄嚣'], ans:1},
+  {type:'hanzi', q:'"应接不暇"的"暇"正确是：', opts:['遐','假','暇','瑕'], ans:2},
+  {type:'hanzi', q:'"天涯海角"的"涯"正确是：', opts:['崖','涯','悬','危'], ans:1},
+  {type:'hanzi', q:'"融会贯通"正确写法是：', opts:['融汇贯通','融会贯通','溶会贯通','融惠贯通'], ans:1},
+  {type:'hanzi', q:'"截然不同"的"截"正确是：', opts:['截','截','戒','界'], ans:0},
+  {type:'hanzi', q:'"相辅相成"正确写法是：', opts:['相辅相承','相辅相成','相扶相成','相扶相承'], ans:1},
+  {type:'hanzi', q:'"竭泽而渔"的"竭"正确是：', opts:['渴','竭','碣','揭'], ans:1},
+  {type:'hanzi', q:'"栩栩如生"的"栩"正确是：', opts:['旭','羽','栩','许'], ans:2},
+  {type:'hanzi', q:'"因势利导"的"势"正确是：', opts:['世','式','势','试'], ans:2},
+  {type:'hanzi', q:'"寥寥无几"的"寥"正确是：', opts:['聊','廖','缪','寥'], ans:3},
+  {type:'hanzi', q:'"锲而不舍"的"锲"正确是：', opts:['挈','锲','契','窃'], ans:1},
+  {type:'hanzi', q:'"自惭形秽"的"秽"正确是：', opts:['晦','汇','秽','汗'], ans:2},
+  {type:'hanzi', q:'"旁征博引"的"征"正确是：', opts:['症','征','正','证'], ans:1},
+  {type:'hanzi', q:'"殚精竭虑"的"殚"正确是：', opts:['惮','弹','殚','耽'], ans:2},
+];
+
+/* ═══════════════════════════════════════════════════════════
+   AI 对手配置
+═══════════════════════════════════════════════════════════ */
+const AI_CONFIGS = [
+  {name:'学童·甲', level:1, correctRate:0.38, minTime:10, maxTime:20, emoji:'🐣'},
+  {name:'学童·乙', level:1, correctRate:0.42, minTime:9,  maxTime:19, emoji:'🐤'},
+  {name:'学童·丙', level:1, correctRate:0.35, minTime:11, maxTime:20, emoji:'🐥'},
+  {name:'秀才·文', level:2, correctRate:0.62, minTime:6,  maxTime:14, emoji:'📖'},
+  {name:'秀才·武', level:2, correctRate:0.65, minTime:5,  maxTime:13, emoji:'✏️'},
+  {name:'秀才·卿', level:2, correctRate:0.60, minTime:7,  maxTime:15, emoji:'📚'},
+  {name:'举人·明', level:3, correctRate:0.82, minTime:3,  maxTime:9,  emoji:'🎓'},
+  {name:'举人·远', level:3, correctRate:0.78, minTime:4,  maxTime:10, emoji:'🎯'},
+  {name:'进士·墨魂', level:4, correctRate:0.96, minTime:1, maxTime:4,  emoji:'💀'},
+];
+
+/* ═══════════════════════════════════════════════════════════
+   游戏状态
+═══════════════════════════════════════════════════════════ */
+const G = {
+  screen: 'home',
+  round: 0,
+  playerAlive: true,
+  playerLives: 3,    // 玩家生命值（0=死亡）
+  correctCount: 0,
+  totalAnswered: 0,
+  rouletteCount: 0,
+  currentQ: null,
+  answered: false,
+  timer: null,
+  timeLeft: 20,
+  ais: [],
+};
+
+/* ─── 音效系统（Web Audio API）─── */
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playSound(type) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    const now = ctx.currentTime;
+
+    if (type === 'correct') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(440, now);
+      osc.frequency.setValueAtTime(660, now + 0.08);
+      osc.frequency.setValueAtTime(880, now + 0.16);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+      osc.start(now); osc.stop(now + 0.4);
+    } else if (type === 'wrong') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.setValueAtTime(110, now + 0.1);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+      osc.start(now); osc.stop(now + 0.5);
+    } else if (type === 'click') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(880, now);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      osc.start(now); osc.stop(now + 0.06);
+    } else if (type === 'gunshot') {
+      const bufferSize = ctx.sampleRate * 0.5;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.05));
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buffer;
+      const g2 = ctx.createGain();
+      g2.gain.setValueAtTime(0.6, now);
+      g2.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+      src.connect(g2); g2.connect(ctx.destination);
+      src.start(now);
+    } else if (type === 'empty') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(80, now);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.start(now); osc.stop(now + 0.15);
+    } else if (type === 'spin') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.exponentialRampToValueAtTime(50, now + 1.2);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+      osc.start(now); osc.stop(now + 1.2);
+    } else if (type === 'victory') {
+      const freqs = [523, 659, 784, 1047];
+      freqs.forEach((f, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.type = 'square';
+        o.frequency.setValueAtTime(f, now + i * 0.12);
+        g.gain.setValueAtTime(0.1, now + i * 0.12);
+        g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.5);
+        o.start(now + i * 0.12); o.stop(now + i * 0.12 + 0.5);
+      });
+    }
+  } catch(e) {}
+}
+
+/* ─── 屏幕切换 ─── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  G.screen = id;
+}
+
+/* ─── 更新首页日期 ─── */
+function updateDate() {
+  const now = new Date();
+  const d = `DATE ${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}[${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][now.getDay()]}]`;
+  const t = `PM${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  document.getElementById('homeDate').textContent = d + ' ' + t;
+  document.getElementById('resultDate').textContent = d + ' ' + t;
+}
+
+/* ─── 读取最高记录 ─── */
+function loadRecord() {
+  const r = JSON.parse(localStorage.getItem('hanziRecord') || 'null');
+  if (r) {
+    document.getElementById('recordText').innerHTML =
+      `<span>第 ${r.round} 轮</span> · 正确率 <span>${r.accuracy}%</span>`;
+  }
+}
+
+function saveRecord(round, accuracy) {
+  const old = JSON.parse(localStorage.getItem('hanziRecord') || 'null');
+  if (!old || round > old.round || (round === old.round && accuracy > old.accuracy)) {
+    localStorage.setItem('hanziRecord', JSON.stringify({round, accuracy}));
+    return true;
+  }
+  return false;
+}
+
+/* ─── 开始游戏 ─── */
+function startGame() {
+  playSound('click');
+  G.round = 0;
+  G.playerAlive = true;
+  G.playerLives = 3;
+  G.correctCount = 0;
+  G.totalAnswered = 0;
+  G.rouletteCount = 0;
+  G.answered = false;
+
+  // 初始化 AI
+  G.ais = AI_CONFIGS.map((cfg, i) => ({
+    ...cfg,
+    id: i,
+    alive: true,
+    answeredCorrect: false,
+    answerTime: 0,
+  }));
+
+  // 渲染 AI 面板
+  renderAIPanel();
+  showScreen('game');
+  nextRound();
+}
+
+/* ─── 渲染 AI 状态面板 ─── */
+function renderAIPanel() {
+  const panel = document.getElementById('aiPanel');
+  panel.innerHTML = '';
+  G.ais.forEach(ai => {
+    const card = document.createElement('div');
+    card.className = 'ai-card' + (ai.alive ? ' active' : ' dead');
+    card.id = 'aiCard' + ai.id;
+    card.innerHTML = `
+      <div class="ai-card-icon">${ai.emoji}</div>
+      <div class="ai-card-name">${ai.name.split('·')[0]}</div>
+      <div class="ai-card-indicator"></div>
+    `;
+    panel.appendChild(card);
+  });
+}
+
+/* ─── 更新 AI 卡片状态 ─── */
+function updateAICard(id, state) {
+  const card = document.getElementById('aiCard' + id);
+  if (!card) return;
+  card.className = 'ai-card';
+  if (state === 'dead') {
+    card.classList.add('dead');
+    card.querySelector('.ai-card-icon').textContent = '💀';
+    setTimeout(() => card.classList.add('kaboom'), 50);
+  } else if (state === 'active') {
+    card.classList.add('active');
+  }
+}
+
+/* ─── 下一轮 ─── */
+function nextRound() {
+  if (!G.playerAlive) return;
+
+  const alive = G.ais.filter(a => a.alive);
+  if (alive.length === 0) {
+    endGame('win');
+    return;
+  }
+
+  G.round++;
+  G.answered = false;
+
+  // 更新顶部信息
+  document.getElementById('roundNum').textContent = String(G.round).padStart(2,'0');
+  document.getElementById('aliveCount').textContent = `存活 ${alive.length + 1}`;
+
+  // 更新主对手显示（最高等级活着的那个）
+  const boss = alive.sort((a,b) => b.level - a.level)[0];
+  document.getElementById('opponentNameText').textContent = boss.name;
+  document.getElementById('opponentStatus').textContent = '···思考中';
+  document.getElementById('opponentStatus').className = 'opponent-status status-thinking';
+  document.getElementById('opponentOverlay').classList.remove('show');
+
+  // 计算本轮时限（随轮次缩短）
+  G.timeLeft = Math.max(8, 20 - Math.floor(G.round / 3) * 2);
+
+  // 出题
+  loadQuestion();
+
+  // 启动倒计时
+  startTimer();
+
+  // AI 模拟作答
+  scheduleAIAnswers();
+}
+
+/* ─── 随机抽题 ─── */
+function loadQuestion() {
+  const pool = [...QUESTIONS];
+  // 根据轮次偏向难题
+  const q = pool[Math.floor(Math.random() * pool.length)];
+  G.currentQ = q;
+
+  const typeMap = {idiom:'成语释义', poem:'诗词填空', hanzi:'汉字辨形'};
+  document.getElementById('questionTypeTag').textContent = typeMap[q.type] || '语文题';
+  document.getElementById('questionText').textContent = q.q;
+
+  // 打乱选项顺序（但记录正确答案新位置）
+  const shuffled = q.opts.map((t,i) => ({t, orig:i})).sort(() => Math.random() - 0.5);
+  const keys = ['A','B','C','D'];
+  shuffled.forEach((item, i) => {
+    document.getElementById('opt' + i).className = 'option-btn';
+    document.getElementById('opt' + i).disabled = false;
+    document.getElementById('optText' + i).textContent = item.t;
+    document.getElementById('opt' + i).dataset.orig = item.orig;
+    document.getElementById('opt' + i).querySelector('.opt-key').textContent = keys[i];
+  });
+  // 储存答案（相对打乱后的位置）
+  G.currentQ._shuffledCorrect = shuffled.findIndex(item => item.orig === q.ans);
+}
+
+/* ─── 倒计时 ─── */
+function startTimer() {
+  clearInterval(G.timer);
+  const total = G.timeLeft;
+  let left = total;
+
+  const bar = document.getElementById('timerBar');
+  const num = document.getElementById('timerNum');
+
+  bar.style.width = '100%';
+  bar.className = 'timer-bar';
+  num.textContent = left;
+
+  G.timer = setInterval(() => {
+    left--;
+    num.textContent = left;
+    bar.style.width = (left / total * 100) + '%';
+
+    if (left <= 5) {
+      bar.className = 'timer-bar danger';
+    }
+
+    if (left <= 0) {
+      clearInterval(G.timer);
+      if (!G.answered) {
+        onTimeout();
+      }
+    }
+  }, 1000);
+}
+
+/* ─── 玩家点击选项 ─── */
+function answerQuestion(idx) {
+  if (G.answered) return;
+  G.answered = true;
+  clearInterval(G.timer);
+  G.totalAnswered++;
+
+  playSound('click');
+  const correct = G.currentQ._shuffledCorrect;
+
+  // 禁用所有选项
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('opt' + i).disabled = true;
+  }
+
+  if (idx === correct) {
+    // 答对
+    document.getElementById('opt' + idx).classList.add('correct');
+    G.correctCount++;
+    playSound('correct');
+    document.getElementById('opponentStatus').textContent = '✗ 错误';
+    document.getElementById('opponentStatus').className = 'opponent-status status-wrong';
+    setTimeout(() => {
+      checkRoundResult(true);
+    }, 1200);
+  } else {
+    // 答错
+    document.getElementById('opt' + idx).classList.add('wrong');
+    document.getElementById('opt' + correct).classList.add('correct');
+    playSound('wrong');
+    setTimeout(() => {
+      showRoulette('wrong');
+    }, 1000);
+  }
+}
+
+/* ─── 超时 ─── */
+function onTimeout() {
+  G.answered = true;
+  G.totalAnswered++;
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('opt' + i).disabled = true;
+  }
+  const correct = G.currentQ._shuffledCorrect;
+  document.getElementById('opt' + correct).classList.add('correct');
+  playSound('wrong');
+  setTimeout(() => {
+    showRoulette('timeout');
+  }, 800);
+}
+
+/* ─── 本轮结果（答对时） ─── */
+function checkRoundResult(playerCorrect) {
+  // 模拟AI被淘汰（错误率低等级AI可能被淘汰）
+  G.ais.forEach(ai => {
+    if (!ai.alive) return;
+    const willFail = Math.random() > ai.correctRate;
+    if (willFail) {
+      // AI 进轮盘赌，1/3概率死亡
+      const shot = Math.random() < (2/6);
+      if (shot) {
+        ai.alive = false;
+        updateAICard(ai.id, 'dead');
+      }
+    }
+  });
+
+  // 更新对手状态显示
+  const aliveNow = G.ais.filter(a => a.alive);
+  if (aliveNow.length === 0) {
+    setTimeout(() => endGame('win'), 600);
+    return;
+  }
+
+  document.getElementById('aliveCount').textContent = `存活 ${aliveNow.length + 1}`;
+  setTimeout(() => nextRound(), 1400);
+}
+
+/* ─── AI 模拟作答动画 ─── */
+function scheduleAIAnswers() {
+  G.ais.forEach(ai => {
+    if (!ai.alive) return;
+    const delay = (ai.minTime + Math.random() * (ai.maxTime - ai.minTime)) * 1000;
+    setTimeout(() => {
+      const card = document.getElementById('aiCard' + ai.id);
+      if (card && ai.alive) {
+        card.querySelector('.ai-card-icon').textContent = Math.random() < ai.correctRate ? '✓' : '✗';
+      }
+    }, Math.min(delay, G.timeLeft * 1000 - 500));
+  });
+}
+
+/* ═══════════════════════════════════════
+   轮盘赌
+═══════════════════════════════════════ */
+let rouletteReason = '';
+
+function showRoulette(reason) {
+  rouletteReason = reason;
+  G.rouletteCount++;
+
+  const title = reason === 'timeout' ? '！ 超 时 ！' : '！ 回答错误 ！';
+  document.getElementById('rouletteTitle').innerHTML =
+    `${title}<br><span style="font-size:14px;letter-spacing:2px;margin-top:8px;display:block;">接受命运的审判</span>`;
+
+  // 重置弹仓（随机放置2颗子弹）
+  resetCylinder();
+
+  document.getElementById('rouletteFireBtn').disabled = false;
+  document.getElementById('cylinderMsg').textContent = '按下扳机…';
+  showScreen('roulette');
+}
+
+function resetCylinder() {
+  // 随机2颗为真子弹
+  const slots = [false, false, false, false, false, false];
+  let placed = 0;
+  while (placed < 2) {
+    const idx = Math.floor(Math.random() * 6);
+    if (!slots[idx]) { slots[idx] = true; placed++; }
+  }
+  G.cylinderSlots = slots;
+  G.cylinderPos = 0; // 当前击发位置（从0号槽开始）
+
+  // 更新 SVG 颜色
+  for (let i = 0; i < 6; i++) {
+    const slot = document.getElementById('slot' + i);
+    if (slot) slot.setAttribute('fill', '#050f08');
+  }
+}
+
+function pullTrigger() {
+  const btn = document.getElementById('rouletteFireBtn');
+  btn.disabled = true;
+  playSound('spin');
+
+  // 转动弹仓动画
+  const svg = document.getElementById('cylinderSvg');
+  svg.style.transformOrigin = '80px 80px';
+  svg.classList.add('spinning');
+  document.getElementById('cylinderMsg').textContent = '转动中…';
+
+  setTimeout(() => {
+    svg.classList.remove('spinning');
+
+    // 随机决定击发槽
+    const fireIdx = Math.floor(Math.random() * 6);
+    const isShot = G.cylinderSlots[fireIdx];
+
+    // 显示子弹
+    for (let i = 0; i < 6; i++) {
+      const slot = document.getElementById('slot' + i);
+      if (slot) {
+        if (G.cylinderSlots[i]) {
+          slot.setAttribute('fill', i === fireIdx ? '#ff3355' : '#8b1a2a');
+        } else {
+          slot.setAttribute('fill', '#1a3020');
+        }
+      }
+    }
+
+    if (isShot) {
+      // 中弹！
+      document.getElementById('cylinderMsg').textContent = '💥 砰！';
+      playSound('gunshot');
+      setTimeout(() => {
+        const flash = document.getElementById('screenFlash');
+        flash.style.display = 'block';
+        setTimeout(() => { flash.style.display = 'none'; }, 500);
+
+        document.body.style.animation = 'screenShake 0.5s ease-out';
+        setTimeout(() => { document.body.style.animation = ''; }, 500);
+
+        endGame('lose');
+      }, 600);
+    } else {
+      // 空枪
+      document.getElementById('cylinderMsg').textContent = '咔哒… 空枪，继续！';
+      playSound('empty');
+      setTimeout(() => {
+        showScreen('game');
+        checkRoundResult(false);
+      }, 1600);
+    }
+  }, 1600);
+}
+
+/* ═══════════════════════════════════════
+   结算
+═══════════════════════════════════════ */
+function endGame(result) {
+  clearInterval(G.timer);
+
+  const accuracy = G.totalAnswered > 0
+    ? Math.round(G.correctCount / G.totalAnswered * 100)
+    : 0;
+
+  const aliveAI = G.ais.filter(a => a.alive).length;
+
+  document.getElementById('statRound').textContent = `第 ${G.round} 轮`;
+  document.getElementById('statCorrect').textContent = `${G.correctCount} / ${G.totalAnswered}`;
+  document.getElementById('statAccuracy').textContent = `${accuracy}%`;
+  document.getElementById('statRoulette').textContent = `${G.rouletteCount} 次`;
+
+  if (result === 'win') {
+    document.getElementById('resultTitle').textContent = '✦ 胜 利 ✦';
+    document.getElementById('resultTitle').className = 'result-title win';
+    document.getElementById('statEnding').textContent = '最后幸存者';
+    document.getElementById('resultTicker').textContent = '恭喜！你是最后的幸存者！汉字之王！';
+    playSound('victory');
+  } else {
+    document.getElementById('resultTitle').textContent = '× 阵 亡 ×';
+    document.getElementById('resultTitle').className = 'result-title lose';
+    document.getElementById('statEnding').textContent = '饮弹身亡';
+    document.getElementById('resultTicker').textContent = '中弹身亡… 汉字学习之路还很长…';
+  }
+
+  // 检查最高记录
+  const isNew = saveRecord(G.round, accuracy);
+  if (isNew) {
+    document.getElementById('newRecordBadge').style.display = 'block';
+  } else {
+    document.getElementById('newRecordBadge').style.display = 'none';
+  }
+
+  showScreen('result');
+  loadRecord();
+}
+
+function restartGame() {
+  playSound('click');
+  startGame();
+}
+
+function goHome() {
+  playSound('click');
+  clearInterval(G.timer);
+  showScreen('home');
+}
+
+/* ─── 键盘快捷键（ABCD 选项）─── */
+document.addEventListener('keydown', e => {
+  if (G.screen !== 'game' || G.answered) return;
+  const map = {'a':0,'b':1,'c':2,'d':3,'1':0,'2':1,'3':2,'4':3};
+  const idx = map[e.key.toLowerCase()];
+  if (idx !== undefined) answerQuestion(idx);
+});
+
+/* ─── 初始化 ─── */
+setInterval(updateDate, 1000);
+updateDate();
+loadRecord();
+</script>
+</body>
+</html>
