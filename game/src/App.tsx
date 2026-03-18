@@ -624,6 +624,7 @@ const App: React.FC = () => {
           aiSlots={appState.aiSlots}
           onCorrect={handleOnlineCorrect}
           onPenalty={handleOnlinePenalty}
+          onQuit={handleHome}
           isOnlineMode={true}
           isYourTurn={appState.online?.yourTurn ?? false}
         />
@@ -640,6 +641,8 @@ const App: React.FC = () => {
           aiSlots={appState.aiSlots}
           onCorrect={handlePlayerCorrect}
           onPenalty={handlePlayerPenalty}
+          onQuit={handleHome}
+          isYourTurn={true}
         />
       );
 
@@ -656,6 +659,8 @@ const App: React.FC = () => {
             aiSlots={appState.aiSlots}
             onCorrect={handlePlayerCorrect}
             onPenalty={handlePlayerPenalty}
+            onQuit={handleHome}
+            isYourTurn={false}
           />
           <AITurnOverlay
             idiom={appState.currentIdiom}

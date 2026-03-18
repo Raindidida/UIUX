@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import VideoScene from './VideoScene';
 
 export interface GameStats {
   rounds: number;
@@ -61,6 +62,9 @@ const ResultScreen: React.FC<Props> = ({ stats, onRetry, onHome, onlineEndReason
           — BATTLE RESULT —
         </span>
       </div>
+
+      {/* 16:9 结果视频 */}
+      <VideoScene event={stats.isVictory ? 'victory' : 'defeat'} />
 
       {/* 主体 */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 gap-7">

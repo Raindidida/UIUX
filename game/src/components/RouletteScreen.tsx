@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import VideoScene, { VideoEvent } from './VideoScene';
 import { BulletSlot } from '../App';
 
 export type RouletteTarget = 'player' | 'ai';
@@ -27,6 +28,14 @@ const RouletteScreen: React.FC<Props> = ({ target, opponentName, presetHit, pres
 
   const isPlayer = target === 'player';
   const shot = presetHit ?? BULLET_POSITIONS.includes(chamber);
+
+  // 根据阶段映射视频事件
+  const videoEvent: VideoEvent =
+    phase === 'spinning' ? 'roulette-spin' :
+    phase === 'countdown' ? 'roulette-spin' :
+    phase === 'fire' ? (isShot ? 'roulette-bang' : 'roulette-miss') :
+    phase === 'result' ? (isShot ? 'roulette-bang' : 'roulette-miss') :
+    'roulette-spin';
 
   // 阶段1：弹仓旋转 1.2s
   useEffect(() => {
@@ -95,14 +104,25 @@ const RouletteScreen: React.FC<Props> = ({ target, opponentName, presetHit, pres
           </div>
         </div>
 
-        {/* ─── 枪口插画区域 ─── */}
-        <div className="relative w-full max-w-sm flex items-center justify-center">
-          <GunBarrelIllustration
-            phase={phase}
-            countdown={countdown}
-            isShot={isShot}
-            isPlayer={isPlayer}
-          />
+        {/* ─── 16:9 视频区域 ─── */}
+        <div className="relative w-full max-w-lg">
+          <VideoScene event={videoEvent} loop={false} />
+          {/* 倒计时叠加在视频上 */}
+          {phase === 'countdown' && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <div className="bg-black/60 rounded px-6 py-3 flex flex-col items-center gap-1">
+                <div className="font-pixel text-[8px] text-zinc-400 tracking-widest">自动开枪倒计时</div>
+                <div
+                  className={`
+                    font-pixel text-5xl font-black tabular-nums
+                    ${countdown <= 1 ? 'text-red-500 animate-blink' : countdown <= 2 ? 'text-orange-400' : 'text-yellow-400'}
+                  `}
+                >
+                  {countdown}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 弹仓状态 */}

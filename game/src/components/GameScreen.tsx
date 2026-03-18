@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import PixelScene, { BgState, OppState, PlayerState } from './PixelScene';
+import VideoScene, { VideoEvent } from './VideoScene';
 import { Idiom } from '../data/idioms';
 import { getRandomError, FunnyError } from '../data/funnyErrors';
 import { validateIdiomWithAI, isValidChainAI } from '../data/zhipuApi';
@@ -15,8 +15,10 @@ interface Props {
   aiSlots?: BulletSlot[];
   onCorrect: (input: Idiom) => void;
   onPenalty: (type: 'not-idiom' | 'wrong-chain' | 'timeout') => void;
+  onQuit?: () => void;
   isOnlineMode?: boolean;
   isYourTurn?: boolean;
+  opponentInput?: string; // 对手正在输入的内容（用于显示乱码）
 }
 
 // 子弹槽可视化组件
@@ -66,6 +68,27 @@ const BulletSlotsBar: React.FC<{
   </div>
 );
 
+// 乱码文字组件 —— 模拟对手正在输入的样子
+const ScrambledText: React.FC<{ length: number }> = ({ length }) => {
+  const [chars, setChars] = useState<string[]>([]);
+  const POOL = '田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑';
+
+  useEffect(() => {
+    const gen = () => Array.from({ length: Math.max(length, 2) }, () =>
+      POOL[Math.floor(Math.random() * POOL.length)]
+    );
+    setChars(gen());
+    const id = setInterval(() => setChars(gen()), 120);
+    return () => clearInterval(id);
+  }, [length]);
+
+  return (
+    <span className="tracking-widest text-violet-400 font-bold text-lg select-none blur-[1px]">
+      {chars.join('')}
+    </span>
+  );
+};
+
 type ValidatePhase = 'idle' | 'validating' | 'done';
 
 const GameScreen: React.FC<Props> = ({
@@ -78,22 +101,20 @@ const GameScreen: React.FC<Props> = ({
   aiSlots,
   onCorrect,
   onPenalty,
+  onQuit,
   isOnlineMode = false,
   isYourTurn = true,
+  opponentInput,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [timeLeft, setTimeLeft] = useState(timerMax);
-  const [bgState, setBgState] = useState<BgState>('bg-normal');
-  const [oppState, setOppState] = useState<OppState>('opp-idle');
-  const [playerState, setPlayerState] = useState<PlayerState>('player-idle');
+  const [videoEvent, setVideoEvent] = useState<VideoEvent>('idle');
   const [errorInfo, setErrorInfo] = useState<FunnyError | null>(null);
   const [errorKey, setErrorKey] = useState(0);
-  // phase 现在只有两种：'input'（可输入）和 'success'（接龙成功，锁定等待切换）
-  // 错误不再切换 phase，直接短暂显示提示后恢复
   const [phase, setPhase] = useState<'input' | 'success'>('input');
   const [validatePhase, setValidatePhase] = useState<ValidatePhase>('idle');
   const [validateMsg, setValidateMsg] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // API调用中禁止重复提交
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -104,9 +125,7 @@ const GameScreen: React.FC<Props> = ({
   useEffect(() => {
     setInputValue('');
     setTimeLeft(timerMax);
-    setBgState('bg-normal');
-    setOppState('opp-idle');
-    setPlayerState('player-idle');
+    setVideoEvent('idle');
     setErrorInfo(null);
     setValidatePhase('idle');
     setValidateMsg('');
@@ -114,13 +133,24 @@ const GameScreen: React.FC<Props> = ({
     setIsSubmitting(false);
     timeoutCalledRef.current = false;
     if (errorClearRef.current) clearTimeout(errorClearRef.current);
-    setTimeout(() => inputRef.current?.focus(), 100);
-  }, [currentIdiom]);
+    // 自己回合时自动聚焦
+    if (isYourTurn) setTimeout(() => inputRef.current?.focus(), 100);
+  }, [currentIdiom, isYourTurn]);
 
-  // 倒计时 —— 输入错误不暂停，全程运行直到归零
+  // 对手回合时视频显示 thinking
+  useEffect(() => {
+    if (isOnlineMode && !isYourTurn) {
+      setVideoEvent('thinking');
+    } else {
+      setVideoEvent('idle');
+    }
+  }, [isOnlineMode, isYourTurn]);
+
+  // 倒计时
   useEffect(() => {
     if (phase !== 'input') return;
     if (frozen) return;
+    if (isOnlineMode && !isYourTurn) return; // 对手回合不计时
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -128,53 +158,43 @@ const GameScreen: React.FC<Props> = ({
           handleTimeout();
           return 0;
         }
-        if (t <= Math.ceil(timerMax * 0.3)) setBgState('bg-danger');
         return t - 1;
       });
     }, 1000);
     return () => clearInterval(timerRef.current!);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, currentIdiom, timerMax, frozen]);
+  }, [phase, currentIdiom, timerMax, frozen, isYourTurn]);
 
   const stopTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current);
   };
 
-  // 倒计时归零 → 触发轮盘
   const handleTimeout = useCallback(() => {
     if (timeoutCalledRef.current) return;
     timeoutCalledRef.current = true;
     stopTimer();
-    setPhase('success'); // 锁定输入
-    setBgState('bg-danger');
-    setOppState('opp-timeout');
-    setPlayerState('player-idle');
+    setPhase('success');
+    setVideoEvent('timeout');
     const err = getRandomError('timeout');
     setErrorInfo(err);
     setErrorKey(k => k + 1);
     setTimeout(() => onPenalty('timeout'), 2000);
   }, [onPenalty]);
 
-  // 显示短暂错误后自动恢复输入（不触发轮盘）
   const showErrorAndResume = useCallback((err: FunnyError) => {
     setErrorInfo(err);
     setErrorKey(k => k + 1);
-    setBgState('bg-normal');
-    setOppState('opp-wrong');
-    setPlayerState('player-idle');
-    setInputValue(''); // 清空输入框方便重新输入
-    // 1.2s 后自动清除错误提示，恢复正常状态
+    setVideoEvent('wrong');
+    setInputValue('');
     if (errorClearRef.current) clearTimeout(errorClearRef.current);
     errorClearRef.current = setTimeout(() => {
       setErrorInfo(null);
-      setOppState('opp-idle');
-      setBgState(prev => prev === 'bg-danger' ? 'bg-danger' : 'bg-normal');
+      setVideoEvent('idle');
       inputRef.current?.focus();
     }, 1200);
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    // 锁定条件：成功状态、或正在验证中、或倒计时已归零
     if (phase !== 'input') return;
     if (isSubmitting) return;
     if (timeoutCalledRef.current) return;
@@ -184,8 +204,7 @@ const GameScreen: React.FC<Props> = ({
     setIsSubmitting(true);
     setValidatePhase('validating');
     setValidateMsg(`正在验证「${trimmed}」…`);
-    setOppState('opp-thinking');
-    setPlayerState('player-typing');
+    setVideoEvent('thinking');
 
     try {
       const result = await validateIdiomWithAI(trimmed);
@@ -193,7 +212,6 @@ const GameScreen: React.FC<Props> = ({
       setValidateMsg('');
 
       if (!result.isIdiom) {
-        // 不是成语 → 短暂提示，继续输入
         setIsSubmitting(false);
         showErrorAndResume(getRandomError('not-idiom'));
         return;
@@ -203,18 +221,14 @@ const GameScreen: React.FC<Props> = ({
       const prevLast   = { char: currentIdiom.text.slice(-1), pinyin: currentIdiom.last };
 
       if (!isValidChainAI(inputFirst, prevLast)) {
-        // 接龙不符合 → 短暂提示，继续输入
         setIsSubmitting(false);
         showErrorAndResume(getRandomError('wrong-chain'));
         return;
       }
 
-      // 接龙成功！锁定等待切换
       setPhase('success');
       stopTimer();
-      setBgState('bg-normal');
-      setOppState('opp-correct');
-      setPlayerState('player-typing');
+      setVideoEvent('correct');
       setErrorInfo(null);
       const successIdiom: Idiom = {
         text: trimmed,
@@ -227,7 +241,6 @@ const GameScreen: React.FC<Props> = ({
       setValidatePhase('done');
       setValidateMsg('');
 
-      // API失败 → 降级本地验证
       const { findIdiom, isValidChain } = await import('../data/idioms');
       const found = findIdiom(trimmed);
 
@@ -244,9 +257,7 @@ const GameScreen: React.FC<Props> = ({
 
       setPhase('success');
       stopTimer();
-      setBgState('bg-normal');
-      setOppState('opp-correct');
-      setPlayerState('player-typing');
+      setVideoEvent('correct');
       setErrorInfo(null);
       setTimeout(() => onCorrect(found), 1600);
     }
@@ -259,30 +270,15 @@ const GameScreen: React.FC<Props> = ({
   const timerPct = (timeLeft / timerMax) * 100;
   const timerDanger = timeLeft <= Math.ceil(timerMax * 0.3);
   const isValidating = validatePhase === 'validating';
-  // 输入框禁用：只在成功状态或正在API调用时禁用，错误后恢复可用
-  const inputDisabled = phase === 'success' || isValidating;
+  // 是否禁用输入：成功状态 / API调用中 / 非自己回合 / frozen
+  const isMyTurn = !isOnlineMode || isYourTurn;
+  const inputDisabled = phase === 'success' || isValidating || !isMyTurn || frozen;
 
   return (
     <div className="min-h-screen bg-[#0a1410] text-emerald-400 flex flex-col font-cn">
 
-      {/* 联网模式标识栏 */}
-      {isOnlineMode && (
-        <div className={`
-          flex items-center justify-center gap-2 px-3 py-1.5
-          border-b text-[9px] font-pixel tracking-widest
-          ${isYourTurn
-            ? 'bg-emerald-950/40 border-emerald-800/50 text-emerald-500'
-            : 'bg-violet-950/40 border-violet-800/50 text-violet-600 animate-pulse'
-          }
-        `}>
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-          {isYourTurn ? '⚔ 你的回合 — 输入成语' : `⏳ 等待 ${opponentName} 接龙…`}
-          <span className="ml-auto opacity-50">ONLINE</span>
-        </div>
-      )}
-
-      {/* ── 顶部信息栏 ── */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-emerald-900/50 bg-black/50 shrink-0 gap-3">
+      {/* ══ 顶部状态栏 ══ */}
+      <div className="flex items-center justify-between px-3 py-2 border-b border-emerald-900/50 bg-black/60 shrink-0 gap-3">
 
         {/* 左：玩家子弹槽 */}
         <div className="flex flex-col gap-1 min-w-[90px]">
@@ -293,7 +289,7 @@ const GameScreen: React.FC<Props> = ({
           }
         </div>
 
-        {/* 中：倒计时 */}
+        {/* 中：倒计时 + 回合信息 */}
         <div className="flex flex-col items-center gap-1 flex-1 max-w-[160px]">
           <div className="flex items-center gap-2 w-full">
             <div className="flex-1 h-2.5 border border-emerald-800 bg-black overflow-hidden">
@@ -306,7 +302,7 @@ const GameScreen: React.FC<Props> = ({
               />
             </div>
             <span className={`font-pixel text-[11px] min-w-[20px] text-right tabular-nums ${timerDanger ? 'text-red-400 animate-blink' : 'text-emerald-400'}`}>
-              {frozen ? '—' : timeLeft}
+              {(frozen || (isOnlineMode && !isYourTurn)) ? '—' : timeLeft}
             </span>
           </div>
           <div className="font-pixel text-[6px] text-emerald-900">
@@ -314,9 +310,25 @@ const GameScreen: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* 右：AI子弹槽 */}
+        {/* 右：AI子弹槽 + 退出按钮 */}
         <div className="flex flex-col gap-1 items-end min-w-[90px]">
-          <span className="font-pixel text-[6px] text-red-900">2P {opponentName}</span>
+          <div className="flex items-center gap-2">
+            <span className="font-pixel text-[6px] text-red-900">2P {opponentName}</span>
+            {onQuit && (
+              <button
+                onClick={onQuit}
+                className="
+                  ml-1 px-1.5 py-0.5 font-pixel text-[7px] tracking-wider
+                  border border-red-900/60 bg-red-950/40 text-red-700
+                  hover:bg-red-900/50 hover:border-red-700 hover:text-red-400
+                  active:scale-95 transition-all
+                "
+                title="退出游戏"
+              >
+                ✕ 退出
+              </button>
+            )}
+          </div>
           {aiSlots
             ? <BulletSlotsBar slots={aiSlots} label="" isPlayer={false} />
             : <span className="font-pixel text-[6px] text-red-900">♥ ♥ ♥</span>
@@ -324,21 +336,137 @@ const GameScreen: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* ── 游戏视口 ── */}
-      <div className="relative w-full flex-1 min-h-0" style={{ minHeight: 320 }}>
-        <PixelScene bgState={bgState} oppState={oppState} playerState={playerState} />
+      {/* ══ 接龙输入区（顶部，紧贴状态栏） ══ */}
+      <div className={`shrink-0 border-b-2 px-4 py-3 space-y-2.5 transition-colors
+        ${isMyTurn
+          ? 'border-emerald-800/60 bg-[#0d1f18]'
+          : 'border-violet-900/60 bg-[#0d0f1f]'
+        }
+      `}>
 
-        {/* 对手名字标签 */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+        {/* 联网模式 —— 回合指示横幅 */}
+        {isOnlineMode && (
+          <div className={`
+            flex items-center gap-2 py-1 px-2 text-[8px] font-pixel tracking-widest border
+            ${isYourTurn
+              ? 'bg-emerald-950/30 border-emerald-800/40 text-emerald-500'
+              : 'bg-violet-950/30 border-violet-800/40 text-violet-500 animate-pulse'
+            }
+          `}>
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
+            {isYourTurn ? '⚔ 你的回合 — 输入成语接龙' : `⏳ 等待 ${opponentName} 接龙…`}
+            <span className="ml-auto opacity-40">ONLINE</span>
+          </div>
+        )}
+
+        {/* 当前需接的成语 */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-pixel text-[8px] text-emerald-700 shrink-0">当前词：</span>
+          <div className="flex gap-1">
+            {currentIdiom.text.split('').map((ch, i) => (
+              <span
+                key={i}
+                className={`inline-flex items-center justify-center w-9 h-9 border text-lg font-bold
+                  ${i === currentIdiom.text.length - 1
+                    ? 'border-yellow-600 bg-yellow-900/30 text-yellow-300'
+                    : 'border-emerald-800 bg-emerald-900/20 text-emerald-300'
+                  }`}
+              >
+                {ch}
+              </span>
+            ))}
+          </div>
+          <div className="flex items-center gap-1 text-xs text-emerald-700 ml-1">
+            <span>→ 末：</span>
+            <span className="text-yellow-400 font-bold text-base">{currentIdiom.text.slice(-1)}</span>
+            <span className="font-pixel text-[7px] text-emerald-800">({currentIdiom.last})</span>
+          </div>
+        </div>
+
+        {/* 输入框区域 */}
+        {isMyTurn ? (
+          /* 自己的回合：正常输入框 */
+          <div className="flex gap-2">
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputValue}
+              onChange={e => {
+                if (phase === 'input') setInputValue(e.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+              maxLength={8}
+              placeholder={`首字同「${currentIdiom.text.slice(-1)}」字或同「${currentIdiom.last}」音…`}
+              disabled={inputDisabled}
+              className="
+                flex-1 bg-black/50 border-2 border-emerald-700 text-emerald-300
+                px-3 py-2.5 text-lg tracking-widest font-cn
+                placeholder:text-emerald-900 outline-none
+                focus:border-emerald-400 focus:shadow-[0_0_12px_rgba(52,211,153,0.3)]
+                disabled:opacity-40 disabled:cursor-not-allowed
+                transition-all
+              "
+            />
+            <button
+              onClick={handleSubmit}
+              disabled={inputDisabled || !inputValue.trim()}
+              className="
+                px-5 py-2.5 bg-emerald-900/50 border-2 border-emerald-600 text-emerald-300
+                hover:bg-emerald-800/50 hover:border-emerald-400
+                active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
+                transition-all text-sm tracking-widest font-bold
+              "
+            >
+              {isValidating ? '验证…' : '接龙 ↵'}
+            </button>
+          </div>
+        ) : (
+          /* 对手回合：乱码显示区域 */
+          <div className="flex gap-2 items-center">
+            <div className="
+              flex-1 bg-violet-950/30 border-2 border-violet-900/50 text-violet-400
+              px-3 py-2.5 flex items-center gap-3 min-h-[48px]
+            ">
+              <span className="font-pixel text-[7px] text-violet-700 shrink-0">对方输入中</span>
+              <div className="flex-1">
+                {opponentInput && opponentInput.length > 0 ? (
+                  <ScrambledText length={opponentInput.length} />
+                ) : (
+                  <span className="text-violet-800 text-sm font-pixel tracking-widest animate-pulse">
+                    ···
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="px-5 py-2.5 bg-violet-950/20 border-2 border-violet-900/40 text-violet-800 text-sm tracking-widest font-pixel cursor-not-allowed select-none">
+              等待中
+            </div>
+          </div>
+        )}
+
+        <div className="font-pixel text-[7px] text-emerald-900">
+          {isMyTurn
+            ? `按 Enter 提交 │ AI 实时验证成语 │ 超时或接错 → 轮盘赌`
+            : `等待 ${opponentName} 接龙中…请勿离开`
+          }
+        </div>
+      </div>
+
+      {/* ══ 16:9 视频区域 ══ */}
+      <div className="relative flex-1 min-h-0 flex flex-col">
+        <VideoScene event={videoEvent} className="w-full" />
+
+        {/* 对手名字标签（叠加在视频上） */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
           <div className="bg-black/70 border border-emerald-800 px-3 py-1 text-[11px] text-emerald-500 font-pixel tracking-wider">
             {opponentName}
           </div>
         </div>
 
-        {/* ── 验证中 Loading ── */}
+        {/* 验证中 Loading */}
         {isValidating && (
-          <div className="absolute inset-0 z-60 flex items-center justify-center pointer-events-none">
-            <div className="bg-black/80 border border-emerald-700 px-6 py-4 flex flex-col items-center gap-3 animate-slide-up">
+          <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+            <div className="bg-black/85 border border-emerald-700 px-6 py-4 flex flex-col items-center gap-3">
               <div className="flex gap-2">
                 {[0, 0.2, 0.4].map((d, i) => (
                   <div
@@ -355,17 +483,16 @@ const GameScreen: React.FC<Props> = ({
           </div>
         )}
 
-        {/* 错误提示 —— 小横幅，不阻挡输入框，1.2s自动消失 */}
+        {/* 错误提示横幅 */}
         {errorInfo && (
           <div
             key={errorKey}
-            className="absolute top-2 left-2 right-2 z-60 pointer-events-none animate-slide-up"
+            className="absolute top-2 left-2 right-2 z-20 pointer-events-none animate-slide-up"
           >
             <div
               className="bg-red-950/95 border border-red-700 px-4 py-2.5 flex items-start gap-3"
               style={{ boxShadow: '0 0 16px rgba(220,38,38,0.35)' }}
             >
-              {/* 红色闪光条 */}
               <div className="w-1 self-stretch bg-red-600 shrink-0" />
               <div className="flex-1 min-w-0">
                 <div className="font-pixel text-[7px] text-red-500 tracking-widest mb-0.5">{errorInfo.article}</div>
@@ -378,97 +505,22 @@ const GameScreen: React.FC<Props> = ({
             </div>
           </div>
         )}
-      </div>
 
-      {/* ── 接龙输入区 ── */}
-      <div className="shrink-0 border-t-2 border-emerald-900/60 bg-[#0d1f18] px-4 py-4 space-y-3">
-
-        {/* 当前需接的成语 */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-pixel text-[8px] text-emerald-700 shrink-0">当前词：</span>
-          <div className="flex gap-1">
-            {currentIdiom.text.split('').map((ch, i) => (
-              <span
-                key={i}
-                className={`inline-flex items-center justify-center w-10 h-10 border text-xl font-bold
-                  ${i === currentIdiom.text.length - 1
-                    ? 'border-yellow-600 bg-yellow-900/30 text-yellow-300'
-                    : 'border-emerald-800 bg-emerald-900/20 text-emerald-300'
-                  }`}
-              >
-                {ch}
-              </span>
-            ))}
-          </div>
-          <div className="flex items-center gap-1 text-xs text-emerald-700">
-            <span>→ 末字：</span>
-            <span className="text-yellow-400 font-bold text-base">{currentIdiom.text.slice(-1)}</span>
-            <span className="font-pixel text-[7px] text-emerald-800">({currentIdiom.last})</span>
-          </div>
+        {/* 底部状态栏 */}
+        <div className="flex items-center justify-between px-4 py-1.5 border-t border-emerald-900/50 bg-black/60 text-[8px] font-pixel text-emerald-800 shrink-0 mt-auto">
+          <span className={timerDanger && isMyTurn ? 'text-red-600 animate-blink' : ''}>
+            {timerDanger && isMyTurn ? '⚠ 危险！' : '♥ ♥ ♥'}
+          </span>
+          <span className="text-emerald-900">智谱 GLM-4-Flash 实时验证</span>
+          {onQuit && (
+            <button
+              onClick={onQuit}
+              className="text-red-900 hover:text-red-600 transition-colors cursor-pointer"
+            >
+              █ 退出游戏
+            </button>
+          )}
         </div>
-
-        {/* 接龙提示 */}
-        <div className="font-pixel text-[7px] text-emerald-800 border-b border-emerald-900/40 pb-2">
-          ── 首字与「{currentIdiom.text.slice(-1)}」<span className="text-yellow-800">同字</span>或<span className="text-emerald-700">同音({currentIdiom.last})</span>均可 ──
-        </div>
-
-        {/* 输入框 */}
-        <div className="flex gap-3">
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputValue}
-            onChange={e => {
-              if (phase === 'input') {
-                setInputValue(e.target.value);
-                if (e.target.value.length > 0) {
-                  setOppState('opp-thinking');
-                  setPlayerState('player-typing');
-                } else {
-                  setOppState('opp-idle');
-                  setPlayerState('player-idle');
-                }
-              }
-            }}
-            onKeyDown={handleKeyDown}
-            maxLength={8}
-            placeholder={`首字同「${currentIdiom.text.slice(-1)}」字或同「${currentIdiom.last}」音…`}
-            disabled={inputDisabled}
-            className="
-              flex-1 bg-black/50 border-2 border-emerald-800 text-emerald-300
-              px-4 py-3 text-lg tracking-widest font-cn
-              placeholder:text-emerald-900 outline-none
-              focus:border-emerald-500 focus:shadow-[0_0_12px_rgba(52,211,153,0.3)]
-              disabled:opacity-40 disabled:cursor-not-allowed
-              transition-all
-            "
-          />
-          <button
-            onClick={handleSubmit}
-            disabled={inputDisabled || !inputValue.trim()}
-            className="
-              px-6 py-3 bg-emerald-900/50 border-2 border-emerald-600 text-emerald-300
-              hover:bg-emerald-800/50 hover:border-emerald-400
-              active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-              transition-all text-base tracking-widest font-bold
-            "
-          >
-            {isValidating ? '验证…' : '接龙 ↵'}
-          </button>
-        </div>
-
-        <div className="font-pixel text-[7px] text-emerald-900">
-          按 Enter 提交 &nbsp;│&nbsp; AI 实时验证成语 &nbsp;│&nbsp; 超时或接错 → 轮盘赌
-        </div>
-      </div>
-
-      {/* ── 底部状态栏 ── */}
-      <div className="flex items-center justify-between px-4 py-1.5 border-t border-emerald-900/50 bg-black/40 text-[8px] font-pixel text-emerald-800 shrink-0">
-        <span className={timerDanger ? 'text-red-600 animate-blink' : ''}>
-          {timerDanger ? '⚠ 危险！' : '♥ ♥ ♥'}
-        </span>
-        <span className="text-emerald-900">智谱 GLM-4-Flash 实时验证</span>
-        <span>█ ESC 放弃</span>
       </div>
     </div>
   );
