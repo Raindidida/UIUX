@@ -325,7 +325,9 @@ const GameScreen: React.FC<Props> = ({
   const timerDanger = timeLeft <= Math.ceil(timerMax * 0.3);
   const isValidating = validatePhase === 'validating';
   const isMyTurn = !isOnlineMode || isYourTurn;
-  const hasRoulette = !!roulettePhase;
+  // 必须同时检查 roulettePhase 和 pendingRoulette，防止 pendingRoulette 已清除
+  // 但 roulettePhase 还未归 null 时访问 pendingRoulette!.hit 引发 crash → 白屏
+  const hasRoulette = !!roulettePhase && !!pendingRoulette;
   const inputDisabled = phase === 'success' || isValidating || !isMyTurn || frozen || hasRoulette;
 
   return (

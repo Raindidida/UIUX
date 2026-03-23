@@ -65,8 +65,8 @@ const PIXEL_FALLBACK: Record<VideoEvent, {
   'defeat':                 { emoji: '☠️', label: 'DEFEATED',      color: 'text-zinc-400',    bg: 'from-zinc-900 to-black' },
 };
 
-// ── 淡入淡出时长（ms）─────────────────────────────────────────
-const FADE_MS = 400;
+// ── 切换过渡时长：0 = 硬切，无淡入淡出 ─────────────────────────
+const FADE_MS = 0;
 
 interface Props {
   event: VideoEvent;
@@ -161,7 +161,7 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
-  // ── 通用视频样式（仅 opacity 做过渡）────────────────────────
+  // ── 通用视频样式（无过渡动画，硬切）────────────────────────
   const slotStyle = (isActive: boolean): React.CSSProperties => ({
     position: 'absolute',
     inset: 0,
@@ -169,7 +169,6 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
     height: '100%',
     objectFit: 'cover',
     opacity: isActive ? 1 : 0,
-    transition: `opacity ${FADE_MS}ms ease-in-out`,
     zIndex: isActive ? 2 : 1,
   });
 
