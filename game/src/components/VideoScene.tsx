@@ -65,13 +65,32 @@ const PIXEL_FALLBACK: Record<VideoEvent, {
   'defeat':                 { emoji: '☠️', label: 'DEFEATED',      color: 'text-zinc-400',    bg: 'from-zinc-900 to-black' },
 };
 
-// ── 切换过渡时长：0 = 硬切，无淡入淡出 ─────────────────────────
-const FADE_MS = 0;
+// ── 模块级预加载存储（防止 GC）────────────────────────────────
+const _preloadStore: HTMLVideoElement[] = [];
+
+/**
+ * 预加载所有视频到浏览器缓存。
+ * 在应用挂载时调用一次，后续视频切换将无黑帧。
+ */
+export function preloadAllVideos(): void {
+  const seen = new Set<string>();
+  Object.values(VIDEO_MAP).forEach(src => {
+    if (!src || seen.has(src)) return;
+    seen.add(src);
+    const v = document.createElement('video');
+    v.preload = 'auto';
+    v.muted = true;
+    (v as HTMLVideoElement & { playsInline: boolean }).playsInline = true;
+    v.src = src;
+    v.load();
+    _preloadStore.push(v);
+  });
+}
 
 interface Props {
   event: VideoEvent;
   className?: string;
-  /** fill=true 时铺满父容器，不限制 16:9 比例 */
+  /** fill=true 时铺满父容器 */
   fill?: boolean;
   /** 非循环视频播放结束时回调 */
   onEnded?: () => void;
@@ -80,23 +99,17 @@ interface Props {
 /**
  * 双缓冲视频播放器
  * - 始终保持两个 <video> 元素（A / B 交替使用）
- * - 切换时：将新视频加载到不可见的那个槽，开始播放后交换 opacity
- * - CSS transition 实现无黑帧的淡入淡出
+ * - 切换时等待 canplay 事件后再交换槽，消除黑帧
  */
 const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEnded }) => {
   const refA = useRef<HTMLVideoElement>(null);
   const refB = useRef<HTMLVideoElement>(null);
 
-  // 当前哪个槽在前台（opacity 1）
   const [activeIsA, setActiveIsA] = useState(true);
-
-  // 追踪上一个 event，避免初始化时触发切换
   const prevEventRef = useRef(event);
-
-  // 延迟清理旧槽的计时器
   const cleanupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const swapFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // 是否显示像素占位（无视频文件时）
   const [showFallback, setShowFallback] = useState(!VIDEO_MAP[event]);
 
   // ── 挂载时初始化 slot A ───────────────────────────────────
@@ -106,7 +119,7 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
       refA.current.src = src;
       refA.current.loop = LOOP_MAP[event];
       refA.current.load();
-      refA.current.play().catch(() => {/* 浏览器自动播放策略 */});
+      refA.current.play().catch(() => {});
       setShowFallback(false);
     } else {
       setShowFallback(true);
@@ -115,7 +128,7 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── event 变化时：加载新视频 + 淡入淡出切换 ─────────────────
+  // ── event 变化：加载新视频，等 canplay 后无黑帧切换 ────────
   useEffect(() => {
     if (event === prevEventRef.current) return;
     prevEventRef.current = event;
@@ -123,32 +136,32 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
     const newSrc = VIDEO_MAP[event];
     const newLoop = LOOP_MAP[event];
 
-    // 取消上一次尚未执行的清理
     if (cleanupTimerRef.current) clearTimeout(cleanupTimerRef.current);
+    if (swapFallbackRef.current) clearTimeout(swapFallbackRef.current);
 
-    // 确定哪个槽是"后台"（即将载入新内容）
     const isCurrentA = activeIsA;
     const stagingRef = isCurrentA ? refB : refA;
 
-    if (newSrc && stagingRef.current) {
-      // 将新视频写入后台槽并开始播放
-      stagingRef.current.src = newSrc;
-      stagingRef.current.loop = newLoop;
-      stagingRef.current.load();
-      stagingRef.current.play().catch(() => {});
-      setShowFallback(false);
-    } else {
-      if (stagingRef.current) {
-        stagingRef.current.src = '';
-      }
+    if (!newSrc || !stagingRef.current) {
+      if (stagingRef.current) stagingRef.current.src = '';
       if (!newSrc) setShowFallback(true);
+      requestAnimationFrame(() => setActiveIsA(!isCurrentA));
+      return;
     }
 
-    // 下一帧触发 CSS 过渡（opacity 切换）
-    requestAnimationFrame(() => {
-      setActiveIsA(!isCurrentA);
+    const staging = stagingRef.current;
+    let swapped = false;
 
-      // 过渡完成后，清除旧槽资源
+    const doSwap = () => {
+      if (swapped) return;
+      swapped = true;
+      staging.removeEventListener('canplay', doSwap);
+      if (swapFallbackRef.current) clearTimeout(swapFallbackRef.current);
+
+      setActiveIsA(!isCurrentA);
+      setShowFallback(false);
+
+      // 过渡后清除旧槽资源（释放内存）
       cleanupTimerRef.current = setTimeout(() => {
         const oldRef = isCurrentA ? refA : refB;
         if (oldRef.current) {
@@ -156,12 +169,22 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
           oldRef.current.removeAttribute('src');
           oldRef.current.load();
         }
-      }, FADE_MS + 150);
-    });
+      }, 200);
+    };
+
+    // 兜底：若 canplay 300ms 内未触发（极端网络情况）则强制切换
+    swapFallbackRef.current = setTimeout(doSwap, 300);
+
+    staging.addEventListener('canplay', doSwap, { once: true });
+    staging.src = newSrc;
+    staging.loop = newLoop;
+    staging.load();
+    staging.play().catch(() => doSwap());
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event]);
 
-  // ── 通用视频样式（无过渡动画，硬切）────────────────────────
+  // ── 通用视频样式（硬切，无过渡）────────────────────────────
   const slotStyle = (isActive: boolean): React.CSSProperties => ({
     position: 'absolute',
     inset: 0,
@@ -179,7 +202,7 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
       className={`relative overflow-hidden bg-black ${className}`}
       style={fill ? { width: '100%', height: '100%' } : { aspectRatio: '16 / 9' }}
     >
-      {/* 像素占位（在两个视频层之下，z-index 0） */}
+      {/* 像素占位（在两个视频层之下） */}
       {showFallback && (
         <div
           className={`absolute inset-0 z-0 bg-gradient-to-b ${fallback.bg}
@@ -192,12 +215,10 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEn
                 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)',
             }}
           />
-          {/* 四角装饰 */}
           <div className="absolute top-2 left-2  w-5 h-5 border-t-2 border-l-2 border-current opacity-30" />
           <div className="absolute top-2 right-2 w-5 h-5 border-t-2 border-r-2 border-current opacity-30" />
           <div className="absolute bottom-2 left-2  w-5 h-5 border-b-2 border-l-2 border-current opacity-30" />
           <div className="absolute bottom-2 right-2 w-5 h-5 border-b-2 border-r-2 border-current opacity-30" />
-          {/* 图标 + 标签 */}
           <div className="text-5xl animate-bounce" style={{ animationDuration: '1.5s' }}>
             {fallback.emoji}
           </div>

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import HomeScreen, { Difficulty, DIFFICULTY_CONFIG } from './components/HomeScreen';
 import GameScreen, { PendingRoulette } from './components/GameScreen';
+import { preloadAllVideos } from './components/VideoScene';
 import ResultScreen, { GameStats, loadBestRecord } from './components/ResultScreen';
 import MatchmakingScreen from './components/MatchmakingScreen';
 import {
@@ -262,6 +263,9 @@ const App: React.FC = () => {
   // 用 ref 存储当前 appState，避免事件回调中闭包过期
   const appStateRef = useRef(appState);
   useEffect(() => { appStateRef.current = appState; }, [appState]);
+
+  // ── 进入页面时预加载所有视频 ──
+  useEffect(() => { preloadAllVideos(); }, []);
 
   // 存储 pending 的联网 playerName（在匹配成功前保留）
   const pendingOnlineRef = useRef<{ playerName: string; difficulty: Difficulty } | null>(null);

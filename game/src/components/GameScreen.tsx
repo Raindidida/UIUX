@@ -66,7 +66,7 @@ const ScrambledText: React.FC<{ length: number }> = ({ length }) => {
   return <span className="tracking-widest text-violet-400 font-bold text-lg select-none blur-[1px]">{chars.join('')}</span>;
 };
 
-// ── 轮盘阶段类型（简化：无倒计时）─────────────────────────────
+// ── 轮盘阶段类型 ──────────────────────────────────────────────
 type RoulettePhase = 'fire' | 'result';
 
 // ── 轮盘结果浮层（纯展示）────────────────────────────────────
@@ -79,22 +79,14 @@ const RouletteOverlay: React.FC<{
   flashRed: boolean;
 }> = ({ phase, hit, isPlayer, opponentName, flashWhite, flashRed }) => (
   <>
-    {/* 开枪白闪 */}
     {flashWhite && <div className="fixed inset-0 z-[500] bg-white/85 pointer-events-none" />}
-    {/* 中弹红屏 */}
-    {flashRed && <div className="fixed inset-0 z-[499] bg-red-800/55 pointer-events-none" />}
-
-    {/* 结果文字（视频播完后显示）*/}
+    {flashRed   && <div className="fixed inset-0 z-[499] bg-red-800/55 pointer-events-none" />}
     {phase === 'result' && (
       <div className="absolute inset-0 z-[100] flex items-center justify-center pointer-events-none">
         <div className="text-center space-y-4 animate-slide-up">
           {hit ? (
             <>
-              <div className={`
-                font-black tracking-wider leading-tight text-[42px]
-                drop-shadow-[0_0_30px_currentColor]
-                ${isPlayer ? 'text-red-400' : 'text-yellow-300'}
-              `}>
+              <div className={`font-black tracking-wider leading-tight text-[42px] drop-shadow-[0_0_30px_currentColor] ${isPlayer ? 'text-red-400' : 'text-yellow-300'}`}>
                 {isPlayer ? '💀 你中弹了！' : `🎯 ${opponentName} 中弹！`}
               </div>
               <div className="font-pixel text-[10px] text-zinc-400 tracking-[0.5em]">
@@ -144,8 +136,6 @@ const GameScreen: React.FC<Props> = ({
   const [validatePhase, setValidatePhase] = useState<ValidatePhase>('idle');
   const [validateMsg, setValidateMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorInfo, setErrorInfo] = useState<FunnyError | null>(null);
-  const [errorKey, setErrorKey] = useState(0);
 
   // ── 视频事件 ──────────────────────────────────────────────
   const [videoEvent, setVideoEvent] = useState<VideoEvent>('idle');
@@ -157,19 +147,15 @@ const GameScreen: React.FC<Props> = ({
   const rouletteDoneRef = useRef(false);
   const roulettePhaseRef = useRef<RoulettePhase | null>(null);
   const rouletteVideoRef = useRef<VideoEvent | null>(null);
-  // timeout 视频正在播放的标志（视频结束时才切换轮盘视频）
   const pendingTimeoutPenaltyRef = useRef(false);
-  // timeout 视频已结束但服务端结果尚未到达（联网模式网络延迟场景）
   const timeoutVideoEndedWaitingRef = useRef(false);
   const penaltyFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // pendingRoulette 的 ref 副本，供 handleVideoEnded 读取（避免 stale closure）
   const pendingRouletteRef = useRef<PendingRoulette | undefined>(undefined);
-  // onPenalty 的稳定 ref
   const onPenaltyRef = useRef(onPenalty);
   useEffect(() => { onPenaltyRef.current = onPenalty; }, [onPenalty]);
 
-  // ── 闪光定时器（统一管理，避免重复或遗漏清理）─────────────
-  const flashTimers = useRef<{t1?: ReturnType<typeof setTimeout>; t2?: ReturnType<typeof setTimeout>; t3?: ReturnType<typeof setTimeout>}>({});
+  // ── 闪光定时器（统一管理）────────────────────────────────
+  const flashTimers = useRef<{ t1?: ReturnType<typeof setTimeout>; t2?: ReturnType<typeof setTimeout>; t3?: ReturnType<typeof setTimeout> }>({});
   const clearFlash = useCallback(() => {
     clearTimeout(flashTimers.current.t1);
     clearTimeout(flashTimers.current.t2);
@@ -188,26 +174,33 @@ const GameScreen: React.FC<Props> = ({
     }
   }, [clearFlash]);
 
-  // 错误输入：视频正在播放的标志（onEnded 后恢复输入）
-  const wrongVideoPlayingRef = useRef(false);
+  // ── 错误输入：红闪 + 提示文字，不锁定输入 ──────────────────
+  const [wrongFlash, setWrongFlash] = useState(false);
+  const [wrongMsg, setWrongMsg] = useState<string | null>(null);
+  const wrongMsgTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ── 正确接龙动画（文字浮现在视频上）──────────────────────
+  const [correctAnimText, setCorrectAnimText] = useState<string | null>(null);
+  const correctAnimTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutCalledRef = useRef(false);
-  const errorClearRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── 每轮重置 ────────────────────────────────────────────
   useEffect(() => {
     setInputValue('');
     setTimeLeft(timerMax);
     setVideoEvent('idle');
-    setErrorInfo(null);
     setValidatePhase('idle');
     setValidateMsg('');
     setPhase('input');
     setIsSubmitting(false);
+    setWrongMsg(null);
+    setCorrectAnimText(null);
+    if (wrongMsgTimerRef.current) clearTimeout(wrongMsgTimerRef.current);
+    if (correctAnimTimerRef.current) clearTimeout(correctAnimTimerRef.current);
     timeoutCalledRef.current = false;
-    wrongVideoPlayingRef.current = false;
-    if (errorClearRef.current) clearTimeout(errorClearRef.current);
     if (!isOnlineMode || isYourTurn) setTimeout(() => inputRef.current?.focus(), 100);
   }, [currentIdiom, isYourTurn, isOnlineMode]);
 
@@ -241,16 +234,11 @@ const GameScreen: React.FC<Props> = ({
     timeoutCalledRef.current = true;
     stopTimer();
     setPhase('success');
-    setVideoEvent('timeout');          // 立即播放倒计时结束视频
-    setErrorInfo(getRandomError('timeout'));
-    setErrorKey(k => k + 1);
-    // 标记 timeout 视频正在播放
+    setVideoEvent('timeout');
+    setWrongMsg(null);
+    if (wrongMsgTimerRef.current) clearTimeout(wrongMsgTimerRef.current);
     pendingTimeoutPenaltyRef.current = true;
-    // ★ 立即触发 onPenalty，后台 0.001s 同步算出轮盘结果
-    //   pendingRoulette effect 会准备好下一个视频引用，
-    //   等 timeout 视频自然播完后 handleVideoEnded 无缝切换
     onPenaltyRef.current('timeout');
-    // 兜底：5s 内视频未结束（文件缺失等）则强制切
     if (penaltyFallbackRef.current) clearTimeout(penaltyFallbackRef.current);
     penaltyFallbackRef.current = setTimeout(() => {
       if (pendingTimeoutPenaltyRef.current) {
@@ -264,22 +252,18 @@ const GameScreen: React.FC<Props> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startFlash]);
 
-  const showErrorAndResume = useCallback((_err: FunnyError) => {
-    // 不显示错误浮层（不要闪屏），锁定输入等视频播完
-    setPhase('success');
-    setVideoEvent('wrong');           // 播放 玩家成语提交输入.mp4（无缝）
+  // ── 输入错误：红闪 + 提示，不锁定输入 ────────────────────
+  const showErrorAndResume = useCallback((err: FunnyError) => {
+    setVideoEvent('idle');
+    setValidatePhase('idle');
+    setValidateMsg('');
+    setIsSubmitting(false);
     setInputValue('');
-    wrongVideoPlayingRef.current = true;
-    // 兜底：5s 内视频未触发 onEnded 则强制恢复（文件缺失等）
-    if (errorClearRef.current) clearTimeout(errorClearRef.current);
-    errorClearRef.current = setTimeout(() => {
-      if (wrongVideoPlayingRef.current) {
-        wrongVideoPlayingRef.current = false;
-        setVideoEvent('idle');
-        setPhase('input');
-        setTimeout(() => inputRef.current?.focus(), 50);
-      }
-    }, 5000);
+    setWrongFlash(true);
+    setWrongMsg(err.title);
+    if (wrongMsgTimerRef.current) clearTimeout(wrongMsgTimerRef.current);
+    wrongMsgTimerRef.current = setTimeout(() => setWrongMsg(null), 4000);
+    setTimeout(() => inputRef.current?.focus(), 50);
   }, []);
 
   const handleSubmit = useCallback(async () => {
@@ -292,7 +276,6 @@ const GameScreen: React.FC<Props> = ({
     setVideoEvent('thinking');
     try {
       const result = await validateIdiomWithAI(trimmed);
-      // 若等待期间倒计时已结束，放弃本次提交（由 handleTimeout 接管）
       if (timeoutCalledRef.current) { setIsSubmitting(false); setValidatePhase('idle'); setValidateMsg(''); return; }
       setValidatePhase('done'); setValidateMsg('');
       if (!result.isIdiom) { setIsSubmitting(false); showErrorAndResume(getRandomError('not-idiom')); return; }
@@ -300,11 +283,16 @@ const GameScreen: React.FC<Props> = ({
       const prevLast = { char: currentIdiom.text.slice(-1), pinyin: currentIdiom.last };
       if (!isValidChainAI(inputFirst, prevLast)) { setIsSubmitting(false); showErrorAndResume(getRandomError('wrong-chain')); return; }
       setPhase('success'); stopTimer();
-      setVideoEvent('correct'); setErrorInfo(null);
+      setVideoEvent('correct');
+      setWrongMsg(null);
+      if (wrongMsgTimerRef.current) clearTimeout(wrongMsgTimerRef.current);
+      // 正确动画
+      setCorrectAnimText(trimmed);
+      if (correctAnimTimerRef.current) clearTimeout(correctAnimTimerRef.current);
+      correctAnimTimerRef.current = setTimeout(() => setCorrectAnimText(null), 1600);
       const successIdiom: Idiom = { text: trimmed, first: result.firstPinyin, last: result.lastPinyin };
       setTimeout(() => onCorrect(successIdiom), 1600);
     } catch {
-      // 若等待期间倒计时已结束，放弃（由 handleTimeout 接管）
       if (timeoutCalledRef.current) { setIsSubmitting(false); setValidatePhase('idle'); setValidateMsg(''); return; }
       setValidatePhase('done'); setValidateMsg('');
       const { findIdiom, isValidChain } = await import('../data/idioms');
@@ -312,12 +300,17 @@ const GameScreen: React.FC<Props> = ({
       if (!found) { setIsSubmitting(false); showErrorAndResume(getRandomError('not-idiom')); return; }
       if (!isValidChain(found, currentIdiom)) { setIsSubmitting(false); showErrorAndResume(getRandomError('wrong-chain')); return; }
       setPhase('success'); stopTimer();
-      setVideoEvent('correct'); setErrorInfo(null);
+      setVideoEvent('correct');
+      setWrongMsg(null);
+      if (wrongMsgTimerRef.current) clearTimeout(wrongMsgTimerRef.current);
+      setCorrectAnimText(trimmed);
+      if (correctAnimTimerRef.current) clearTimeout(correctAnimTimerRef.current);
+      correctAnimTimerRef.current = setTimeout(() => setCorrectAnimText(null), 1600);
       setTimeout(() => onCorrect(found), 1600);
     }
   }, [phase, isSubmitting, inputValue, currentIdiom, onCorrect, showErrorAndResume]);
 
-  // ═══ 轮盘状态机：pendingRoulette → 直接播视频 → 视频结束 → 结果文字 ════
+  // ═══ 轮盘状态机 ════════════════════════════════════════════
   useEffect(() => {
     if (!pendingRoulette) {
       setRoulettePhase(null);
@@ -325,68 +318,51 @@ const GameScreen: React.FC<Props> = ({
       rouletteVideoRef.current = null;
       pendingRouletteRef.current = undefined;
       timeoutVideoEndedWaitingRef.current = false;
-      // Bug4 fix: 确保 wrong 残留状态在轮盘结束后也被清理
-      wrongVideoPlayingRef.current = false;
-      if (errorClearRef.current) { clearTimeout(errorClearRef.current); errorClearRef.current = null; }
       clearFlash();
       rouletteDoneRef.current = false;
       return;
     }
-    // 同步到 ref（供 handleVideoEnded 等读取）
     pendingRouletteRef.current = pendingRoulette;
     stopTimer();
     rouletteDoneRef.current = false;
-
-    // Bug3 fix: 轮盘开始时清除错误信息浮层（避免与轮盘结果 UI 叠层）
-    setErrorInfo(null);
+    // 轮盘开始，清除错误提示
+    setWrongMsg(null);
+    if (wrongMsgTimerRef.current) clearTimeout(wrongMsgTimerRef.current);
 
     const { target, hit } = pendingRoulette;
     const fireVideo: VideoEvent = target === 'player'
       ? (hit ? 'roulette-bang-player' : 'roulette-miss-player')
       : (hit ? 'roulette-bang-opponent' : 'roulette-miss-opponent');
 
-    // 始终准备好 ref（handleVideoEnded 和兜底定时器会用到）
     rouletteVideoRef.current = fireVideo;
     setRoulettePhase('fire');
     roulettePhaseRef.current = 'fire';
 
     if (pendingTimeoutPenaltyRef.current) {
-      // ① timeout 视频还在播（离线模式 / 服务端极快响应）：
-      //    只准备引用，不切换视频不闪光
-      //    handleVideoEnded 视频结束时会无缝切换
+      // timeout 视频正在播，只准备引用；handleVideoEnded 播完后无缝切换
       return () => clearFlash();
     }
 
     if (timeoutVideoEndedWaitingRef.current) {
-      // ② timeout 视频已播完，服务端结果刚到（联网模式网络延迟）：
-      //    立即切换到轮盘视频，无需等待
+      // timeout 视频已播完，服务端结果刚到；立即切换
       timeoutVideoEndedWaitingRef.current = false;
       setVideoEvent(fireVideo);
       startFlash(hit);
       return () => clearFlash();
     }
 
-    // ③ 正常路径（AI 罚款、对手轮盘、不含 timeout 流程）：立即切视频 + 闪光
     setVideoEvent(fireVideo);
     startFlash(hit);
     return () => clearFlash();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingRoulette]);
 
-  // 视频播完 → 判断当前状态：
-  // 1) timeout 视频刚播完 → 切换到已准备好的轮盘视频 / 等服务端结果
-  // 2) wrong 视频刚播完 → 无缝恢复输入（无 errorInfo，无闪屏）
-  // 3) 轮盘结果视频播完 → 显示结果文字
+  // ── 视频播完回调 ─────────────────────────────────────────
   const handleVideoEnded = useCallback(() => {
+    // timeout 视频播完 → 无缝切换到轮盘视频
     if (pendingTimeoutPenaltyRef.current) {
       pendingTimeoutPenaltyRef.current = false;
-      // 清除可能同时存在的 wrong 视频标记（竞态：timeout 与 AI 验证同时触发）
-      wrongVideoPlayingRef.current = false;
-      if (errorClearRef.current) { clearTimeout(errorClearRef.current); errorClearRef.current = null; }
-      if (penaltyFallbackRef.current) {
-        clearTimeout(penaltyFallbackRef.current);
-        penaltyFallbackRef.current = null;
-      }
+      if (penaltyFallbackRef.current) { clearTimeout(penaltyFallbackRef.current); penaltyFallbackRef.current = null; }
       if (rouletteVideoRef.current) {
         setVideoEvent(rouletteVideoRef.current);
         startFlash(pendingRouletteRef.current?.hit ?? false);
@@ -395,23 +371,12 @@ const GameScreen: React.FC<Props> = ({
       }
       return;
     }
-    // wrong 视频播完 → 恢复输入，无闪屏
-    if (wrongVideoPlayingRef.current) {
-      wrongVideoPlayingRef.current = false;
-      if (errorClearRef.current) {
-        clearTimeout(errorClearRef.current);
-        errorClearRef.current = null;
-      }
-      setVideoEvent('idle');
-      setPhase('input');
-      setTimeout(() => inputRef.current?.focus(), 50);
-      return;
-    }
+    // 轮盘结果视频播完 → 显示结果文字
     if (roulettePhaseRef.current !== 'fire') return;
     if (!rouletteVideoRef.current) return;
     setRoulettePhase('result');
     roulettePhaseRef.current = 'result';
-  }, []);
+  }, [startFlash]);
 
   // 结果文字展示 1s 后触发完成回调
   useEffect(() => {
@@ -423,16 +388,15 @@ const GameScreen: React.FC<Props> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roulettePhase, pendingRoulette]);
 
-  // ── 派生状态 ────────────────────────────────────────────
+  // ── 派生状态 ─────────────────────────────────────────────
   const timerPct = (timeLeft / timerMax) * 100;
   const timerDanger = timeLeft <= Math.ceil(timerMax * 0.3);
   const isValidating = validatePhase === 'validating';
   const isMyTurn = !isOnlineMode || isYourTurn;
-  // 必须同时检查 roulettePhase 和 pendingRoulette，防止 pendingRoulette 已清除
-  // 但 roulettePhase 还未归 null 时访问 pendingRoulette!.hit 引发 crash → 白屏
   const hasRoulette = !!roulettePhase && !!pendingRoulette;
-  const inputDisabled = phase === 'success' || isValidating || !isMyTurn || frozen || hasRoulette;
+  const inputDisabled = phase === 'success' || isValidating || frozen || hasRoulette;
 
+  // ════════════════════════════════════════════════════════════
   return (
     <div className="relative min-h-screen overflow-hidden bg-black font-cn">
 
@@ -441,7 +405,15 @@ const GameScreen: React.FC<Props> = ({
         <VideoScene event={videoEvent} fill className="w-full h-full" onEnded={handleVideoEnded} />
       </div>
 
-      {/* ══ 开枪/中弹闪光（由 RouletteOverlay 渲染，z-500/499）══ */}
+      {/* ══ 错误红闪（输入失败，animation 结束后自动隐藏）══ */}
+      {wrongFlash && (
+        <div
+          className="fixed inset-0 z-[480] pointer-events-none animate-red-flash"
+          onAnimationEnd={() => setWrongFlash(false)}
+        />
+      )}
+
+      {/* ══ 轮盘闪光 / 结果浮层 ══ */}
       {hasRoulette && (
         <RouletteOverlay
           phase={roulettePhase!}
@@ -456,12 +428,14 @@ const GameScreen: React.FC<Props> = ({
       {/* ══ UI 层（z-20）══ */}
       <div className="relative z-20 flex flex-col min-h-screen">
 
-        {/* ── 顶部状态栏 ─────────────────────────────────── */}
+        {/* ── 顶部状态栏 ─────────────────────────────────────────── */}
         <div className="flex items-center justify-between px-3 py-2 bg-black/70 backdrop-blur-sm border-b border-white/10 shrink-0 gap-3">
           {/* 左：玩家子弹 */}
           <div className="flex flex-col gap-0.5 min-w-[80px]">
             <span className="font-pixel text-[6px] text-emerald-700">1P 你</span>
-            {playerSlots ? <BulletSlotsBar slots={playerSlots} isPlayer /> : <span className="font-pixel text-[6px] text-emerald-800">♥ ♥ ♥</span>}
+            {playerSlots
+              ? <BulletSlotsBar slots={playerSlots} isPlayer />
+              : <span className="font-pixel text-[6px] text-emerald-800">♥ ♥ ♥</span>}
           </div>
 
           {/* 中：倒计时 */}
@@ -472,7 +446,9 @@ const GameScreen: React.FC<Props> = ({
                   className={`h-full transition-all duration-1000 ${timerDanger ? 'bg-red-600' : 'bg-emerald-500'}`}
                   style={{
                     width: `${timerPct}%`,
-                    boxShadow: timerDanger ? '0 0 6px rgba(220,38,38,0.8)' : '0 0 4px rgba(52,211,153,0.5)',
+                    boxShadow: timerDanger
+                      ? '0 0 6px rgba(220,38,38,0.8)'
+                      : '0 0 4px rgba(52,211,153,0.5)',
                   }}
                 />
               </div>
@@ -497,95 +473,35 @@ const GameScreen: React.FC<Props> = ({
                 >✕</button>
               )}
             </div>
-            {aiSlots ? <BulletSlotsBar slots={aiSlots} isPlayer={false} /> : <span className="font-pixel text-[6px] text-red-900">♥ ♥ ♥</span>}
+            {aiSlots
+              ? <BulletSlotsBar slots={aiSlots} isPlayer={false} />
+              : <span className="font-pixel text-[6px] text-red-900">♥ ♥ ♥</span>}
           </div>
         </div>
 
-        {/* ── 接龙输入面板 ────────────────────────────────── */}
-        <div className={`shrink-0 border-b px-4 py-3 space-y-2.5 bg-black/70 backdrop-blur-sm transition-colors ${
-          isMyTurn ? 'border-emerald-800/40' : 'border-violet-800/40'
-        }`}>
-
-          {/* 联网回合指示 */}
-          {isOnlineMode && !hasRoulette && (
-            <div className={`flex items-center gap-2 py-1 px-2 text-[8px] font-pixel tracking-widest border ${
-              isYourTurn
-                ? 'bg-emerald-950/40 border-emerald-800/30 text-emerald-500'
-                : 'bg-violet-950/40 border-violet-800/30 text-violet-500 animate-pulse'
-            }`}>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
-              {isYourTurn ? '⚔ 你的回合 — 输入成语接龙' : `⏳ 等待 ${opponentName} 接龙…`}
-              <span className="ml-auto opacity-30">ONLINE</span>
+        {/* ── 对手输入面板（顶部，仅在对手回合 + 非轮盘）─────────── */}
+        {!isMyTurn && !hasRoulette && (
+          <div className="shrink-0 border-b px-4 py-2.5 bg-violet-950/55 backdrop-blur-sm border-violet-800/40">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+              <span className="font-pixel text-[7px] text-violet-400 tracking-widest">
+                ⏳ {opponentName} 接龙中…
+              </span>
+              <span className="ml-auto font-pixel text-[6px] text-violet-900">ONLINE</span>
             </div>
-          )}
-
-          {/* 当前成语 */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-pixel text-[7px] text-emerald-700 shrink-0">当前：</span>
-            <div className="flex gap-1">
-              {currentIdiom.text.split('').map((ch, i) => (
-                <span key={i} className={`inline-flex items-center justify-center w-8 h-8 border text-base font-bold ${
-                  i === currentIdiom.text.length - 1
-                    ? 'border-yellow-600/80 bg-yellow-900/40 text-yellow-200'
-                    : 'border-emerald-800/60 bg-emerald-950/60 text-emerald-200'
-                }`}>{ch}</span>
-              ))}
-            </div>
-            <span className="text-xs text-emerald-700">→ 末：</span>
-            <span className="text-yellow-300 font-bold text-lg">{currentIdiom.text.slice(-1)}</span>
-            <span className="font-pixel text-[6px] text-emerald-800">({currentIdiom.last})</span>
-          </div>
-
-          {/* 输入框 / 等待占位 */}
-          {!hasRoulette && (isMyTurn ? (
-            <div className="flex gap-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputValue}
-                onChange={e => { if (phase === 'input') setInputValue(e.target.value); }}
-                onKeyDown={e => { if (e.key === 'Enter') handleSubmit(); }}
-                maxLength={8}
-                placeholder={`首字同「${currentIdiom.text.slice(-1)}」字或同「${currentIdiom.last}」音…`}
-                disabled={inputDisabled}
-                className="flex-1 bg-black/50 border-2 border-emerald-700/70 text-emerald-200 px-3 py-2 text-lg tracking-widest font-cn placeholder:text-emerald-900/80 outline-none focus:border-emerald-400 focus:shadow-[0_0_12px_rgba(52,211,153,0.25)] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              />
-              <button
-                onClick={handleSubmit}
-                disabled={inputDisabled || !inputValue.trim()}
-                className="px-5 py-2 bg-emerald-900/50 border-2 border-emerald-600/70 text-emerald-200 hover:bg-emerald-800/60 hover:border-emerald-400 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm tracking-widest font-bold"
-              >
-                {isValidating ? '验证…' : '接龙 ↵'}
-              </button>
-            </div>
-          ) : (
             <div className="flex gap-2 items-center">
-              <div className="flex-1 bg-violet-950/40 border-2 border-violet-900/50 px-3 py-2 flex items-center gap-3 min-h-[44px]">
-                <span className="font-pixel text-[6px] text-violet-700 shrink-0">对方输入中</span>
+              <div className="flex-1 bg-violet-950/50 border border-violet-800/40 px-3 py-2.5 flex items-center gap-3 min-h-[44px] cursor-not-allowed select-none">
                 <ScrambledText length={3} />
               </div>
-              <div className="px-4 py-2 bg-violet-950/20 border-2 border-violet-900/30 text-violet-800 text-sm font-pixel cursor-not-allowed select-none">等待中</div>
+              <div className="px-4 py-2.5 bg-violet-950/20 border border-violet-900/30 text-violet-800 text-sm font-pixel cursor-not-allowed select-none">
+                等待中
+              </div>
             </div>
-          ))}
-
-          {/* 轮盘进行中时隐藏输入框，显示提示 */}
-          {hasRoulette && (
-            <div className="py-1 text-center font-pixel text-[8px] text-zinc-500 tracking-widest animate-pulse">
-              ⚠ &nbsp;轮盘进行中，请稍候…
-            </div>
-          )}
-
-          <div className="font-pixel text-[6px] text-emerald-900/70">
-            {isMyTurn && !hasRoulette
-              ? '按 Enter 提交 │ AI 实时验证成语 │ 超时或接错 → 轮盘赌'
-              : !isMyTurn
-                ? `等待 ${opponentName} 接龙中…`
-                : ''}
           </div>
-        </div>
+        )}
 
-        {/* ── 中间透明区域（视频透出）────────────────────── */}
-        <div className="flex-1 relative">
+        {/* ── 中间透明区域（视频透出 + 浮层）─────────────────────── */}
+        <div className="flex-1 relative min-h-0">
 
           {/* 对手名字标签 */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
@@ -594,7 +510,35 @@ const GameScreen: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* 验证加载 */}
+          {/* 对手回合：中下方显示末字提示 */}
+          {!isMyTurn && !hasRoulette && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+              <div className="bg-black/70 border border-yellow-900/50 px-3 py-1.5 backdrop-blur-sm flex items-center gap-2">
+                <span className="font-pixel text-[6px] text-yellow-800">接龙末字：</span>
+                <span className="text-yellow-300 font-black text-xl">{currentIdiom.text.slice(-1)}</span>
+                <span className="font-pixel text-[6px] text-yellow-900">({currentIdiom.last})</span>
+              </div>
+            </div>
+          )}
+
+          {/* 正确接龙动画浮层 */}
+          {correctAnimText && (
+            <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
+              <div className="text-center animate-correct-pop">
+                <div
+                  className="text-5xl font-black text-emerald-300 tracking-widest"
+                  style={{ textShadow: '0 0 40px rgba(52,211,153,0.9), 0 0 80px rgba(52,211,153,0.4)' }}
+                >
+                  {correctAnimText}
+                </div>
+                <div className="font-pixel text-[10px] text-emerald-400 tracking-[0.5em] mt-2">
+                  ✓ · CHAIN · OK · ✓
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 验证加载指示器 */}
           {isValidating && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="bg-black/80 backdrop-blur-sm border border-emerald-700/60 px-6 py-4 flex flex-col items-center gap-3">
@@ -609,24 +553,77 @@ const GameScreen: React.FC<Props> = ({
               </div>
             </div>
           )}
-
-          {/* 错误提示横幅 */}
-          {errorInfo && (
-            <div key={errorKey} className="absolute top-2 left-2 right-2 pointer-events-none animate-slide-up">
-              <div className="bg-red-950/90 backdrop-blur-sm border border-red-700/70 px-4 py-2.5 flex items-start gap-3" style={{ boxShadow: '0 0 16px rgba(220,38,38,0.3)' }}>
-                <div className="w-1 self-stretch bg-red-600 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-pixel text-[7px] text-red-500 tracking-widest mb-0.5">{errorInfo.article}</div>
-                  <div className="text-red-200 text-sm font-bold leading-snug truncate">{errorInfo.title}</div>
-                  <p className="text-zinc-500 text-xs mt-0.5 line-clamp-2">{errorInfo.body}</p>
-                </div>
-                <div className="font-pixel text-[6px] text-red-800 animate-blink shrink-0">⚠ 继续<br />输入</div>
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* ── 底部状态栏 ──────────────────────────────────── */}
+        {/* ── 玩家输入面板（底部，仅在玩家回合 + 非轮盘）──────────── */}
+        {isMyTurn && !hasRoulette && (
+          <div className="shrink-0 border-t px-4 py-3 space-y-2 bg-black/80 backdrop-blur-sm border-emerald-800/40">
+
+            {/* 错误提示条（接龙失败）*/}
+            {wrongMsg && (
+              <div className="flex items-center gap-2 px-2 py-1.5 bg-red-950/70 border border-red-800/50 animate-shake-x">
+                <span className="text-red-400 text-sm shrink-0">⚠</span>
+                <span className="text-red-300 text-sm font-bold flex-1 truncate">{wrongMsg}</span>
+                <span className="font-pixel text-[6px] text-red-600 animate-blink shrink-0">重试</span>
+              </div>
+            )}
+
+            {/* 当前成语显示 */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-pixel text-[7px] text-emerald-700 shrink-0">当前：</span>
+              <div className="flex gap-1">
+                {currentIdiom.text.split('').map((ch, i) => (
+                  <span
+                    key={i}
+                    className={`inline-flex items-center justify-center w-8 h-8 border text-base font-bold ${
+                      i === currentIdiom.text.length - 1
+                        ? 'border-yellow-600/80 bg-yellow-900/40 text-yellow-200'
+                        : 'border-emerald-800/60 bg-emerald-950/60 text-emerald-200'
+                    }`}
+                  >{ch}</span>
+                ))}
+              </div>
+              <span className="text-xs text-emerald-700">→ 末：</span>
+              <span className="text-yellow-300 font-bold text-lg">{currentIdiom.text.slice(-1)}</span>
+              <span className="font-pixel text-[6px] text-emerald-800">({currentIdiom.last})</span>
+            </div>
+
+            {/* 输入框 + 提交 */}
+            <div className="flex gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputValue}
+                onChange={e => { if (!inputDisabled) setInputValue(e.target.value); }}
+                onKeyDown={e => { if (e.key === 'Enter') handleSubmit(); }}
+                maxLength={8}
+                placeholder={`首字同「${currentIdiom.text.slice(-1)}」字或同「${currentIdiom.last}」音…`}
+                disabled={inputDisabled}
+                className="flex-1 bg-black/50 border-2 border-emerald-700/70 text-emerald-200 px-3 py-2 text-lg tracking-widest font-cn placeholder:text-emerald-900/80 outline-none focus:border-emerald-400 focus:shadow-[0_0_12px_rgba(52,211,153,0.25)] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={inputDisabled || !inputValue.trim()}
+                className="px-5 py-2 bg-emerald-900/50 border-2 border-emerald-600/70 text-emerald-200 hover:bg-emerald-800/60 hover:border-emerald-400 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all text-sm tracking-widest font-bold"
+              >
+                {isValidating ? '验证…' : '接龙 ↵'}
+              </button>
+            </div>
+
+            <div className="font-pixel text-[6px] text-emerald-900/60">
+              按 Enter 提交 │ AI 实时验证成语 │ 超时或接错 → 轮盘赌
+            </div>
+          </div>
+        )}
+
+        {/* 轮盘进行中底部提示 */}
+        {hasRoulette && (
+          <div className="shrink-0 py-2 text-center font-pixel text-[7px] text-zinc-600 tracking-widest">
+            ⚠ · ROULETTE · IN · PROGRESS · ⚠
+          </div>
+        )}
+
+        {/* ── 底部状态栏 ─────────────────────────────────────────── */}
         <div className="flex items-center justify-between px-4 py-1.5 bg-black/60 backdrop-blur-sm border-t border-white/10 text-[7px] font-pixel text-emerald-900 shrink-0">
           <span className={timerDanger && isMyTurn && !hasRoulette ? 'text-red-600 animate-blink' : ''}>
             {timerDanger && isMyTurn && !hasRoulette ? '⚠ 危险！' : '◈ DEATHMATCH'}
