@@ -71,6 +71,8 @@ const FADE_MS = 400;
 interface Props {
   event: VideoEvent;
   className?: string;
+  /** fill=true 时铺满父容器，不限制 16:9 比例 */
+  fill?: boolean;
 }
 
 /**
@@ -79,7 +81,7 @@ interface Props {
  * - 切换时：将新视频加载到不可见的那个槽，开始播放后交换 opacity
  * - CSS transition 实现无黑帧的淡入淡出
  */
-const VideoScene: React.FC<Props> = ({ event, className = '' }) => {
+const VideoScene: React.FC<Props> = ({ event, className = '', fill = false }) => {
   const refA = useRef<HTMLVideoElement>(null);
   const refB = useRef<HTMLVideoElement>(null);
 
@@ -174,7 +176,7 @@ const VideoScene: React.FC<Props> = ({ event, className = '' }) => {
   return (
     <div
       className={`relative overflow-hidden bg-black ${className}`}
-      style={{ aspectRatio: '16 / 9' }}
+      style={fill ? { width: '100%', height: '100%' } : { aspectRatio: '16 / 9' }}
     >
       {/* 像素占位（在两个视频层之下，z-index 0） */}
       {showFallback && (

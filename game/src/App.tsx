@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import HomeScreen, { Difficulty, DIFFICULTY_CONFIG } from './components/HomeScreen';
-import GameScreen from './components/GameScreen';
-import RouletteScreen from './components/RouletteScreen';
+import GameScreen, { PendingRoulette } from './components/GameScreen';
 import ResultScreen, { GameStats, loadBestRecord } from './components/ResultScreen';
 import MatchmakingScreen from './components/MatchmakingScreen';
 import {
@@ -84,9 +83,6 @@ type Screen =
   | 'online-game'
   | 'game'
   | 'ai-turn'
-  | 'roulette-player'
-  | 'roulette-ai'
-  | 'ai-killed'
   | 'result';
 
 interface OnlineState {
@@ -110,9 +106,8 @@ interface AppState {
   difficulty: Difficulty;
   playerSlots: BulletSlot[];   // 玩家弹仓
   aiSlots: BulletSlot[];       // AI弹仓
-  // 轮盘结果（传给 RouletteScreen 直接展示，不再自己随机）
-  pendingRouletteHit?: boolean;
-  pendingRouletteChamber?: number;
+  // 轮盘（内嵌在游戏界面展示，不跳转独立页面）
+  pendingRoulette?: PendingRoulette;
   // 联网模式
   online?: OnlineState;
   onlineWinner?: 'you' | 'opponent' | 'draw';
@@ -244,36 +239,6 @@ const AITurnOverlay: React.FC<{
   );
 };
 
-// ── AI 被击杀过渡页 ──
-const AIKilledScreen: React.FC<{
-  aiName: string;
-  nextAiName: string | null;
-  onContinue: () => void;
-}> = ({ aiName, nextAiName, onContinue }) => {
-  React.useEffect(() => {
-    const t = setTimeout(onContinue, 2500);
-    return () => clearTimeout(t);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] text-emerald-400 flex flex-col items-center justify-center gap-6 font-cn">
-      <div className="text-6xl animate-bounce">💥</div>
-      <div className="font-pixel text-[10px] text-red-500 tracking-widest animate-blink">
-        {aiName} 已被击杀！
-      </div>
-      {nextAiName ? (
-        <div className="text-center space-y-2">
-          <div className="text-zinc-500 text-sm">下一位对手出现…</div>
-          <div className="font-pixel text-[9px] text-yellow-400 tracking-widest">⚔ {nextAiName} 登场</div>
-        </div>
-      ) : (
-        <div className="text-emerald-300 text-lg font-bold">全部对手已击败！</div>
-      )}
-    </div>
-  );
-};
-
 // ── App ──
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>({
@@ -326,19 +291,15 @@ const App: React.FC = () => {
       }));
     });
 
-    // 轮盘赌结果（服务端仲裁）
+    // 轮盘赌结果（服务端仲裁）— 不跳转独立页面，直接在游戏界面显示浮层
     const offRoulette = onGameRoulette((data: GameRoulettePayload) => {
-      setAppState(prev => {
-        const screen: Screen = data.target === 'you' ? 'roulette-player' : 'roulette-ai';
-        return {
-          ...prev,
-          screen,
-          playerSlots: data.playerSlots as BulletSlot[],
-          aiSlots: data.opponentSlots as BulletSlot[],
-          pendingRouletteHit: data.hit,
-          pendingRouletteChamber: data.chamber,
-        };
-      });
+      const target: 'player' | 'ai' = data.target === 'you' ? 'player' : 'ai';
+      setAppState(prev => ({
+        ...prev,
+        playerSlots: data.playerSlots as BulletSlot[],
+        aiSlots: data.opponentSlots as BulletSlot[],
+        pendingRoulette: { target, hit: data.hit, chamber: data.chamber ?? 0 },
+      }));
     });
 
     // 游戏结束
@@ -452,16 +413,9 @@ const App: React.FC = () => {
     }));
   }, []);
 
-  // ── 联网模式：轮盘结果（仅动画展示，服务端已仲裁，此处不影响状态） ──
-  const handleOnlineRouletteResult = useCallback((_survived: boolean) => {
-    // 结果已由服务端通过 game:over 或 game:state_update 告知
-    // 此回调只需切回游戏界面等待下一步（若未结束）
-    setAppState(prev => ({
-      ...prev,
-      screen: prev.screen === 'roulette-player' || prev.screen === 'roulette-ai'
-        ? 'online-game'
-        : prev.screen,
-    }));
+  // ── 联网模式：轮盘动画结束（服务端已仲裁，仅清除浮层）──
+  const handleOnlineRouletteResult = useCallback((_target: 'player' | 'ai', _survived: boolean) => {
+    setAppState(prev => ({ ...prev, pendingRoulette: undefined }));
   }, []);
 
   const handlePlayerCorrect = useCallback((inputIdiom: Idiom) => {
@@ -475,31 +429,62 @@ const App: React.FC = () => {
   }, []);
 
   const handlePlayerPenalty = useCallback((_type: 'not-idiom' | 'wrong-chain' | 'timeout') => {
-    // 预先计算轮盘结果，传给 RouletteScreen 直接展示
     setAppState(prev => {
       const { nextSlots, hit, chamberId } = fireOnce(prev.playerSlots);
       return {
         ...prev,
-        screen: 'roulette-player',
         wrongCount: prev.wrongCount + 1,
         playerSlots: nextSlots,
-        pendingRouletteHit: hit,
-        pendingRouletteChamber: chamberId,
+        pendingRoulette: { target: 'player', hit, chamber: chamberId },
       };
     });
   }, []);
 
-  const handlePlayerRouletteResult = useCallback((survived: boolean) => {
-    if (!survived) {
-      setAppState(prev => ({ ...prev, screen: 'result', isVictory: false }));
-    } else {
-      setAppState(prev => ({
-        ...prev,
-        screen: 'ai-turn',
-        round: prev.round + 1,
-        chainHistory: [...prev.chainHistory, `[玩家失败→AI接] ${prev.currentIdiom.text}`],
-      }));
-    }
+  // ── 统一轮盘完成回调（离线模式）──
+  const handleRouletteComplete = useCallback((target: 'player' | 'ai', survived: boolean) => {
+    setAppState(prev => {
+      const base = { ...prev, pendingRoulette: undefined };
+      if (target === 'player') {
+        if (!survived) {
+          return { ...base, screen: 'result' as Screen, isVictory: false };
+        } else {
+          return {
+            ...base,
+            screen: 'ai-turn' as Screen,
+            round: prev.round + 1,
+            chainHistory: [...prev.chainHistory, `[玩家失败→AI接] ${prev.currentIdiom.text}`],
+          };
+        }
+      } else {
+        // AI 轮盘
+        if (!survived) {
+          const newKillCount = prev.killCount + 1;
+          const nextIndex = prev.aiLevelIndex + 1;
+          if (nextIndex >= AI_LEVELS.length) {
+            return { ...base, screen: 'result' as Screen, isVictory: true, killCount: newKillCount };
+          }
+          const newIdiom = getRandomStartIdiom();
+          return {
+            ...base,
+            screen: 'game' as Screen,
+            aiLevelIndex: nextIndex,
+            killCount: newKillCount,
+            aiSlots: freshBulletSlots(),
+            playerSlots: freshBulletSlots(),
+            currentIdiom: newIdiom,
+            round: prev.round + 1,
+            chainHistory: [...prev.chainHistory, `[换对手] ${newIdiom.text}`],
+          };
+        } else {
+          return {
+            ...base,
+            screen: 'game' as Screen,
+            round: prev.round + 1,
+            chainHistory: [...prev.chainHistory, `[AI失败→玩家接] ${prev.currentIdiom.text}`],
+          };
+        }
+      }
+    });
   }, []);
 
   const handleAISuccess = useCallback((next: Idiom) => {
@@ -517,47 +502,9 @@ const App: React.FC = () => {
       const { nextSlots, hit, chamberId } = fireOnce(prev.aiSlots);
       return {
         ...prev,
-        screen: 'roulette-ai',
+        screen: 'game' as Screen,  // 留在游戏界面，通过浮层展示
         aiSlots: nextSlots,
-        pendingRouletteHit: hit,
-        pendingRouletteChamber: chamberId,
-      };
-    });
-  }, []);
-
-  const handleAIRouletteResult = useCallback((survived: boolean) => {
-    if (!survived) {
-      setAppState(prev => ({
-        ...prev,
-        screen: 'ai-killed',
-        killCount: prev.killCount + 1,
-        aiLevelIndex: Math.min(prev.aiLevelIndex + 1, AI_LEVELS.length - 1),
-        aiSlots: freshBulletSlots(), // 击杀后新对手重置弹仓
-      }));
-    } else {
-      setAppState(prev => ({
-        ...prev,
-        screen: 'game',
-        round: prev.round + 1,
-        chainHistory: [...prev.chainHistory, `[AI失败→玩家接] ${prev.currentIdiom.text}`],
-      }));
-    }
-  }, []);
-
-  const handleAIKilledContinue = useCallback(() => {
-    setAppState(prev => {
-      const nextIndex = prev.aiLevelIndex;
-      if (nextIndex >= AI_LEVELS.length) {
-        return { ...prev, screen: 'result', isVictory: true };
-      }
-      const newIdiom = getRandomStartIdiom();
-      return {
-        ...prev,
-        screen: 'game',
-        currentIdiom: newIdiom,
-        round: prev.round + 1,
-        chainHistory: [...prev.chainHistory, `[换对手] ${newIdiom.text}`],
-        playerSlots: freshBulletSlots(), // 换对手时玩家弹仓也重置
+        pendingRoulette: { target: 'ai', hit, chamber: chamberId },
       };
     });
   }, []);
@@ -619,14 +566,15 @@ const App: React.FC = () => {
           round={appState.round}
           opponentName={appState.online?.opponentName ?? '对手'}
           timerMax={DIFFICULTY_CONFIG[appState.difficulty].seconds}
-          frozen={!appState.online?.yourTurn}
           playerSlots={appState.playerSlots}
           aiSlots={appState.aiSlots}
           onCorrect={handleOnlineCorrect}
           onPenalty={handleOnlinePenalty}
           onQuit={handleHome}
+          onRouletteComplete={handleOnlineRouletteResult}
           isOnlineMode={true}
           isYourTurn={appState.online?.yourTurn ?? false}
+          pendingRoulette={appState.pendingRoulette}
         />
       );
 
@@ -642,7 +590,9 @@ const App: React.FC = () => {
           onCorrect={handlePlayerCorrect}
           onPenalty={handlePlayerPenalty}
           onQuit={handleHome}
+          onRouletteComplete={handleRouletteComplete}
           isYourTurn={true}
+          pendingRoulette={appState.pendingRoulette}
         />
       );
 
@@ -660,7 +610,9 @@ const App: React.FC = () => {
             onCorrect={handlePlayerCorrect}
             onPenalty={handlePlayerPenalty}
             onQuit={handleHome}
+            onRouletteComplete={handleRouletteComplete}
             isYourTurn={false}
+            pendingRoulette={appState.pendingRoulette}
           />
           <AITurnOverlay
             idiom={appState.currentIdiom}
@@ -672,44 +624,6 @@ const App: React.FC = () => {
           />
         </>
       );
-
-    case 'roulette-player':
-      return (
-        <RouletteScreen
-          target="player"
-          opponentName={appState.online?.opponentName ?? currentAI.name}
-          presetHit={appState.pendingRouletteHit}
-          presetChamber={appState.pendingRouletteChamber}
-          playerSlots={appState.playerSlots}
-          aiSlots={appState.aiSlots}
-          onResult={appState.online ? handleOnlineRouletteResult : handlePlayerRouletteResult}
-        />
-      );
-
-    case 'roulette-ai':
-      return (
-        <RouletteScreen
-          target="ai"
-          opponentName={appState.online?.opponentName ?? currentAI.name}
-          presetHit={appState.pendingRouletteHit}
-          presetChamber={appState.pendingRouletteChamber}
-          playerSlots={appState.playerSlots}
-          aiSlots={appState.aiSlots}
-          onResult={appState.online ? handleOnlineRouletteResult : handleAIRouletteResult}
-        />
-      );
-
-    case 'ai-killed': {
-      const nextIndex = appState.aiLevelIndex;
-      const nextAI = nextIndex < AI_LEVELS.length ? AI_LEVELS[nextIndex] : null;
-      return (
-        <AIKilledScreen
-          aiName={AI_LEVELS[Math.max(0, appState.aiLevelIndex - 1)].name}
-          nextAiName={nextAI ? `${nextAI.name}（${nextAI.title}）` : null}
-          onContinue={handleAIKilledContinue}
-        />
-      );
-    }
 
     case 'result':
       return (
