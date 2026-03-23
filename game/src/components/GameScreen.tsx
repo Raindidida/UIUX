@@ -190,6 +190,8 @@ const GameScreen: React.FC<Props> = ({
 
   // 错误输入：视频正在播放的标志（onEnded 后恢复输入）
   const wrongVideoPlayingRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutCalledRef = useRef(false);
   const errorClearRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
