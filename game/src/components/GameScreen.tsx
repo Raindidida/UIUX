@@ -158,6 +158,12 @@ const GameScreen: React.FC<Props> = ({
   // 用 ref 跟踪当前相位 & 当前轮盘视频事件，避免 stale closure
   const roulettePhaseRef = useRef<RoulettePhase | null>(null);
   const rouletteVideoRef = useRef<VideoEvent | null>(null);
+  // 等待 wrong/timeout 视频播完后触发轮盘的标志
+  const pendingTimeoutPenaltyRef = useRef(false);
+  const penaltyFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // onPenalty 的稳定 ref，避免 stale closure
+  const onPenaltyRef = useRef(onPenalty);
+  useEffect(() => { onPenaltyRef.current = onPenalty; }, [onPenalty]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -212,8 +218,18 @@ const GameScreen: React.FC<Props> = ({
     setVideoEvent('timeout');
     setErrorInfo(getRandomError('timeout'));
     setErrorKey(k => k + 1);
-    setTimeout(() => onPenalty('timeout'), 2000);
-  }, [onPenalty]);
+    // 标记：等 wrong/timeout 视频播完后再触发轮盘
+    pendingTimeoutPenaltyRef.current = true;
+    // 兜底：视频超过 5s 还没结束（文件缺失等）则强制触发
+    if (penaltyFallbackRef.current) clearTimeout(penaltyFallbackRef.current);
+    penaltyFallbackRef.current = setTimeout(() => {
+      if (pendingTimeoutPenaltyRef.current) {
+        pendingTimeoutPenaltyRef.current = false;
+        onPenaltyRef.current('timeout');
+      }
+    }, 5000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const showErrorAndResume = useCallback((err: FunnyError) => {
     setErrorInfo(err);
@@ -270,6 +286,12 @@ const GameScreen: React.FC<Props> = ({
       rouletteDoneRef.current = false;
       return;
     }
+    // pendingRoulette 刚设好 → 清理 wrong 视频的兜底定时器（视频已结束）
+    pendingTimeoutPenaltyRef.current = false;
+    if (penaltyFallbackRef.current) {
+      clearTimeout(penaltyFallbackRef.current);
+      penaltyFallbackRef.current = null;
+    }
     stopTimer();
     rouletteDoneRef.current = false;
 
@@ -301,10 +323,20 @@ const GameScreen: React.FC<Props> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingRoulette]);
 
-  // 视频播完 → 显示结果文字（用 ref 判断，避免 stale closure）
+  // 视频播完 → 判断当前等待什么：
+  // 1) 等待 wrong/timeout 视频播完 → 触发轮盘 onPenalty
+  // 2) 等待轮盘结果视频播完 → 显示结果文字
   const handleVideoEnded = useCallback(() => {
+    if (pendingTimeoutPenaltyRef.current) {
+      pendingTimeoutPenaltyRef.current = false;
+      if (penaltyFallbackRef.current) {
+        clearTimeout(penaltyFallbackRef.current);
+        penaltyFallbackRef.current = null;
+      }
+      onPenaltyRef.current('timeout');
+      return;
+    }
     if (roulettePhaseRef.current !== 'fire') return;
-    // 只在期望的轮盘视频结束时触发，忽略 wrong/correct 等视频的 ended 事件
     if (!rouletteVideoRef.current) return;
     setRoulettePhase('result');
     roulettePhaseRef.current = 'result';
