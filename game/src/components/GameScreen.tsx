@@ -155,6 +155,9 @@ const GameScreen: React.FC<Props> = ({
   const [flashWhite, setFlashWhite] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
   const rouletteDoneRef = useRef(false);
+  // 用 ref 跟踪当前相位 & 当前轮盘视频事件，避免 stale closure
+  const roulettePhaseRef = useRef<RoulettePhase | null>(null);
+  const rouletteVideoRef = useRef<VideoEvent | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -260,6 +263,8 @@ const GameScreen: React.FC<Props> = ({
   useEffect(() => {
     if (!pendingRoulette) {
       setRoulettePhase(null);
+      roulettePhaseRef.current = null;
+      rouletteVideoRef.current = null;
       setFlashWhite(false);
       setFlashRed(false);
       rouletteDoneRef.current = false;
@@ -269,36 +274,41 @@ const GameScreen: React.FC<Props> = ({
     rouletteDoneRef.current = false;
 
     const { target, hit } = pendingRoulette;
-    // 立刻切到对应结果视频
-    if (target === 'player') setVideoEvent(hit ? 'roulette-bang-player' : 'roulette-miss-player');
-    else setVideoEvent(hit ? 'roulette-bang-opponent' : 'roulette-miss-opponent');
+    const fireVideo: VideoEvent = target === 'player'
+      ? (hit ? 'roulette-bang-player' : 'roulette-miss-player')
+      : (hit ? 'roulette-bang-opponent' : 'roulette-miss-opponent');
 
-    // 视频开始时的闪光（模拟开枪瞬间）
+    // 记录本次轮盘期待的视频，避免 wrong.mp4/correct.mp4 误触发
+    rouletteVideoRef.current = fireVideo;
+    setVideoEvent(fireVideo);
+
+    // 开枪瞬间闪光
     setFlashWhite(true);
-    const tW = setTimeout(() => setFlashWhite(false), hit ? 400 : 150);
-    let tR: ReturnType<typeof setTimeout> | undefined;
-    if (hit) {
-      tR = setTimeout(() => setFlashRed(true), 80);
-      setTimeout(() => setFlashRed(false), 500);
-    }
+    const t1 = setTimeout(() => setFlashWhite(false), hit ? 400 : 150);
+    const t2 = hit ? setTimeout(() => setFlashRed(true), 80) : undefined;
+    const t3 = hit ? setTimeout(() => setFlashRed(false), 520) : undefined;
 
     setRoulettePhase('fire');
+    roulettePhaseRef.current = 'fire';
 
     return () => {
-      clearTimeout(tW);
-      if (tR) clearTimeout(tR);
+      clearTimeout(t1);
+      if (t2) clearTimeout(t2);
+      if (t3) clearTimeout(t3);
       setFlashWhite(false);
       setFlashRed(false);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingRoulette]);
 
-  // 视频播完 → 显示结果文字
+  // 视频播完 → 显示结果文字（用 ref 判断，避免 stale closure）
   const handleVideoEnded = useCallback(() => {
-    if (roulettePhase === 'fire') {
-      setRoulettePhase('result');
-    }
-  }, [roulettePhase]);
+    if (roulettePhaseRef.current !== 'fire') return;
+    // 只在期望的轮盘视频结束时触发，忽略 wrong/correct 等视频的 ended 事件
+    if (!rouletteVideoRef.current) return;
+    setRoulettePhase('result');
+    roulettePhaseRef.current = 'result';
+  }, []);
 
   // 结果文字展示 1s 后触发完成回调
   useEffect(() => {

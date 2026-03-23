@@ -614,14 +614,17 @@ const App: React.FC = () => {
             isYourTurn={false}
             pendingRoulette={appState.pendingRoulette}
           />
-          <AITurnOverlay
-            idiom={appState.currentIdiom}
-            aiName={currentAI.name}
-            failRate={currentFailRate}
-            thinkDelay={currentAI.thinkDelay}
-            onSuccess={handleAISuccess}
-            onFail={handleAIFail}
-          />
+          {/* 轮盘进行中时不显示 AITurnOverlay，避免文字叠加 */}
+          {!appState.pendingRoulette && (
+            <AITurnOverlay
+              idiom={appState.currentIdiom}
+              aiName={currentAI.name}
+              failRate={currentFailRate}
+              thinkDelay={currentAI.thinkDelay}
+              onSuccess={handleAISuccess}
+              onFail={handleAIFail}
+            />
+          )}
         </>
       );
 
