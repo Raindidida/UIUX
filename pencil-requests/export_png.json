@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","id":12,"method":"tools/call","params":{"name":"export_nodes","arguments":{"filePath":"d:/UIUX/branding-vi-kit.pen","nodeIds":["ZSw3H","IvYtp","HBKCz","ZFrDs","L0IzT"],"outputDir":"d:/UIUX/vi-kit-export","format":"png","scale":1}}}

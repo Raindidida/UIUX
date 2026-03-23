@@ -29,13 +29,15 @@ const RouletteScreen: React.FC<Props> = ({ target, opponentName, presetHit, pres
   const isPlayer = target === 'player';
   const shot = presetHit ?? BULLET_POSITIONS.includes(chamber);
 
-  // 根据阶段映射视频事件
-  const videoEvent: VideoEvent =
-    phase === 'spinning' ? 'roulette-spin' :
-    phase === 'countdown' ? 'roulette-spin' :
-    phase === 'fire' ? (isShot ? 'roulette-bang' : 'roulette-miss') :
-    phase === 'result' ? (isShot ? 'roulette-bang' : 'roulette-miss') :
-    'roulette-spin';
+  // 根据阶段 + 玩家/对手 + 是否中枪 映射视频事件
+  const videoEvent: VideoEvent = (() => {
+    if (phase === 'spinning' || phase === 'countdown') return 'roulette-spin';
+    if (phase === 'fire' || phase === 'result') {
+      if (isPlayer) return isShot ? 'roulette-bang-player'   : 'roulette-miss-player';
+      else          return isShot ? 'roulette-bang-opponent' : 'roulette-miss-opponent';
+    }
+    return 'roulette-spin';
+  })();
 
   // 阶段1：弹仓旋转 1.2s
   useEffect(() => {

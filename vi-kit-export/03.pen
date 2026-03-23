@@ -1,0 +1,5255 @@
+{
+  "version": "2.9",
+  "children": [
+    {
+      "type": "frame",
+      "id": "s9c5g",
+      "x": 0,
+      "y": 0,
+      "name": "Style Guide — Typography",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "DNBeC",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "// STYLE GUIDE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "zw3UU",
+          "x": 60,
+          "y": 70,
+          "fill": "$brand-primary",
+          "content": "OPC_",
+          "fontFamily": "Space Mono",
+          "fontSize": 72,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "eSIcL",
+          "x": 60,
+          "y": 160,
+          "fill": "$brand-amber",
+          "content": "BRAND IDENTITY SYSTEM v1.0",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "IKmt7",
+          "x": 60,
+          "y": 192,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "QfjUz",
+          "x": 60,
+          "y": 208,
+          "fill": "$brand-primary",
+          "content": "TYPOGRAPHY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "dfyOD",
+          "x": 880,
+          "y": 200,
+          "fill": "#7A726880",
+          "content": "Aa",
+          "fontFamily": "Space Mono",
+          "fontSize": 200,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "TEn1t",
+          "x": 60,
+          "y": 240,
+          "fill": "#1A1612",
+          "content": "IBM Plex Mono",
+          "fontFamily": "Space Mono",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "VdTgK",
+          "x": 60,
+          "y": 284,
+          "fill": "$brand-amber",
+          "textGrowth": "fixed-width",
+          "width": 560,
+          "content": "> monospace typeface for developer-first brands\n> designed for clarity in code and UI contexts\n> supports ascii art rendering",
+          "lineHeight": 1.7,
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "BLbkx",
+          "x": 60,
+          "y": 390,
+          "fill": "#1A1612",
+          "content": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Wsc0s",
+          "x": 60,
+          "y": 416,
+          "fill": "#1A1612",
+          "content": "abcdefghijklmnopqrstuvwxyz",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "fV9No",
+          "x": 60,
+          "y": 442,
+          "fill": "#1A1612",
+          "content": "0123456789 !@#$%^&*()[]{}|<>",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "6KFYF",
+          "x": 60,
+          "y": 480,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "TZEQH",
+          "x": 60,
+          "y": 508,
+          "fill": "$brand-primary",
+          "content": "-- FONT WEIGHTS --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "8HCim",
+          "x": 60,
+          "y": 536,
+          "fill": "#1A1612",
+          "content": "Light     (300)  The future is in our hands.",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "300"
+        },
+        {
+          "type": "text",
+          "id": "4oNfy",
+          "x": 60,
+          "y": 568,
+          "fill": "#1A1612",
+          "content": "Regular   (400)  The future is in our hands.",
+          "fontFamily": "Space Mono",
+          "fontSize": 16
+        },
+        {
+          "type": "text",
+          "id": "jxPqo",
+          "x": 60,
+          "y": 600,
+          "fill": "#1A1612",
+          "content": "Medium    (500)  The future is in our hands.",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "500"
+        },
+        {
+          "type": "text",
+          "id": "dEls1",
+          "x": 60,
+          "y": 632,
+          "fill": "#1A1612",
+          "content": "Bold      (700)  THE FUTURE IS IN OUR HANDS.",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "rTEKj",
+          "x": 60,
+          "y": 664,
+          "fill": "$brand-primary",
+          "content": "Black     (900)  THE FUTURE IS IN OUR HANDS.",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "900"
+        },
+        {
+          "type": "rectangle",
+          "id": "DL3eK",
+          "x": 60,
+          "y": 704,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "54ivR",
+          "x": 60,
+          "y": 720,
+          "fill": "$brand-primary",
+          "content": "-- TYPE SCALE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "od7py",
+          "x": 60,
+          "y": 748,
+          "fill": "#1A1612",
+          "content": "H1 / 64px",
+          "fontFamily": "Space Mono",
+          "fontSize": 64,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "X2HMK",
+          "x": 60,
+          "y": 856,
+          "fill": "$brand-amber",
+          "content": "H2 / 48px __ H3 / 32px _____ H4 / 24px ____________ H5 / 18px",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "puN3w",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "BODY / 14px  caption / 12px  label / 11px",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "MBQcU",
+          "x": 60,
+          "y": 924,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "kHO0m",
+          "x": 60,
+          "y": 940,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Unq9G",
+          "x": 1700,
+          "y": 940,
+          "fill": "#7A726880",
+          "content": "TYPOGRAPHY        3.0",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Gb4kd",
+      "x": 2000,
+      "y": 0,
+      "name": "Style Guide — Colors",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "UkNer",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "// STYLE GUIDE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "ORm9h",
+          "x": 60,
+          "y": 70,
+          "fill": "$brand-primary",
+          "content": "OPC_ COLOR SYSTEM",
+          "fontFamily": "Space Mono",
+          "fontSize": 48,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "RRf7s",
+          "x": 60,
+          "y": 132,
+          "fill": "$brand-amber",
+          "content": "COLORS VARIABLE v1.0",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "ujb6C",
+          "x": 60,
+          "y": 162,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "vkGRC",
+          "x": 60,
+          "y": 178,
+          "fill": "$brand-primary",
+          "content": "-- PRIMARY PALETTE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "giqHx",
+          "x": 60,
+          "y": 200,
+          "name": "Primary 600",
+          "fill": "#FF6B00",
+          "width": 280,
+          "height": 220
+        },
+        {
+          "type": "rectangle",
+          "id": "Llk2z",
+          "x": 360,
+          "y": 200,
+          "name": "Primary 400",
+          "fill": "#FF8C38",
+          "width": 280,
+          "height": 220
+        },
+        {
+          "type": "rectangle",
+          "id": "XU3k3",
+          "x": 660,
+          "y": 200,
+          "name": "Primary 200",
+          "fill": "#FFB347",
+          "width": 280,
+          "height": 220
+        },
+        {
+          "type": "rectangle",
+          "id": "UeK2Y",
+          "x": 960,
+          "y": 200,
+          "name": "Primary 100",
+          "fill": "#FF6B0033",
+          "width": 280,
+          "height": 220
+        },
+        {
+          "type": "rectangle",
+          "id": "2p7fB",
+          "x": 1260,
+          "y": 200,
+          "name": "Primary Ghost",
+          "fill": "#FF6B0011",
+          "width": 280,
+          "height": 220,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0055"
+          }
+        },
+        {
+          "type": "text",
+          "id": "bEXsP",
+          "x": 72,
+          "y": 368,
+          "fill": "#0D0D0D",
+          "content": "#FF6B00\nPRIMARY",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "a7RJz",
+          "x": 372,
+          "y": 368,
+          "fill": "#0D0D0D",
+          "content": "#FF8C38\nSECONDARY",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "eihhI",
+          "x": 672,
+          "y": 368,
+          "fill": "#0D0D0D",
+          "content": "#FFB347\nAMBER",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DL3yI",
+          "x": 972,
+          "y": 368,
+          "fill": "#1A1612",
+          "content": "#FF6B0033\nDIM",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Rnanh",
+          "x": 1272,
+          "y": 368,
+          "fill": "#1A1612",
+          "content": "#FF6B0011\nGHOST",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "pH6bN",
+          "x": 60,
+          "y": 460,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "PAitP",
+          "x": 60,
+          "y": 476,
+          "fill": "$brand-primary",
+          "content": "-- DARK PALETTE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "wo76j",
+          "x": 60,
+          "y": 500,
+          "name": "Dark 950",
+          "fill": "#1A1612",
+          "width": 220,
+          "height": 160,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0033"
+          }
+        },
+        {
+          "type": "rectangle",
+          "id": "dGQvz",
+          "x": 300,
+          "y": 500,
+          "name": "Dark 900",
+          "fill": "#F0EDE5",
+          "width": 220,
+          "height": 160,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0033"
+          }
+        },
+        {
+          "type": "rectangle",
+          "id": "w3whm",
+          "x": 540,
+          "y": 500,
+          "name": "Dark 800",
+          "fill": "#E8E4DA",
+          "width": 220,
+          "height": 160,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0033"
+          }
+        },
+        {
+          "type": "rectangle",
+          "id": "4fJrM",
+          "x": 780,
+          "y": 500,
+          "name": "Dark 700",
+          "fill": "#D8D4CA",
+          "width": 220,
+          "height": 160,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0033"
+          }
+        },
+        {
+          "type": "text",
+          "id": "w62Ke",
+          "x": 72,
+          "y": 616,
+          "fill": "#7A726880",
+          "content": "#0D0D0D\nTERMINAL",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "hEWV6",
+          "x": 312,
+          "y": 616,
+          "fill": "#7A726880",
+          "content": "#1A1A1A\nCARD",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "rNtP6",
+          "x": 552,
+          "y": 616,
+          "fill": "#7A726880",
+          "content": "#2A2A2A\nBORDER",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "WFAmr",
+          "x": 792,
+          "y": 616,
+          "fill": "#7A726880",
+          "content": "#3A3A3A\nMUTED",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "GDGm0",
+          "x": 60,
+          "y": 680,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "op8Cy",
+          "x": 60,
+          "y": 696,
+          "fill": "$brand-primary",
+          "content": "-- ACCENT PALETTE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "H8Nyn",
+          "x": 60,
+          "y": 716,
+          "name": "Green Terminal",
+          "fill": "#39FF14",
+          "width": 180,
+          "height": 100
+        },
+        {
+          "type": "rectangle",
+          "id": "2Ajay",
+          "x": 260,
+          "y": 716,
+          "name": "White Mist",
+          "fill": "#F5F5F0",
+          "width": 180,
+          "height": 100
+        },
+        {
+          "type": "rectangle",
+          "id": "qnz4P",
+          "x": 460,
+          "y": 716,
+          "name": "White Dim",
+          "fill": "#F5F5F066",
+          "width": 180,
+          "height": 100,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#F5F5F033"
+          }
+        },
+        {
+          "type": "text",
+          "id": "09R0b",
+          "x": 60,
+          "y": 830,
+          "fill": "#7A726880",
+          "content": "#39FF14\nNEON GREEN",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "4Jdza",
+          "x": 260,
+          "y": 830,
+          "fill": "$brand-dark",
+          "content": "#F5F5F0\nTEXT",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "B481W",
+          "x": 460,
+          "y": 830,
+          "fill": "#7A726880",
+          "content": "#F5F5F066\nSUBTLE TEXT",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "e4pSc",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "HyeE9",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "r7Jkx",
+          "x": 1750,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "COLORS        1.0",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "IJHoz",
+          "x": 60,
+          "y": 916,
+          "fill": "#7A726880",
+          "content": "> primary: #FF6B00  secondary: #FF8C38  amber: #FFB347\n> terminal: #0D0D0D  card: #1A1A1A  border: #2A2A2A\n> neon: #39FF14  text: #F5F5F0",
+          "lineHeight": 1.8,
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "lPKqe",
+      "x": 4000,
+      "y": 0,
+      "name": "Style Guide — Components",
+      "width": 1920,
+      "height": 1200,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "aXY9D",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "// STYLE GUIDE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "eGXPS",
+          "x": 60,
+          "y": 70,
+          "fill": "$brand-primary",
+          "content": "OPC_ COMPONENTS",
+          "fontFamily": "Space Mono",
+          "fontSize": 48,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "9O3e4",
+          "x": 60,
+          "y": 132,
+          "fill": "$brand-amber",
+          "content": "REUSABLE UI SYSTEM v1.0",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "eKY8c",
+          "x": 60,
+          "y": 162,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "ZDPYg",
+          "x": 60,
+          "y": 178,
+          "fill": "$brand-primary",
+          "content": "-- BUTTONS --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "eeJNc",
+          "x": 60,
+          "y": 200,
+          "name": "Button / Primary",
+          "reusable": true,
+          "width": 180,
+          "height": 44,
+          "fill": "$brand-primary",
+          "children": [
+            {
+              "type": "text",
+              "id": "inQE8",
+              "fill": "$brand-dark",
+              "content": "./EXECUTE",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "1oVUQ",
+          "x": 260,
+          "y": 200,
+          "name": "Button / Outline",
+          "reusable": true,
+          "width": 180,
+          "height": 44,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-primary"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "2tJuk",
+              "fill": "$brand-primary",
+              "content": "./CANCEL",
+              "fontFamily": "Space Mono",
+              "fontSize": 13
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XqfNe",
+          "x": 460,
+          "y": 200,
+          "name": "Button / Ghost",
+          "reusable": true,
+          "width": 180,
+          "height": 44,
+          "fill": "$brand-primary-dim",
+          "children": [
+            {
+              "type": "text",
+              "id": "2teXx",
+              "fill": "$brand-primary",
+              "content": "./INSPECT",
+              "fontFamily": "Space Mono",
+              "fontSize": 13
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "tulfj",
+          "x": 660,
+          "y": 200,
+          "name": "Button / Danger",
+          "reusable": true,
+          "width": 180,
+          "height": 44,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF3333"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "hAiUJ",
+              "fill": "#FF3333",
+              "content": "./ABORT",
+              "fontFamily": "Space Mono",
+              "fontSize": 13
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "3HPJL",
+          "x": 60,
+          "y": 270,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "DVyKa",
+          "x": 60,
+          "y": 286,
+          "fill": "$brand-primary",
+          "content": "-- INPUT / TERMINAL PROMPT --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "bPuVd",
+          "x": 60,
+          "y": 310,
+          "name": "Input / Default",
+          "reusable": true,
+          "width": 400,
+          "height": 44,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "Z0rFD",
+              "x": 12,
+              "y": 13,
+              "fill": "$brand-amber",
+              "content": "> _",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "JERB5",
+          "x": 480,
+          "y": 310,
+          "name": "Input / Focus",
+          "reusable": true,
+          "width": 400,
+          "height": 44,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-primary"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "FhMcO",
+              "x": 12,
+              "y": 13,
+              "fill": "#7A726880",
+              "content": "> enter command...",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "smISN",
+          "x": 60,
+          "y": 386,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "jDqJI",
+          "x": 60,
+          "y": 402,
+          "fill": "$brand-primary",
+          "content": "-- BADGE / TAG --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "VzXSB",
+          "x": 60,
+          "y": 426,
+          "name": "Badge / Active",
+          "reusable": true,
+          "width": 80,
+          "height": 24,
+          "fill": "$brand-primary",
+          "children": [
+            {
+              "type": "text",
+              "id": "DDgVk",
+              "fill": "$brand-dark",
+              "content": "ACTIVE",
+              "fontFamily": "Space Mono",
+              "fontSize": 10,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "AzIz6",
+          "x": 160,
+          "y": 426,
+          "name": "Badge / Beta",
+          "reusable": true,
+          "width": 60,
+          "height": 24,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-amber"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "DSL5C",
+              "fill": "$brand-amber",
+              "content": "BETA",
+              "fontFamily": "Space Mono",
+              "fontSize": 10
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "vjXcG",
+          "x": 240,
+          "y": 426,
+          "name": "Badge / Error",
+          "reusable": true,
+          "width": 70,
+          "height": 24,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF3333"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "K92hk",
+              "fill": "#FF3333",
+              "content": "ERROR",
+              "fontFamily": "Space Mono",
+              "fontSize": 10
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "OUaUO",
+          "x": 330,
+          "y": 426,
+          "name": "Badge / OK",
+          "reusable": true,
+          "width": 50,
+          "height": 24,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#39FF14"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "OV5EU",
+              "fill": "#39FF14",
+              "content": "OK",
+              "fontFamily": "Space Mono",
+              "fontSize": 10,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "BEx0h",
+          "x": 60,
+          "y": 476,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "oZfK7",
+          "x": 60,
+          "y": 492,
+          "fill": "$brand-primary",
+          "content": "-- CARD / TERMINAL WINDOW --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "lEBFo",
+          "x": 60,
+          "y": 522,
+          "name": "Card / Terminal",
+          "reusable": true,
+          "width": 360,
+          "height": 200,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "23iDs",
+              "x": 0,
+              "y": 0,
+              "fill": "$brand-dark-3",
+              "width": 360,
+              "height": 28
+            },
+            {
+              "type": "text",
+              "id": "sgYJH",
+              "x": 12,
+              "y": 8,
+              "fill": "$brand-amber",
+              "content": "[opc@terminal ~]$ _",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "X9o3h",
+              "x": 12,
+              "y": 44,
+              "fill": "#7A726880",
+              "content": "> initializing opc system v2.4\n> loading config...\n> status: READY",
+              "lineHeight": 1.8,
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "PVDh4",
+          "x": 60,
+          "y": 748,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "W34qP",
+          "x": 60,
+          "y": 764,
+          "fill": "$brand-primary",
+          "content": "-- DIVIDER / SEPARATOR --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "Fzgl4",
+          "x": 60,
+          "y": 790,
+          "name": "Divider / Solid",
+          "reusable": true,
+          "width": 600,
+          "height": 1,
+          "fill": "$brand-primary"
+        },
+        {
+          "type": "frame",
+          "id": "98gCY",
+          "x": 60,
+          "y": 820,
+          "name": "Divider / Dashed",
+          "reusable": true,
+          "width": 600,
+          "height": 16,
+          "fill": "#E8E4DA",
+          "children": [
+            {
+              "type": "text",
+              "id": "1cUGw",
+              "fill": "$brand-primary-dim",
+              "content": "------------------------------------------------------------",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "G4QT6",
+          "x": 60,
+          "y": 866,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "F4ywg",
+          "x": 60,
+          "y": 882,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "3Ezma",
+          "x": 1730,
+          "y": 882,
+          "fill": "#7A726880",
+          "content": "COMPONENTS        1.0",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "OSPoj",
+      "x": 6000,
+      "y": 0,
+      "name": "Brand — Logo",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "JMNgF",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "01 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "HLSCd",
+          "x": 1750,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "4ReOo",
+          "x": 1820,
+          "y": 60,
+          "fill": "#7A726880",
+          "content": "LOGO",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "GVEmV",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "frame",
+          "id": "g9kaA",
+          "x": 60,
+          "y": 108,
+          "name": "logoBox",
+          "width": 680,
+          "height": 680,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none"
+        },
+        {
+          "type": "text",
+          "id": "YQZxP",
+          "x": 80,
+          "y": 120,
+          "fill": "$brand-primary-dim",
+          "content": "+--------------------------------------+",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "u6KUJ",
+          "x": 80,
+          "y": 144,
+          "fill": "$brand-primary-dim",
+          "content": "|                                      |",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "FTCwO",
+          "x": 80,
+          "y": 168,
+          "fill": "$brand-primary-dim",
+          "content": "| +-+ +-+ +-+                          |",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "iRlrO",
+          "x": 80,
+          "y": 192,
+          "fill": "$brand-primary-dim",
+          "content": "| | | | | |/                           |",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "YFRuV",
+          "x": 80,
+          "y": 216,
+          "fill": "$brand-primary-dim",
+          "content": "| +-+ +-+ +                            |",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "F5joz",
+          "x": 80,
+          "y": 240,
+          "fill": "$brand-primary-dim",
+          "content": "|  O   P   C                           |",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "5kgBc",
+          "x": 80,
+          "y": 264,
+          "fill": "$brand-primary-dim",
+          "content": "|                                      |",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "NIPIN",
+          "x": 80,
+          "y": 288,
+          "fill": "$brand-primary-dim",
+          "content": "+--------------------------------------+",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "uYPZj",
+          "x": 200,
+          "y": 348,
+          "fill": "$brand-primary",
+          "content": "OPC_",
+          "fontFamily": "Space Mono",
+          "fontSize": 96,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "m7TG9",
+          "x": 200,
+          "y": 460,
+          "fill": "$brand-amber",
+          "content": "OPEN PROTOCOL COMPUTING",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "6tsjc",
+          "x": 60,
+          "y": 820,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "2q2VR",
+          "x": 800,
+          "y": 108,
+          "fill": "$brand-primary",
+          "content": "-- LOGO USAGE RULES --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "xka67",
+          "x": 800,
+          "y": 136,
+          "fill": "#1A1612",
+          "content": "[✓] Dark background",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "NUBTd",
+          "x": 800,
+          "y": 164,
+          "fill": "#1A1612",
+          "content": "[✓] Orange on black  [✓] Monochrome white",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "W5mVF",
+          "x": 800,
+          "y": 192,
+          "fill": "#FF3333",
+          "content": "[✗] Never use gradients",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "9F20Z",
+          "x": 800,
+          "y": 220,
+          "fill": "#FF3333",
+          "content": "[✗] Never use on light background",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "0E3xr",
+          "x": 800,
+          "y": 248,
+          "fill": "#FF3333",
+          "content": "[✗] Never stretch or distort",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "Co7MN",
+          "x": 800,
+          "y": 284,
+          "fill": "$brand-primary-dim",
+          "width": 920,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "EmtKa",
+          "x": 800,
+          "y": 300,
+          "fill": "$brand-primary",
+          "content": "-- LOGO VARIATIONS --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "f5U2i",
+          "x": 800,
+          "y": 320,
+          "name": "logoDark",
+          "width": 260,
+          "height": 80,
+          "fill": "$brand-dark",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "cXPQK",
+              "fill": "$brand-primary",
+              "content": "OPC_",
+              "fontFamily": "Space Mono",
+              "fontSize": 32,
+              "fontWeight": "900"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "q8wAt",
+          "x": 1080,
+          "y": 320,
+          "name": "logoWhite",
+          "width": 260,
+          "height": 80,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "u8VMp",
+              "fill": "#1A1612",
+              "content": "OPC_",
+              "fontFamily": "Space Mono",
+              "fontSize": 32,
+              "fontWeight": "900"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "UwEdo",
+          "x": 1360,
+          "y": 320,
+          "name": "logoMono",
+          "width": 260,
+          "height": 80,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "zEjMx",
+              "fill": "#999490",
+              "content": "OPC_",
+              "fontFamily": "Space Mono",
+              "fontSize": 32,
+              "fontWeight": "900"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "rH5FL",
+          "x": 866,
+          "y": 408,
+          "fill": "#7A726880",
+          "content": "> Primary",
+          "fontFamily": "Space Mono",
+          "fontSize": 10,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "XtFMy",
+          "x": 1156,
+          "y": 408,
+          "fill": "#7A726880",
+          "content": "> White",
+          "fontFamily": "Space Mono",
+          "fontSize": 10,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "K8vHz",
+          "x": 1456,
+          "y": 408,
+          "fill": "#7A726880",
+          "content": "> Mono",
+          "fontFamily": "Space Mono",
+          "fontSize": 10,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "fjJTd",
+          "x": 800,
+          "y": 444,
+          "fill": "$brand-primary",
+          "content": "-- MINIMUM SIZE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "l5xU1",
+          "x": 800,
+          "y": 468,
+          "fill": "#7A726880",
+          "content": "> 48px minimum height for digital  |  12mm minimum for print",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "465c5",
+          "x": 800,
+          "y": 500,
+          "fill": "$brand-primary-dim",
+          "width": 920,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "nnDUK",
+          "x": 800,
+          "y": 516,
+          "fill": "$brand-primary",
+          "content": "-- CLEAR SPACE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "esGJC",
+          "x": 800,
+          "y": 540,
+          "fill": "#7A726880",
+          "content": "> maintain 16px clear space on all sides of the logo mark",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "OYpfO",
+          "x": 800,
+          "y": 564,
+          "fill": "#7A726880",
+          "content": "> do not crowd with other visual elements or text",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "sRAQD",
+          "x": 60,
+          "y": 836,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "6mOTF",
+          "x": 1780,
+          "y": 836,
+          "fill": "#7A726880",
+          "content": "LOGO        01",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "3aVMw",
+          "x": 60,
+          "y": 820,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kQ8Ny",
+      "x": 8000,
+      "y": 0,
+      "name": "Brand — The Mission",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "rGh0v",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "02 / 13",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "CCnL2",
+          "x": 1730,
+          "y": 40,
+          "fill": "$brand-white-dim",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "gJkdK",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "bspp7",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "THE MISSION",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "pb9DL",
+          "x": 60,
+          "y": 100,
+          "fill": "$brand-primary-dim",
+          "content": "+===================================+",
+          "fontFamily": "Inter",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DFfwJ",
+          "x": 60,
+          "y": 120,
+          "fill": "$brand-primary-dim",
+          "content": "|  MISSION STATEMENT                |",
+          "fontFamily": "Inter",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "snfkS",
+          "x": 60,
+          "y": 140,
+          "fill": "$brand-primary-dim",
+          "content": "+===================================+",
+          "fontFamily": "Inter",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "LhNDo",
+          "x": 60,
+          "y": 170,
+          "fill": "$brand-amber",
+          "content": "> execute",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "iFdcL",
+          "x": 60,
+          "y": 196,
+          "fill": "$brand-white",
+          "textGrowth": "fixed-width",
+          "width": 900,
+          "content": ">_ build tools that\n   empower developers\n   to ship faster.",
+          "lineHeight": 1.3,
+          "fontFamily": "Inter",
+          "fontSize": 52,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "bwXC9",
+          "x": 60,
+          "y": 400,
+          "fill": "$brand-amber",
+          "content": "OPC_ believes that the future is\nbuilt one commit at a time.",
+          "lineHeight": 1.5,
+          "fontFamily": "Inter",
+          "fontSize": 20,
+          "fontWeight": "300"
+        },
+        {
+          "type": "text",
+          "id": "EJZZC",
+          "x": 60,
+          "y": 472,
+          "fill": "$brand-primary",
+          "content": "> We build for the terminal generation.",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "r00cj",
+          "x": 60,
+          "y": 510,
+          "fill": "$brand-primary-dim",
+          "width": 600,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "GMkVt",
+      "x": 8000,
+      "y": 0,
+      "name": "Brand — The Mission",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "eUXY7",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "02 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "2MtsY",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "WGkrv",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "UwlbB",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "THE MISSION",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DnTxn",
+          "x": 60,
+          "y": 160,
+          "fill": "#1A1612",
+          "textGrowth": "fixed-width",
+          "width": 900,
+          "content": ">_ build tools that empower\ndevelopers to ship faster.",
+          "lineHeight": 1.25,
+          "fontFamily": "Space Mono",
+          "fontSize": 56,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "f1VLL",
+          "x": 60,
+          "y": 360,
+          "fill": "$brand-amber",
+          "textGrowth": "fixed-width",
+          "width": 880,
+          "content": "OPC_ believes that the future is built one commit at a time.",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 20,
+          "fontWeight": "300"
+        },
+        {
+          "type": "text",
+          "id": "N8m2Q",
+          "x": 60,
+          "y": 430,
+          "fill": "$brand-primary",
+          "content": "> We build for the terminal generation.",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "YNhbH",
+          "x": 60,
+          "y": 464,
+          "fill": "$brand-primary-dim",
+          "width": 600,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "H9JgX",
+          "x": 60,
+          "y": 480,
+          "fill": "$brand-primary",
+          "content": "-- VALUES --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "VunQ5",
+          "x": 60,
+          "y": 508,
+          "fill": "#1A1612",
+          "content": "[ OPEN ]          [ PRECISE ]        [ MINIMAL ]",
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "6bHvi",
+          "x": 60,
+          "y": 548,
+          "fill": "$brand-primary",
+          "content": "[ FAST  ]         [ TERMINAL ]       [ DEVELOPER-FIRST ]",
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "700"
+        },
+        {
+          "type": "rectangle",
+          "id": "G57lt",
+          "x": 60,
+          "y": 620,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "6i1Ao",
+          "x": 1000,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "-- ASCII BRAND MARK --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "yHzve",
+          "x": 1000,
+          "y": 108,
+          "fill": "$brand-primary",
+          "content": "  ___  ____   __\n / _ \\|  _ \\ / _|\n| | | | |_) | |_\n| |_| |  __/|  _|\n \\___/|_|   |_| ",
+          "lineHeight": 1.4,
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Kypka",
+          "x": 1000,
+          "y": 252,
+          "fill": "$brand-amber",
+          "content": "> Open Protocol Computing",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "sCdHF",
+          "x": 1000,
+          "y": 276,
+          "fill": "$brand-primary-dim",
+          "width": 780,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "P1qud",
+          "x": 1000,
+          "y": 292,
+          "fill": "#7A726880",
+          "content": "> MISSION: empower developers\n> VISION:  terminal-first future\n> VALUES:  open, fast, minimal",
+          "lineHeight": 1.8,
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "r9kpF",
+          "x": 1000,
+          "y": 380,
+          "fill": "$brand-green-term",
+          "content": "STATUS: MISSION_LOADED",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "PskVO",
+          "x": 60,
+          "y": 836,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "BViHO",
+          "x": 1770,
+          "y": 836,
+          "fill": "#7A726880",
+          "content": "THE MISSION    02",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "RuJRz",
+          "x": 60,
+          "y": 820,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "YbBV3",
+      "x": 10000,
+      "y": 0,
+      "name": "Brand — Typography",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "RuW2Y",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "03 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "oPBzq",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "wnzks",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "PWdpu",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "TYPOGRAPHY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "WxgCC",
+          "x": 0,
+          "y": -60,
+          "fill": "#FF6B0011",
+          "content": "Aa",
+          "fontFamily": "Space Mono",
+          "fontSize": 320,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "s21n7",
+          "x": 60,
+          "y": 120,
+          "fill": "#1A1612",
+          "content": "IBM Plex\nMono",
+          "lineHeight": 1.1,
+          "fontFamily": "Space Mono",
+          "fontSize": 80,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "i9ql0",
+          "x": 60,
+          "y": 328,
+          "fill": "$brand-amber",
+          "content": "monospace typeface | developer-first | ascii-compatible",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "SahVQ",
+          "x": 60,
+          "y": 360,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "EeA7Y",
+          "x": 60,
+          "y": 380,
+          "fill": "#1A1612",
+          "content": "H1 64px / Bold",
+          "fontFamily": "Space Mono",
+          "fontSize": 64,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "CKx5A",
+          "x": 60,
+          "y": 470,
+          "fill": "#7A726880",
+          "content": "H2 48px / Medium",
+          "fontFamily": "Space Mono",
+          "fontSize": 48,
+          "fontWeight": "500"
+        },
+        {
+          "type": "text",
+          "id": "vmp88",
+          "x": 60,
+          "y": 546,
+          "fill": "#7A726880",
+          "content": "H3 32px / Regular",
+          "fontFamily": "Space Mono",
+          "fontSize": 32
+        },
+        {
+          "type": "text",
+          "id": "yRlch",
+          "x": 60,
+          "y": 604,
+          "fill": "#7A726880",
+          "content": "H4 24px / Regular    Body 16px / Regular    Caption 12px / Light",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "vdZGH",
+          "x": 60,
+          "y": 660,
+          "fill": "$brand-primary",
+          "content": "> font-family: 'IBM Plex Mono', 'Courier New', monospace",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "URekL",
+          "x": 60,
+          "y": 700,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "4oU7Q",
+          "x": 60,
+          "y": 716,
+          "fill": "$brand-primary",
+          "content": "-- USAGE RULES --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "PQbSk",
+          "x": 60,
+          "y": 744,
+          "fill": "#1A1612",
+          "content": "[do]   Always use monospace for all OPC communications",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "9oOJn",
+          "x": 60,
+          "y": 772,
+          "fill": "#1A1612",
+          "content": "[do]   Use IBM Plex Mono as primary, fallback to Courier New",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "bZiX0",
+          "x": 60,
+          "y": 800,
+          "fill": "#1A1612",
+          "content": "[do]   Use weight 700-900 for headlines, 400 for body text",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DGhD4",
+          "x": 60,
+          "y": 828,
+          "fill": "#FF3333",
+          "content": "[err]  Never mix proportional fonts with the OPC brand",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "vyc8B",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "D2nmr",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "53ANf",
+          "x": 1740,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "TYPOGRAPHY        03",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "L0dg6",
+      "x": 12000,
+      "y": 0,
+      "name": "Brand — Colors",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "RQSqZ",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "04 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "H7grB",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "hoCw8",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "1taqi",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "COLORS",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "8dxx0",
+          "x": 1100,
+          "y": 200,
+          "fill": "#FF6B0011",
+          "content": "COLOR SYSTEM",
+          "fontFamily": "Space Mono",
+          "fontSize": 80,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "dqvXR",
+          "x": 60,
+          "y": 108,
+          "fill": "$brand-primary",
+          "content": "PRIMARY",
+          "fontFamily": "Space Mono",
+          "fontSize": 64,
+          "fontWeight": "900"
+        },
+        {
+          "type": "rectangle",
+          "id": "0gcrM",
+          "x": 60,
+          "y": 200,
+          "fill": "#FF6B00",
+          "width": 800,
+          "height": 400
+        },
+        {
+          "type": "text",
+          "id": "CPOsZ",
+          "x": 80,
+          "y": 460,
+          "fill": "#0D0D0D",
+          "content": "#FF6B00",
+          "fontFamily": "Space Mono",
+          "fontSize": 48,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "GecUq",
+          "x": 80,
+          "y": 524,
+          "fill": "#0D0D0D",
+          "content": "OPC PRIMARY ORANGE",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "RBTCG",
+          "x": 80,
+          "y": 548,
+          "fill": "#0D0D0D",
+          "content": "RGB 255 107 0\nHSL 25 100% 50%\nCMYK 0 58 100 0",
+          "lineHeight": 1.7,
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "gPopx",
+          "x": 900,
+          "y": 200,
+          "fill": "#FF8C38",
+          "width": 240,
+          "height": 240
+        },
+        {
+          "type": "text",
+          "id": "5LB0I",
+          "x": 920,
+          "y": 296,
+          "fill": "#0D0D0D",
+          "content": "#FF8C38",
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "YU9rR",
+          "x": 920,
+          "y": 320,
+          "fill": "#0D0D0D",
+          "content": "Secondary",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "7Xf4W",
+          "x": 1160,
+          "y": 200,
+          "fill": "#FFB347",
+          "width": 240,
+          "height": 240
+        },
+        {
+          "type": "text",
+          "id": "EhK4F",
+          "x": 1180,
+          "y": 296,
+          "fill": "#0D0D0D",
+          "content": "#FFB347",
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "BgPFw",
+          "x": 1180,
+          "y": 320,
+          "fill": "#0D0D0D",
+          "content": "Amber",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "jpmod",
+          "x": 1420,
+          "y": 200,
+          "fill": "#1A1612",
+          "width": 240,
+          "height": 240,
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0033"
+          }
+        },
+        {
+          "type": "text",
+          "id": "dCDf3",
+          "x": 1440,
+          "y": 296,
+          "fill": "#1A1612",
+          "content": "#0D0D0D",
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "GJzaI",
+          "x": 1440,
+          "y": 320,
+          "fill": "#7A726880",
+          "content": "Terminal",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "TfZlL",
+          "x": 60,
+          "y": 656,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "wIgGv",
+          "x": 60,
+          "y": 672,
+          "fill": "$brand-primary",
+          "content": "-- COLOR PHILOSOPHY --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "XapyH",
+          "x": 60,
+          "y": 700,
+          "fill": "#1A1612",
+          "content": "> The OPC palette is built for the terminal.",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "2XYiW",
+          "x": 60,
+          "y": 728,
+          "fill": "#7A726880",
+          "content": "> Orange on black. Amber for warmth. Neon for status. No gradients. No noise.",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "3h3RQ",
+          "x": 60,
+          "y": 760,
+          "fill": "$brand-amber",
+          "content": "> Primary #FF6B00  |  Dark #0D0D0D  |  Amber #FFB347  |  Neon #39FF14",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "a2guh",
+          "x": 60,
+          "y": 800,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "D26tE",
+          "x": 60,
+          "y": 816,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "casYF",
+          "x": 1762,
+          "y": 816,
+          "fill": "#7A726880",
+          "content": "COLORS        04",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "FZZw2",
+      "x": 14000,
+      "y": 0,
+      "name": "Brand — Illustration",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "pJv4u",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "05 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "cZRKS",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "mGOVg",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "u5dxl",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "ILLUSTRATION",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "m9815",
+          "x": 60,
+          "y": 108,
+          "fill": "#1A1612",
+          "content": "ASCII ART STYLE GUIDE",
+          "fontFamily": "Space Mono",
+          "fontSize": 48,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "bXTxd",
+          "x": 60,
+          "y": 176,
+          "fill": "$brand-amber",
+          "content": "> All OPC illustrations are rendered in ASCII / monospace character art",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "OXzz1",
+          "x": 60,
+          "y": 208,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "4tXZv",
+          "x": 60,
+          "y": 224,
+          "fill": "$brand-primary",
+          "content": "-- SAMPLE ASCII ART --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "o2X1X",
+          "x": 60,
+          "y": 248,
+          "fill": "$brand-primary",
+          "content": "  /\\_____/\\ \n ( o   o  )\n  =( Y )=\n   )   (\n  (_)-(_)",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "yCFIH",
+          "x": 280,
+          "y": 248,
+          "fill": "$brand-amber",
+          "content": "    .---.\n   /|6 6|\\\n  | | = | |\n  |  '-'  |\n  |  OPC  |\n   \\_____/",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DAeXp",
+          "x": 520,
+          "y": 248,
+          "fill": "#1A1612",
+          "content": " ___________\n|           |\n|  >_ OPC   |\n|___________|\n   |     |\n   |_____|\n   /     \\  /       \\ /         \\",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "RZYlm",
+          "x": 800,
+          "y": 248,
+          "fill": "$brand-green-term",
+          "content": "       *  \n      ***  \n  [OPC]|||  \n      ***  \n       *   \n  POWER ON ",
+          "lineHeight": 1.5,
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "xeMfS",
+          "x": 60,
+          "y": 520,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "ieKNy",
+          "x": 60,
+          "y": 536,
+          "fill": "$brand-primary",
+          "content": "-- ILLUSTRATION RULES --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "fTnnM",
+          "x": 60,
+          "y": 564,
+          "fill": "#1A1612",
+          "content": "[do]   Use ASCII/Unicode box-drawing chars as primary illustration medium",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Khr2w",
+          "x": 60,
+          "y": 592,
+          "fill": "#1A1612",
+          "content": "[do]   Use OPC orange (#FF6B00) or amber (#FFB347) as ASCII art color",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "2eKQ9",
+          "x": 60,
+          "y": 620,
+          "fill": "#1A1612",
+          "content": "[do]   Neon green (#39FF14) for status indicators and active elements",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "i4oaa",
+          "x": 60,
+          "y": 648,
+          "fill": "#FF3333",
+          "content": "[err]  Never use photorealistic illustrations",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "351qw",
+          "x": 60,
+          "y": 676,
+          "fill": "#FF3333",
+          "content": "[err]  Never use gradients or drop shadows in illustrations",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "weQmy",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "NWCaL",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "UbPPg",
+          "x": 1760,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "ILLUSTRATION    05",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Z3FHb",
+      "x": 16000,
+      "y": 0,
+      "name": "Brand — Icon",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "wHgwc",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "06 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Af2fc",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "6YmWF",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "GwvdK",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "ICON SYSTEM",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "IrrV0",
+          "x": 60,
+          "y": 108,
+          "fill": "$brand-primary",
+          "content": "ICONS",
+          "fontFamily": "Space Mono",
+          "fontSize": 80,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "8ztel",
+          "x": 60,
+          "y": 216,
+          "fill": "$brand-amber",
+          "content": "> All icons are 2px stroke / square corners / monochrome",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "ZMAzn",
+          "x": 60,
+          "y": 248,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "sPfhb",
+          "x": 60,
+          "y": 264,
+          "fill": "$brand-primary",
+          "content": "-- ASCII ICON LIBRARY --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "tMjXp",
+          "x": 60,
+          "y": 292,
+          "fill": "$brand-primary",
+          "content": "[>]  PLAY\n[||] PAUSE\n[X]  CLOSE\n[+]  ADD",
+          "lineHeight": 1.8,
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "TbQaV",
+          "x": 260,
+          "y": 292,
+          "fill": "$brand-amber",
+          "content": "[?]  HELP\n[!]  WARN\n[*]  STAR\n[~]  HOME",
+          "lineHeight": 1.8,
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "VqOH5",
+          "x": 460,
+          "y": 292,
+          "fill": "#1A1612",
+          "content": "[^]  UP\n[v]  DOWN\n[<]  BACK\n[->] NEXT",
+          "lineHeight": 1.8,
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "CbHjU",
+          "x": 660,
+          "y": 292,
+          "fill": "$brand-green-term",
+          "content": "[$]  COST\n[#]  TAG\n[@]  USER\n[&]  LINK",
+          "lineHeight": 1.8,
+          "fontFamily": "Space Mono",
+          "fontSize": 18,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "eXRc2",
+          "x": 60,
+          "y": 480,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "Rhc2L",
+          "x": 60,
+          "y": 496,
+          "fill": "$brand-primary",
+          "content": "-- ICON SIZING --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "eRXVt",
+          "x": 60,
+          "y": 524,
+          "fill": "#7A726880",
+          "content": "16px  / inline  [>]",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "e4wbR",
+          "x": 60,
+          "y": 556,
+          "fill": "#1A1612",
+          "content": "24px  / default  [>]",
+          "fontFamily": "Space Mono",
+          "fontSize": 24,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "AZPV1",
+          "x": 60,
+          "y": 596,
+          "fill": "#1A1612",
+          "content": "32px  / large  [>]",
+          "fontFamily": "Space Mono",
+          "fontSize": 32,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "lhL8t",
+          "x": 60,
+          "y": 644,
+          "fill": "$brand-primary",
+          "content": "48px  / hero  [>]",
+          "fontFamily": "Space Mono",
+          "fontSize": 48,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "4clQy",
+          "x": 60,
+          "y": 724,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "J2lmz",
+          "x": 60,
+          "y": 740,
+          "fill": "#1A1612",
+          "content": "[do]   Use bracket notation [X] for all OPC ASCII icons",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "VJIMl",
+          "x": 60,
+          "y": 768,
+          "fill": "#1A1612",
+          "content": "[do]   Align icons with 8px grid",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "nCs1n",
+          "x": 60,
+          "y": 796,
+          "fill": "#FF3333",
+          "content": "[err]  Never use emoji as icons",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "rpu1i",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "3Bl7a",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "DGwdC",
+          "x": 1775,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "ICON        06",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "26zBL",
+      "x": 18000,
+      "y": 0,
+      "name": "Brand — Photography",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "2e5tG",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "07 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "HQlbR",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "wK6eP",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "yntIh",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "PHOTOGRAPHY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "MJwEH",
+          "x": 60,
+          "y": 108,
+          "fill": "#1A1612",
+          "content": "PHOTO STYLE",
+          "fontFamily": "Space Mono",
+          "fontSize": 72,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "UecUk",
+          "x": 60,
+          "y": 208,
+          "fill": "$brand-amber",
+          "content": "> High contrast | Deep shadows | Terminal aesthetic | Code in frame",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "IA3P8",
+          "x": 60,
+          "y": 240,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "bxm79",
+          "x": 60,
+          "y": 256,
+          "fill": "$brand-primary",
+          "content": "-- PHOTO TREATMENT --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "SsYt6",
+          "x": 60,
+          "y": 280,
+          "name": "ph1",
+          "width": 440,
+          "height": 300,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "CMGOg",
+              "x": 12,
+              "y": 12,
+              "fill": "$brand-primary",
+              "content": "+---[ TERMINAL.jpg ]---+\n|                       |\n|   [HIGH CONTRAST]     |\n|   B&W + ORANGE TINT   |\n|                       |\n|   > dark room photos   |\n|   > code on screen    |\n|   > keyboard close-up  |\n+------------------------+",
+              "lineHeight": 1.6,
+              "fontFamily": "Space Mono",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "tpT6F",
+          "x": 520,
+          "y": 280,
+          "name": "ph2",
+          "width": 440,
+          "height": 300,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "JQaiD",
+              "x": 12,
+              "y": 12,
+              "fill": "$brand-amber",
+              "content": "+---[ DEVELOPER.jpg ]--+\n|                       |\n|   [MONOCHROME]        |\n|   DESATURATED + GRAIN |\n|                       |\n|   > late night coding |\n|   > terminal screens  |\n|   > hardware details  |\n+------------------------+",
+              "lineHeight": 1.6,
+              "fontFamily": "Space Mono",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "SYXh5",
+          "x": 60,
+          "y": 620,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "9Wj5T",
+          "x": 60,
+          "y": 636,
+          "fill": "$brand-primary",
+          "content": "-- PHOTO RULES --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "v5Low",
+          "x": 60,
+          "y": 664,
+          "fill": "#1A1612",
+          "content": "[do]   Black and white with orange color overlay",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "2EqI5",
+          "x": 60,
+          "y": 692,
+          "fill": "#1A1612",
+          "content": "[do]   High contrast, deep blacks (#0D0D0D floor)",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "3oik4",
+          "x": 60,
+          "y": 720,
+          "fill": "#1A1612",
+          "content": "[do]   Subjects: developers, terminals, code, hardware",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "a0TeO",
+          "x": 60,
+          "y": 748,
+          "fill": "#FF3333",
+          "content": "[err]  No bright/colorful lifestyle photography",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Wzq3x",
+          "x": 60,
+          "y": 776,
+          "fill": "#FF3333",
+          "content": "[err]  No stock photos of smiling people in offices",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "sfTLF",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "SzKy1",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "zqoyz",
+          "x": 1762,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "PHOTOGRAPHY    07",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "eIMSp",
+      "x": 20000,
+      "y": 0,
+      "name": "Brand — Patterns",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "lH0tw",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "08 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "LtXUJ",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "y2nwz",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "OacQk",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "PATTERNS",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "mmq1r",
+          "x": 60,
+          "y": 108,
+          "fill": "#1A1612",
+          "content": "PATTERN SYSTEM",
+          "fontFamily": "Space Mono",
+          "fontSize": 72,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "TjL7X",
+          "x": 60,
+          "y": 208,
+          "fill": "$brand-amber",
+          "content": "> All patterns use ASCII chars on dark backgrounds",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "OMokv",
+          "x": 60,
+          "y": 240,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "t7i0a",
+          "x": 60,
+          "y": 256,
+          "fill": "$brand-primary",
+          "content": "-- GRID PATTERN --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "s1Qin",
+          "x": 60,
+          "y": 276,
+          "fill": "#FF6B0022",
+          "content": "+--+--+--+--+--+--+\n|  |  |  |  |  |  |\n+--+--+--+--+--+--+\n|  |  |  |  |  |  |\n+--+--+--+--+--+--+\n|  |  |  |  |  |  |\n+--+--+--+--+--+--+",
+          "lineHeight": 1.4,
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "nnuFQ",
+          "x": 500,
+          "y": 256,
+          "fill": "$brand-primary",
+          "content": "-- DOT PATTERN --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "4AfLJ",
+          "x": 500,
+          "y": 276,
+          "fill": "#FF6B0033",
+          "content": ". . . . . . . . . .\n. . . . . . . . . .\n. . . . . . . . . .\n. . . . . . . . . .\n. . . . . . . . . .\n. . . . . . . . . .\n. . . . . . . . . .",
+          "lineHeight": 1.6,
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "zyi4B",
+          "x": 960,
+          "y": 256,
+          "fill": "$brand-primary",
+          "content": "-- SCAN LINE PATTERN --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "ppjhC",
+          "x": 960,
+          "y": 276,
+          "fill": "#FF6B0033",
+          "content": "============================\n                            \n============================\n                            \n============================\n                            \n============================",
+          "lineHeight": 1.4,
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "KFnyg",
+          "x": 60,
+          "y": 480,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "P0Hyb",
+          "x": 60,
+          "y": 496,
+          "fill": "$brand-primary",
+          "content": "-- BORDER PATTERN --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "0ZEMZ",
+          "x": 60,
+          "y": 520,
+          "fill": "$brand-primary",
+          "content": "+-[ OPC_ ]--------[ v2.4 ]--[ RUNNING ]--------[ 2026.03.18 ]--+",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "9E1rH",
+          "x": 60,
+          "y": 544,
+          "fill": "$brand-primary-dim",
+          "content": "|                                                                |",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "ISF2h",
+          "x": 60,
+          "y": 568,
+          "fill": "$brand-primary",
+          "content": "+-----------[ TERMINAL WINDOW FRAME PATTERN ]-------------------+",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "yqaP3",
+          "x": 60,
+          "y": 620,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "VYXBC",
+          "x": 60,
+          "y": 636,
+          "fill": "$brand-primary",
+          "content": "-- USAGE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "X3uEX",
+          "x": 60,
+          "y": 664,
+          "fill": "#1A1612",
+          "content": "[do]   Use ASCII patterns as background texture with low opacity",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "zTR7j",
+          "x": 60,
+          "y": 692,
+          "fill": "#1A1612",
+          "content": "[do]   Use terminal window frame for containers and cards",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "KzIsQ",
+          "x": 60,
+          "y": 720,
+          "fill": "#FF3333",
+          "content": "[err]  Never tile photographic textures",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "Wnz3M",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "y6AFf",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "bPXKD",
+          "x": 1762,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "PATTERNS        08",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "DnCsw",
+      "x": 22000,
+      "y": 0,
+      "name": "Brand — Social Media",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "g55NZ",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "09 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "fNUsA",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "bedz4",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "7VMHx",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "SOCIAL MEDIA",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "cnW1c",
+          "x": 60,
+          "y": 108,
+          "fill": "#1A1612",
+          "content": "SOCIAL FORMATS",
+          "fontFamily": "Space Mono",
+          "fontSize": 56,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "TAJeb",
+          "x": 60,
+          "y": 188,
+          "fill": "$brand-amber",
+          "content": "> Consistent terminal aesthetic across all platforms",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "jQgvm",
+          "x": 60,
+          "y": 220,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "JIWmM",
+          "x": 60,
+          "y": 236,
+          "fill": "$brand-primary",
+          "content": "-- POST TEMPLATE --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "opAav",
+          "x": 60,
+          "y": 260,
+          "name": "Social / Twitter Post",
+          "reusable": true,
+          "width": 580,
+          "height": 580,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "p4HlM",
+              "x": 16,
+              "y": 16,
+              "fill": "$brand-primary",
+              "content": "+-[ OPC_ ]--[ TWEET ]--------------+",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "9tLjS",
+              "x": 16,
+              "y": 60,
+              "fill": "#1A1612",
+              "content": ">_ today we shipped\n   something big.",
+              "lineHeight": 1.2,
+              "fontFamily": "Space Mono",
+              "fontSize": 40,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "DIzrm",
+              "x": 16,
+              "y": 200,
+              "fill": "$brand-amber",
+              "content": "> opc.dev/changelog",
+              "fontFamily": "Space Mono",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "RH5Bp",
+              "x": 16,
+              "y": 248,
+              "fill": "$brand-primary",
+              "content": "[#developer] [#terminal] [#opc]",
+              "fontFamily": "Space Mono",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "rectangle",
+              "id": "Wedv5",
+              "x": 16,
+              "y": 548,
+              "fill": "$brand-primary-dim",
+              "width": 548,
+              "height": 1
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "T8RLL",
+          "x": 680,
+          "y": 260,
+          "name": "Social / LinkedIn Banner",
+          "reusable": true,
+          "width": 800,
+          "height": 300,
+          "fill": "$brand-dark-2",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-border"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "mpZSe",
+              "x": 16,
+              "y": 16,
+              "fill": "$brand-primary",
+              "content": "+-[ OPC_ ]--[ LINKEDIN BANNER ]----[ 1584x396 ]---+",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "aKkUs",
+              "x": 16,
+              "y": 48,
+              "fill": "$brand-primary",
+              "content": "OPEN PROTOCOL COMPUTING",
+              "fontFamily": "Space Mono",
+              "fontSize": 32,
+              "fontWeight": "900"
+            },
+            {
+              "type": "text",
+              "id": "SNVyU",
+              "x": 16,
+              "y": 96,
+              "fill": "$brand-amber",
+              "content": ">_ build faster. ship better.",
+              "fontFamily": "Space Mono",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "s7qIH",
+              "x": 16,
+              "y": 132,
+              "fill": "#7A726880",
+              "content": "opc.dev",
+              "fontFamily": "Space Mono",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "8E5dg",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "ZrlcF",
+          "x": 60,
+          "y": 600,
+          "fill": "$brand-primary",
+          "content": "-- SOCIAL SPECS --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "cxzxv",
+          "x": 60,
+          "y": 624,
+          "fill": "#7A726880",
+          "content": "Twitter/X Post:   1200x1200px   |  1:1 square",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "zcIyA",
+          "x": 60,
+          "y": 648,
+          "fill": "#7A726880",
+          "content": "Twitter/X Banner: 1500x500px    |  3:1 landscape",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Rl3nM",
+          "x": 60,
+          "y": 672,
+          "fill": "#7A726880",
+          "content": "LinkedIn Banner:  1584x396px    |  4:1 landscape",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "eY6oC",
+          "x": 60,
+          "y": 696,
+          "fill": "#7A726880",
+          "content": "Instagram Post:   1080x1080px   |  1:1 square",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Pnr1W",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "N7FFb",
+          "x": 1762,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "SOCIAL MEDIA    09",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "vy2ME",
+      "x": 24000,
+      "y": 0,
+      "name": "Brand — Mockup",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "tGdzp",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "10 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "eTOB2",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "MOfeD",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "FKO2R",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "MOCKUP",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "SPRXz",
+          "x": 60,
+          "y": 108,
+          "fill": "#1A1612",
+          "content": "BRAND IN USE",
+          "fontFamily": "Space Mono",
+          "fontSize": 72,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "g3wNP",
+          "x": 60,
+          "y": 208,
+          "fill": "$brand-amber",
+          "content": "> How OPC looks in the real world",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "XcyHZ",
+          "x": 60,
+          "y": 240,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "bdvV3",
+          "x": 60,
+          "y": 256,
+          "fill": "$brand-primary",
+          "content": "-- TERMINAL APP MOCKUP --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "8yPLQ",
+          "x": 60,
+          "y": 280,
+          "name": "app",
+          "width": 880,
+          "height": 560,
+          "fill": "#F0EDE5",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#FF6B0033"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "t1RhX",
+              "x": 0,
+              "y": 0,
+              "fill": "$brand-dark-3",
+              "width": 880,
+              "height": 32
+            },
+            {
+              "type": "text",
+              "id": "2UMvc",
+              "x": 12,
+              "y": 10,
+              "fill": "$brand-amber",
+              "content": "[x]  [-]  [+]     OPC TERMINAL v2.4",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "8mD2h",
+              "x": 16,
+              "y": 52,
+              "fill": "$brand-primary",
+              "content": "opc@terminal:~$ opc init my-project",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "Oa427",
+              "x": 16,
+              "y": 80,
+              "fill": "#1A1612",
+              "content": "> Initializing OPC project...",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "nttqJ",
+              "x": 16,
+              "y": 108,
+              "fill": "#1A1612",
+              "content": "> Installing dependencies [===========] 100%",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "AwE4y",
+              "x": 16,
+              "y": 136,
+              "fill": "#1A1612",
+              "content": "> Creating project structure:",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "DlJ9Q",
+              "x": 16,
+              "y": 164,
+              "fill": "#7A726880",
+              "content": "  [+] src/\n  [+] src/index.ts\n  [+] package.json\n  [+] .opcrc",
+              "lineHeight": 1.7,
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "JCZxP",
+              "x": 16,
+              "y": 276,
+              "fill": "$brand-green-term",
+              "content": "> STATUS: PROJECT READY",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "mL9p6",
+              "x": 16,
+              "y": 308,
+              "fill": "$brand-primary",
+              "content": "opc@terminal:~$ _",
+              "fontFamily": "Space Mono",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "REskN",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "BqeEW",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "khhrH",
+          "x": 1782,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "MOCKUP    10",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "r0C23",
+      "x": 26000,
+      "y": 0,
+      "name": "Brand — Hero Section",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "VG3d7",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "11 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "wvaGA",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "bVCKs",
+          "x": 0,
+          "y": 0,
+          "fill": "#FF6B0006",
+          "width": 1920,
+          "height": 1080
+        },
+        {
+          "type": "rectangle",
+          "id": "vtha9",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "5nI17",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "HERO SECTION",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "a3JXe",
+          "x": 60,
+          "y": 100,
+          "fill": "$brand-primary-dim",
+          "content": "+-[ OPC_ v2.4 ]---[ HERO TEMPLATE ]---[ WEB ]---------+",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "sXDwI",
+          "x": 60,
+          "y": 120,
+          "fill": "$brand-primary-dim",
+          "content": "|",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "pdncc",
+          "x": 80,
+          "y": 140,
+          "fill": "#1A1612",
+          "textGrowth": "fixed-width",
+          "width": 1200,
+          "content": ">_ build the terminal\n   generation.",
+          "lineHeight": 1.1,
+          "fontFamily": "Space Mono",
+          "fontSize": 96,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "pfPbc",
+          "x": 80,
+          "y": 400,
+          "fill": "$brand-amber",
+          "textGrowth": "fixed-width",
+          "width": 900,
+          "content": "OPC_ gives developers the tools to build faster, ship better.",
+          "fontFamily": "Space Mono",
+          "fontSize": 20,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "vN1Ky",
+          "x": 80,
+          "y": 470,
+          "fill": "$brand-dark",
+          "content": "> Get started",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "ywcxW",
+          "x": 80,
+          "y": 500,
+          "name": "CTA Primary",
+          "reusable": true,
+          "width": 200,
+          "height": 48,
+          "fill": "$brand-primary",
+          "children": [
+            {
+              "type": "text",
+              "id": "OoeJb",
+              "fill": "$brand-dark",
+              "content": "./GET STARTED",
+              "fontFamily": "Space Mono",
+              "fontSize": 14,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "3Mg0o",
+          "x": 300,
+          "y": 500,
+          "name": "CTA Secondary",
+          "reusable": true,
+          "width": 200,
+          "height": 48,
+          "fill": "#E8E4DA",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-primary"
+          },
+          "children": [
+            {
+              "type": "text",
+              "id": "0G0AT",
+              "fill": "$brand-primary",
+              "content": "./DOCS",
+              "fontFamily": "Space Mono",
+              "fontSize": 14
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "dEy1Q",
+          "x": 80,
+          "y": 880,
+          "fill": "$brand-primary-dim",
+          "content": ">_ build the terminal generation.",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "MSzUx",
+          "x": 80,
+          "y": 910,
+          "fill": "#7A726880",
+          "content": "opc.dev    github/opc    @opc_dev",
+          "fontFamily": "Space Mono",
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "KqGeP",
+          "x": 60,
+          "y": 952,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "htHos",
+          "x": 60,
+          "y": 968,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "yrmdd",
+          "x": 1762,
+          "y": 968,
+          "fill": "#7A726880",
+          "content": "HERO SECTION    11",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "VivFW",
+      "x": 28000,
+      "y": 0,
+      "name": "Brand — Media Print",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "fJBBf",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "12 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "VJlhL",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "PNGDg",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "OvUv4",
+          "x": 60,
+          "y": 80,
+          "fill": "$brand-primary",
+          "content": "MEDIA PRINT",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "GudHu",
+          "x": 60,
+          "y": 108,
+          "fill": "#1A1612",
+          "content": "PRINT COLLATERAL",
+          "fontFamily": "Space Mono",
+          "fontSize": 64,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "XTYtW",
+          "x": 60,
+          "y": 196,
+          "fill": "$brand-amber",
+          "content": "> Business cards, letterheads, and merchandise",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "BaynP",
+          "x": 60,
+          "y": 228,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "IshQi",
+          "x": 60,
+          "y": 244,
+          "fill": "$brand-primary",
+          "content": "-- BUSINESS CARD --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "bnYqW",
+          "x": 60,
+          "y": 268,
+          "name": "Business Card / Front",
+          "reusable": true,
+          "width": 504,
+          "height": 295,
+          "fill": "$brand-dark",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-primary"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "nudxW",
+              "x": 0,
+              "y": 0,
+              "fill": "$brand-primary",
+              "width": 4,
+              "height": 295
+            },
+            {
+              "type": "text",
+              "id": "HQGso",
+              "x": 28,
+              "y": 28,
+              "fill": "$brand-primary",
+              "content": "OPC_",
+              "fontFamily": "Space Mono",
+              "fontSize": 40,
+              "fontWeight": "900"
+            },
+            {
+              "type": "text",
+              "id": "PwgW0",
+              "x": 28,
+              "y": 80,
+              "fill": "$brand-amber",
+              "content": "OPEN PROTOCOL COMPUTING",
+              "fontFamily": "Space Mono",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "rectangle",
+              "id": "WZglO",
+              "x": 28,
+              "y": 100,
+              "fill": "$brand-primary-dim",
+              "width": 440,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "Zgqc6",
+              "x": 28,
+              "y": 116,
+              "fill": "#1A1612",
+              "content": "FIRSTNAME LASTNAME",
+              "fontFamily": "Space Mono",
+              "fontSize": 14,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "RTXet",
+              "x": 28,
+              "y": 140,
+              "fill": "#7A726880",
+              "content": ">_ Senior Developer",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "rp0VI",
+              "x": 28,
+              "y": 220,
+              "fill": "$brand-amber",
+              "content": "dev@opc.dev",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "ghijx",
+              "x": 28,
+              "y": 244,
+              "fill": "#7A726880",
+              "content": "opc.dev",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "4XWZh",
+          "x": 620,
+          "y": 244,
+          "fill": "$brand-primary",
+          "content": "-- LETTERHEAD --",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "8AiQU",
+          "x": 620,
+          "y": 268,
+          "name": "Letterhead / A4",
+          "reusable": true,
+          "width": 600,
+          "height": 400,
+          "fill": "$brand-dark",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "$brand-primary-dim"
+          },
+          "layout": "none",
+          "children": [
+            {
+              "type": "rectangle",
+              "id": "kcHCq",
+              "x": 0,
+              "y": 0,
+              "fill": "$brand-primary",
+              "width": 600,
+              "height": 4
+            },
+            {
+              "type": "text",
+              "id": "bYCta",
+              "x": 20,
+              "y": 20,
+              "fill": "$brand-primary",
+              "content": "OPC_",
+              "fontFamily": "Space Mono",
+              "fontSize": 24,
+              "fontWeight": "900"
+            },
+            {
+              "type": "text",
+              "id": "1qpDU",
+              "x": 20,
+              "y": 52,
+              "fill": "$brand-amber",
+              "content": "OPEN PROTOCOL COMPUTING",
+              "fontFamily": "Space Mono",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "rectangle",
+              "id": "hTW8f",
+              "x": 20,
+              "y": 76,
+              "fill": "$brand-primary-dim",
+              "width": 560,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "GSi6V",
+              "x": 20,
+              "y": 96,
+              "fill": "$brand-primary-dim",
+              "content": "+--[ DOCUMENT TITLE ]----------------------------+",
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "ObQnx",
+              "x": 20,
+              "y": 120,
+              "fill": "#7A726880",
+              "content": "lorem ipsum dolor sit amet,\nconsectetur adipiscing elit...",
+              "lineHeight": 1.8,
+              "fontFamily": "Space Mono",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "rectangle",
+              "id": "TKbST",
+              "x": 20,
+              "y": 360,
+              "fill": "$brand-primary-dim",
+              "width": 560,
+              "height": 1
+            },
+            {
+              "type": "text",
+              "id": "qIy1S",
+              "x": 20,
+              "y": 374,
+              "fill": "#7A726880",
+              "content": "opc.dev  |  dev@opc.dev  |  @opc_dev",
+              "fontFamily": "Space Mono",
+              "fontSize": 9,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "rectangle",
+          "id": "pVa7z",
+          "x": 60,
+          "y": 876,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "5mdfp",
+          "x": 60,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "fJkBv",
+          "x": 1770,
+          "y": 892,
+          "fill": "#7A726880",
+          "content": "MEDIA PRINT    12",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "A8M8i",
+      "x": 30000,
+      "y": 0,
+      "name": "Brand — Thank You",
+      "width": 1920,
+      "height": 1080,
+      "fill": "#FAF8F3",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "nMPvi",
+          "x": 60,
+          "y": 40,
+          "fill": "$brand-primary",
+          "content": "13 / 13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "A3nCQ",
+          "x": 1730,
+          "y": 40,
+          "fill": "#7A726880",
+          "content": "// BRAND GUIDELINE",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "zw92t",
+          "x": 60,
+          "y": 64,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "mUr6j",
+          "x": 0,
+          "y": 200,
+          "fill": "#FF6B0008",
+          "content": "                                                              ",
+          "fontFamily": "Space Mono",
+          "fontSize": 96,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "PdGwU",
+          "x": 60,
+          "y": 280,
+          "fill": "$brand-primary-dim",
+          "content": "+==========================================+",
+          "fontFamily": "Space Mono",
+          "fontSize": 20,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "sgaDJ",
+          "x": 60,
+          "y": 320,
+          "fill": "$brand-primary-dim",
+          "content": "|",
+          "fontFamily": "Space Mono",
+          "fontSize": 20,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "S4SUJ",
+          "x": 60,
+          "y": 340,
+          "fill": "$brand-primary",
+          "content": "|  thank you.",
+          "fontFamily": "Space Mono",
+          "fontSize": 96,
+          "fontWeight": "900"
+        },
+        {
+          "type": "text",
+          "id": "TkJ5L",
+          "x": 60,
+          "y": 476,
+          "fill": "$brand-primary-dim",
+          "content": "|",
+          "fontFamily": "Space Mono",
+          "fontSize": 20,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Q0n9Q",
+          "x": 60,
+          "y": 516,
+          "fill": "$brand-primary-dim",
+          "content": "+==========================================+",
+          "fontFamily": "Space Mono",
+          "fontSize": 20,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "5soG2",
+          "x": 60,
+          "y": 580,
+          "fill": "$brand-amber",
+          "content": "> for building with OPC_",
+          "fontFamily": "Space Mono",
+          "fontSize": 24,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "7whWj",
+          "x": 60,
+          "y": 620,
+          "fill": "#7A726880",
+          "content": "> for staying terminal",
+          "fontFamily": "Space Mono",
+          "fontSize": 24,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "o4hfw",
+          "x": 60,
+          "y": 660,
+          "fill": "#7A726880",
+          "content": "> for shipping, not just building",
+          "fontFamily": "Space Mono",
+          "fontSize": 24,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "Tg2YR",
+          "x": 60,
+          "y": 720,
+          "fill": "$brand-green-term",
+          "content": "> STATUS: BRAND LOADED",
+          "fontFamily": "Space Mono",
+          "fontSize": 16,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "MXhcH",
+          "x": 60,
+          "y": 780,
+          "fill": "#7A726880",
+          "content": "opc.dev  |  github/opc  |  @opc_dev",
+          "fontFamily": "Space Mono",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "rectangle",
+          "id": "a8ujB",
+          "x": 60,
+          "y": 820,
+          "fill": "$brand-primary-dim",
+          "width": 1800,
+          "height": 1
+        },
+        {
+          "type": "text",
+          "id": "5GQXE",
+          "x": 60,
+          "y": 836,
+          "fill": "#7A726880",
+          "content": "This document is confidential. (c) 2026 OPC_. All rights reserved.",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "ab5jx",
+          "x": 60,
+          "y": 860,
+          "fill": "#7A726880",
+          "content": "OPC_ BRAND IDENTITY",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "pEAf5",
+          "x": 1775,
+          "y": 860,
+          "fill": "#7A726880",
+          "content": "THANK YOU    13",
+          "fontFamily": "Space Mono",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "zLuXM",
+          "x": 1700,
+          "y": 960,
+          "fill": "$brand-primary-dim",
+          "content": "+--- EOF ---+",
+          "fontFamily": "Space Mono",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "brand-amber": {
+      "type": "color",
+      "value": "#FFB347"
+    },
+    "brand-border": {
+      "type": "color",
+      "value": "#FF6B0055"
+    },
+    "brand-dark": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#0D0D0D"
+        },
+        {
+          "value": "#1A1612"
+        }
+      ]
+    },
+    "brand-dark-2": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#1A1A1A"
+        },
+        {
+          "value": "#F0EDE5"
+        }
+      ]
+    },
+    "brand-dark-3": {
+      "type": "color",
+      "value": [
+        {
+          "value": "#2A2A2A"
+        },
+        {
+          "value": "#E8E4DA"
+        }
+      ]
+    },
+    "brand-green-term": {
+      "type": "color",
+      "value": "#39FF14"
+    },
+    "brand-primary": {
+      "type": "color",
+      "value": "#FF6B00"
+    },
+    "brand-primary-dim": {
+      "type": "color",
+      "value": "#FF6B0033"
+    },
+    "brand-primary-light": {
+      "type": "color",
+      "value": "#FF8C38"
+    },
+    "brand-white": {
+      "type": "color",
+      "value": "#F5F5F0"
+    },
+    "brand-white-dim": {
+      "type": "color",
+      "value": "#F5F5F066"
+    },
+    "font-display": {
+      "type": "string",
+      "value": [
+        {
+          "value": "IBM Plex Mono"
+        },
+        {
+          "value": "Space Grotesk"
+        }
+      ]
+    },
+    "font-mono": {
+      "type": "string",
+      "value": [
+        {
+          "value": "Courier New"
+        },
+        {
+          "value": "Space Mono"
+        }
+      ]
+    },
+    "radius-none": {
+      "type": "number",
+      "value": 0
+    },
+    "radius-sm": {
+      "type": "number",
+      "value": 2
+    },
+    "spacing-lg": {
+      "type": "number",
+      "value": 24
+    },
+    "spacing-md": {
+      "type": "number",
+      "value": 16
+    },
+    "spacing-sm": {
+      "type": "number",
+      "value": 8
+    },
+    "spacing-xl": {
+      "type": "number",
+      "value": 48
+    },
+    "spacing-xs": {
+      "type": "number",
+      "value": 4
+    },
+    "brand-bg": {
+      "type": "color",
+      "value": "#FAF8F3"
+    },
+    "brand-bg-card": {
+      "type": "color",
+      "value": "#F0EDE5"
+    },
+    "brand-bg-card-2": {
+      "type": "color",
+      "value": "#E8E4DA"
+    },
+    "brand-border-light": {
+      "type": "color",
+      "value": "#D4CFC4"
+    },
+    "brand-text-main": {
+      "type": "color",
+      "value": "#1A1612"
+    },
+    "brand-text-muted": {
+      "type": "color",
+      "value": "#7A7268"
+    }
+  }
+}
