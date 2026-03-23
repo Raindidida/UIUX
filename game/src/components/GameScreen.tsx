@@ -159,6 +159,8 @@ const GameScreen: React.FC<Props> = ({
   const rouletteVideoRef = useRef<VideoEvent | null>(null);
   // timeout 视频正在播放的标志（视频结束时才切换轮盘视频）
   const pendingTimeoutPenaltyRef = useRef(false);
+  // timeout 视频已结束但服务端结果尚未到达（联网模式网络延迟场景）
+  const timeoutVideoEndedWaitingRef = useRef(false);
   const penaltyFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // pendingRoulette 的 ref 副本，供 handleVideoEnded 读取（避免 stale closure）
   const pendingRouletteRef = useRef<PendingRoulette | undefined>(undefined);
@@ -310,6 +312,7 @@ const GameScreen: React.FC<Props> = ({
       roulettePhaseRef.current = null;
       rouletteVideoRef.current = null;
       pendingRouletteRef.current = undefined;
+      timeoutVideoEndedWaitingRef.current = false;
       clearFlash();
       rouletteDoneRef.current = false;
       return;
@@ -330,12 +333,22 @@ const GameScreen: React.FC<Props> = ({
     roulettePhaseRef.current = 'fire';
 
     if (pendingTimeoutPenaltyRef.current) {
-      // ★ timeout 视频还在播：只准备引用，不切换视频不闪光
-      //   handleVideoEnded 视频结束时会无缝切换
+      // ① timeout 视频还在播（离线模式 / 服务端极快响应）：
+      //    只准备引用，不切换视频不闪光
+      //    handleVideoEnded 视频结束时会无缝切换
       return () => clearFlash();
     }
 
-    // 正常路径（AI 罚款、联网模式）：立即切视频 + 闪光
+    if (timeoutVideoEndedWaitingRef.current) {
+      // ② timeout 视频已播完，服务端结果刚到（联网模式网络延迟）：
+      //    立即切换到轮盘视频，无需等待
+      timeoutVideoEndedWaitingRef.current = false;
+      setVideoEvent(fireVideo);
+      startFlash(hit);
+      return () => clearFlash();
+    }
+
+    // ③ 正常路径（AI 罚款、对手轮盘、不含 timeout 流程）：立即切视频 + 闪光
     setVideoEvent(fireVideo);
     startFlash(hit);
     return () => clearFlash();
@@ -343,7 +356,7 @@ const GameScreen: React.FC<Props> = ({
   }, [pendingRoulette]);
 
   // 视频播完 → 判断当前状态：
-  // 1) timeout 视频刚播完 → 无缝切换到已准备好的轮盘视频 + 闪光
+  // 1) timeout 视频刚播完 → 切换到已准备好的轮盘视频 / 等服务端结果
   // 2) 轮盘结果视频播完 → 显示结果文字
   const handleVideoEnded = useCallback(() => {
     if (pendingTimeoutPenaltyRef.current) {
@@ -352,11 +365,14 @@ const GameScreen: React.FC<Props> = ({
         clearTimeout(penaltyFallbackRef.current);
         penaltyFallbackRef.current = null;
       }
-      // pendingRoulette effect 已经把 rouletteVideoRef 和 phase 准备好了
-      // 直接切换视频（无任何 React 状态链延迟）
       if (rouletteVideoRef.current) {
+        // 结果已准备好（离线模式 / 服务端极快响应）→ 无缝切换
         setVideoEvent(rouletteVideoRef.current);
         startFlash(pendingRouletteRef.current?.hit ?? false);
+      } else {
+        // 服务端尚未回应（联网模式网络延迟）→ 标记等待
+        // pendingRoulette effect 收到结果后会立即切换（路径②）
+        timeoutVideoEndedWaitingRef.current = true;
       }
       return;
     }
