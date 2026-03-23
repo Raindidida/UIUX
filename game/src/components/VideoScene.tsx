@@ -20,7 +20,7 @@ export const VIDEO_MAP: Record<VideoEvent, string | null> = {
   'idle':                   '/videos/idle.mp4',
   'thinking':               '/videos/idle.mp4',
   'correct':                '/videos/correct.mp4',
-  'wrong':                  '/videos/wrong.mp4',
+  'wrong':                  '/videos/correct.mp4',   // 玩家成语提交输入.mp4（与 correct 共用同一文件）
   'timeout':                '/videos/timeout.mp4',
   'roulette-spin':          '/videos/idle.mp4',
   'roulette-bang-player':   '/videos/roulette-bang-player.mp4',

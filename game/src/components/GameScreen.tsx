@@ -188,8 +188,8 @@ const GameScreen: React.FC<Props> = ({
     }
   }, [clearFlash]);
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // 错误输入：视频正在播放的标志（onEnded 后恢复输入）
+  const wrongVideoPlayingRef = useRef(false);
   const timeoutCalledRef = useRef(false);
   const errorClearRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -204,6 +204,7 @@ const GameScreen: React.FC<Props> = ({
     setPhase('input');
     setIsSubmitting(false);
     timeoutCalledRef.current = false;
+    wrongVideoPlayingRef.current = false;
     if (errorClearRef.current) clearTimeout(errorClearRef.current);
     if (!isOnlineMode || isYourTurn) setTimeout(() => inputRef.current?.focus(), 100);
   }, [currentIdiom, isYourTurn, isOnlineMode]);
@@ -261,17 +262,22 @@ const GameScreen: React.FC<Props> = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startFlash]);
 
-  const showErrorAndResume = useCallback((err: FunnyError) => {
-    setErrorInfo(err);
-    setErrorKey(k => k + 1);
-    setVideoEvent('wrong');
+  const showErrorAndResume = useCallback((_err: FunnyError) => {
+    // 不显示错误浮层（不要闪屏），锁定输入等视频播完
+    setPhase('success');
+    setVideoEvent('wrong');           // 播放 玩家成语提交输入.mp4（无缝）
     setInputValue('');
+    wrongVideoPlayingRef.current = true;
+    // 兜底：5s 内视频未触发 onEnded 则强制恢复（文件缺失等）
     if (errorClearRef.current) clearTimeout(errorClearRef.current);
     errorClearRef.current = setTimeout(() => {
-      setErrorInfo(null);
-      setVideoEvent('idle');
-      inputRef.current?.focus();
-    }, 1200);
+      if (wrongVideoPlayingRef.current) {
+        wrongVideoPlayingRef.current = false;
+        setVideoEvent('idle');
+        setPhase('input');
+        setTimeout(() => inputRef.current?.focus(), 50);
+      }
+    }, 5000);
   }, []);
 
   const handleSubmit = useCallback(async () => {
@@ -357,7 +363,8 @@ const GameScreen: React.FC<Props> = ({
 
   // 视频播完 → 判断当前状态：
   // 1) timeout 视频刚播完 → 切换到已准备好的轮盘视频 / 等服务端结果
-  // 2) 轮盘结果视频播完 → 显示结果文字
+  // 2) wrong 视频刚播完 → 无缝恢复输入（无 errorInfo，无闪屏）
+  // 3) 轮盘结果视频播完 → 显示结果文字
   const handleVideoEnded = useCallback(() => {
     if (pendingTimeoutPenaltyRef.current) {
       pendingTimeoutPenaltyRef.current = false;
@@ -366,14 +373,23 @@ const GameScreen: React.FC<Props> = ({
         penaltyFallbackRef.current = null;
       }
       if (rouletteVideoRef.current) {
-        // 结果已准备好（离线模式 / 服务端极快响应）→ 无缝切换
         setVideoEvent(rouletteVideoRef.current);
         startFlash(pendingRouletteRef.current?.hit ?? false);
       } else {
-        // 服务端尚未回应（联网模式网络延迟）→ 标记等待
-        // pendingRoulette effect 收到结果后会立即切换（路径②）
         timeoutVideoEndedWaitingRef.current = true;
       }
+      return;
+    }
+    // wrong 视频播完 → 恢复输入，无闪屏
+    if (wrongVideoPlayingRef.current) {
+      wrongVideoPlayingRef.current = false;
+      if (errorClearRef.current) {
+        clearTimeout(errorClearRef.current);
+        errorClearRef.current = null;
+      }
+      setVideoEvent('idle');
+      setPhase('input');
+      setTimeout(() => inputRef.current?.focus(), 50);
       return;
     }
     if (roulettePhaseRef.current !== 'fire') return;
