@@ -292,6 +292,8 @@ const GameScreen: React.FC<Props> = ({
     setVideoEvent('thinking');
     try {
       const result = await validateIdiomWithAI(trimmed);
+      // 若等待期间倒计时已结束，放弃本次提交（由 handleTimeout 接管）
+      if (timeoutCalledRef.current) { setIsSubmitting(false); setValidatePhase('idle'); setValidateMsg(''); return; }
       setValidatePhase('done'); setValidateMsg('');
       if (!result.isIdiom) { setIsSubmitting(false); showErrorAndResume(getRandomError('not-idiom')); return; }
       const inputFirst = { char: result.firstChar, pinyin: result.firstPinyin };
@@ -302,6 +304,8 @@ const GameScreen: React.FC<Props> = ({
       const successIdiom: Idiom = { text: trimmed, first: result.firstPinyin, last: result.lastPinyin };
       setTimeout(() => onCorrect(successIdiom), 1600);
     } catch {
+      // 若等待期间倒计时已结束，放弃（由 handleTimeout 接管）
+      if (timeoutCalledRef.current) { setIsSubmitting(false); setValidatePhase('idle'); setValidateMsg(''); return; }
       setValidatePhase('done'); setValidateMsg('');
       const { findIdiom, isValidChain } = await import('../data/idioms');
       const found = findIdiom(trimmed);
@@ -321,6 +325,9 @@ const GameScreen: React.FC<Props> = ({
       rouletteVideoRef.current = null;
       pendingRouletteRef.current = undefined;
       timeoutVideoEndedWaitingRef.current = false;
+      // Bug4 fix: 确保 wrong 残留状态在轮盘结束后也被清理
+      wrongVideoPlayingRef.current = false;
+      if (errorClearRef.current) { clearTimeout(errorClearRef.current); errorClearRef.current = null; }
       clearFlash();
       rouletteDoneRef.current = false;
       return;
@@ -329,6 +336,9 @@ const GameScreen: React.FC<Props> = ({
     pendingRouletteRef.current = pendingRoulette;
     stopTimer();
     rouletteDoneRef.current = false;
+
+    // Bug3 fix: 轮盘开始时清除错误信息浮层（避免与轮盘结果 UI 叠层）
+    setErrorInfo(null);
 
     const { target, hit } = pendingRoulette;
     const fireVideo: VideoEvent = target === 'player'
@@ -370,6 +380,9 @@ const GameScreen: React.FC<Props> = ({
   const handleVideoEnded = useCallback(() => {
     if (pendingTimeoutPenaltyRef.current) {
       pendingTimeoutPenaltyRef.current = false;
+      // 清除可能同时存在的 wrong 视频标记（竞态：timeout 与 AI 验证同时触发）
+      wrongVideoPlayingRef.current = false;
+      if (errorClearRef.current) { clearTimeout(errorClearRef.current); errorClearRef.current = null; }
       if (penaltyFallbackRef.current) {
         clearTimeout(penaltyFallbackRef.current);
         penaltyFallbackRef.current = null;
