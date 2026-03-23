@@ -21,7 +21,7 @@ export const VIDEO_MAP: Record<VideoEvent, string | null> = {
   'thinking':               '/videos/idle.mp4',
   'correct':                '/videos/correct.mp4',
   'wrong':                  '/videos/wrong.mp4',
-  'timeout':                '/videos/wrong.mp4',
+  'timeout':                '/videos/timeout.mp4',
   'roulette-spin':          '/videos/idle.mp4',
   'roulette-bang-player':   '/videos/roulette-bang-player.mp4',
   'roulette-miss-player':   '/videos/roulette-miss-player.mp4',

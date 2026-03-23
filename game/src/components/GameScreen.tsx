@@ -155,15 +155,36 @@ const GameScreen: React.FC<Props> = ({
   const [flashWhite, setFlashWhite] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
   const rouletteDoneRef = useRef(false);
-  // 用 ref 跟踪当前相位 & 当前轮盘视频事件，避免 stale closure
   const roulettePhaseRef = useRef<RoulettePhase | null>(null);
   const rouletteVideoRef = useRef<VideoEvent | null>(null);
-  // 等待 wrong/timeout 视频播完后触发轮盘的标志
+  // timeout 视频正在播放的标志（视频结束时才切换轮盘视频）
   const pendingTimeoutPenaltyRef = useRef(false);
   const penaltyFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // onPenalty 的稳定 ref，避免 stale closure
+  // pendingRoulette 的 ref 副本，供 handleVideoEnded 读取（避免 stale closure）
+  const pendingRouletteRef = useRef<PendingRoulette | undefined>(undefined);
+  // onPenalty 的稳定 ref
   const onPenaltyRef = useRef(onPenalty);
   useEffect(() => { onPenaltyRef.current = onPenalty; }, [onPenalty]);
+
+  // ── 闪光定时器（统一管理，避免重复或遗漏清理）─────────────
+  const flashTimers = useRef<{t1?: ReturnType<typeof setTimeout>; t2?: ReturnType<typeof setTimeout>; t3?: ReturnType<typeof setTimeout>}>({});
+  const clearFlash = useCallback(() => {
+    clearTimeout(flashTimers.current.t1);
+    clearTimeout(flashTimers.current.t2);
+    clearTimeout(flashTimers.current.t3);
+    flashTimers.current = {};
+    setFlashWhite(false);
+    setFlashRed(false);
+  }, []);
+  const startFlash = useCallback((hit: boolean) => {
+    clearFlash();
+    setFlashWhite(true);
+    flashTimers.current.t1 = setTimeout(() => setFlashWhite(false), hit ? 400 : 150);
+    if (hit) {
+      flashTimers.current.t2 = setTimeout(() => setFlashRed(true), 80);
+      flashTimers.current.t3 = setTimeout(() => setFlashRed(false), 520);
+    }
+  }, [clearFlash]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -215,21 +236,28 @@ const GameScreen: React.FC<Props> = ({
     timeoutCalledRef.current = true;
     stopTimer();
     setPhase('success');
-    setVideoEvent('timeout');
+    setVideoEvent('timeout');          // 立即播放倒计时结束视频
     setErrorInfo(getRandomError('timeout'));
     setErrorKey(k => k + 1);
-    // 标记：等 wrong/timeout 视频播完后再触发轮盘
+    // 标记 timeout 视频正在播放
     pendingTimeoutPenaltyRef.current = true;
-    // 兜底：视频超过 5s 还没结束（文件缺失等）则强制触发
+    // ★ 立即触发 onPenalty，后台 0.001s 同步算出轮盘结果
+    //   pendingRoulette effect 会准备好下一个视频引用，
+    //   等 timeout 视频自然播完后 handleVideoEnded 无缝切换
+    onPenaltyRef.current('timeout');
+    // 兜底：5s 内视频未结束（文件缺失等）则强制切
     if (penaltyFallbackRef.current) clearTimeout(penaltyFallbackRef.current);
     penaltyFallbackRef.current = setTimeout(() => {
       if (pendingTimeoutPenaltyRef.current) {
         pendingTimeoutPenaltyRef.current = false;
-        onPenaltyRef.current('timeout');
+        if (rouletteVideoRef.current) {
+          setVideoEvent(rouletteVideoRef.current);
+          startFlash(pendingRouletteRef.current?.hit ?? false);
+        }
       }
     }, 5000);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [startFlash]);
 
   const showErrorAndResume = useCallback((err: FunnyError) => {
     setErrorInfo(err);
@@ -281,17 +309,13 @@ const GameScreen: React.FC<Props> = ({
       setRoulettePhase(null);
       roulettePhaseRef.current = null;
       rouletteVideoRef.current = null;
-      setFlashWhite(false);
-      setFlashRed(false);
+      pendingRouletteRef.current = undefined;
+      clearFlash();
       rouletteDoneRef.current = false;
       return;
     }
-    // pendingRoulette 刚设好 → 清理 wrong 视频的兜底定时器（视频已结束）
-    pendingTimeoutPenaltyRef.current = false;
-    if (penaltyFallbackRef.current) {
-      clearTimeout(penaltyFallbackRef.current);
-      penaltyFallbackRef.current = null;
-    }
+    // 同步到 ref（供 handleVideoEnded 等读取）
+    pendingRouletteRef.current = pendingRoulette;
     stopTimer();
     rouletteDoneRef.current = false;
 
@@ -300,32 +324,27 @@ const GameScreen: React.FC<Props> = ({
       ? (hit ? 'roulette-bang-player' : 'roulette-miss-player')
       : (hit ? 'roulette-bang-opponent' : 'roulette-miss-opponent');
 
-    // 记录本次轮盘期待的视频，避免 wrong.mp4/correct.mp4 误触发
+    // 始终准备好 ref（handleVideoEnded 和兜底定时器会用到）
     rouletteVideoRef.current = fireVideo;
-    setVideoEvent(fireVideo);
-
-    // 开枪瞬间闪光
-    setFlashWhite(true);
-    const t1 = setTimeout(() => setFlashWhite(false), hit ? 400 : 150);
-    const t2 = hit ? setTimeout(() => setFlashRed(true), 80) : undefined;
-    const t3 = hit ? setTimeout(() => setFlashRed(false), 520) : undefined;
-
     setRoulettePhase('fire');
     roulettePhaseRef.current = 'fire';
 
-    return () => {
-      clearTimeout(t1);
-      if (t2) clearTimeout(t2);
-      if (t3) clearTimeout(t3);
-      setFlashWhite(false);
-      setFlashRed(false);
-    };
+    if (pendingTimeoutPenaltyRef.current) {
+      // ★ timeout 视频还在播：只准备引用，不切换视频不闪光
+      //   handleVideoEnded 视频结束时会无缝切换
+      return () => clearFlash();
+    }
+
+    // 正常路径（AI 罚款、联网模式）：立即切视频 + 闪光
+    setVideoEvent(fireVideo);
+    startFlash(hit);
+    return () => clearFlash();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingRoulette]);
 
-  // 视频播完 → 判断当前等待什么：
-  // 1) 等待 wrong/timeout 视频播完 → 触发轮盘 onPenalty
-  // 2) 等待轮盘结果视频播完 → 显示结果文字
+  // 视频播完 → 判断当前状态：
+  // 1) timeout 视频刚播完 → 无缝切换到已准备好的轮盘视频 + 闪光
+  // 2) 轮盘结果视频播完 → 显示结果文字
   const handleVideoEnded = useCallback(() => {
     if (pendingTimeoutPenaltyRef.current) {
       pendingTimeoutPenaltyRef.current = false;
@@ -333,7 +352,12 @@ const GameScreen: React.FC<Props> = ({
         clearTimeout(penaltyFallbackRef.current);
         penaltyFallbackRef.current = null;
       }
-      onPenaltyRef.current('timeout');
+      // pendingRoulette effect 已经把 rouletteVideoRef 和 phase 准备好了
+      // 直接切换视频（无任何 React 状态链延迟）
+      if (rouletteVideoRef.current) {
+        setVideoEvent(rouletteVideoRef.current);
+        startFlash(pendingRouletteRef.current?.hit ?? false);
+      }
       return;
     }
     if (roulettePhaseRef.current !== 'fire') return;
