@@ -502,7 +502,7 @@ const App: React.FC = () => {
       const { nextSlots, hit, chamberId } = fireOnce(prev.aiSlots);
       return {
         ...prev,
-        screen: 'game' as Screen,  // 留在游戏界面，通过浮层展示
+        screen: 'ai-turn' as Screen,  // 保持在 ai-turn，AITurnOverlay 会自然消失，GameScreen 展示轮盘
         aiSlots: nextSlots,
         pendingRoulette: { target: 'ai', hit, chamber: chamberId },
       };

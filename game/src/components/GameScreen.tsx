@@ -66,98 +66,54 @@ const ScrambledText: React.FC<{ length: number }> = ({ length }) => {
   return <span className="tracking-widest text-violet-400 font-bold text-lg select-none blur-[1px]">{chars.join('')}</span>;
 };
 
-// ── 轮盘阶段类型 ──────────────────────────────────────────────
-type RoulettePhase = 'spin' | 'countdown' | 'fire' | 'result';
+// ── 轮盘阶段类型（简化：无倒计时）─────────────────────────────
+type RoulettePhase = 'fire' | 'result';
 
-// ── 轮盘结果浮层（纯展示，状态由 GameScreen 管理）────────────────
+// ── 轮盘结果浮层（纯展示）────────────────────────────────────
 const RouletteOverlay: React.FC<{
   phase: RoulettePhase;
-  countdown: number;
   hit: boolean;
   isPlayer: boolean;
   opponentName: string;
   flashWhite: boolean;
   flashRed: boolean;
-}> = ({ phase, countdown, hit, isPlayer, opponentName, flashWhite, flashRed }) => (
+}> = ({ phase, hit, isPlayer, opponentName, flashWhite, flashRed }) => (
   <>
     {/* 开枪白闪 */}
     {flashWhite && <div className="fixed inset-0 z-[500] bg-white/85 pointer-events-none" />}
     {/* 中弹红屏 */}
     {flashRed && <div className="fixed inset-0 z-[499] bg-red-800/55 pointer-events-none" />}
 
-    {/* 主浮层内容 */}
-    <div className="absolute inset-0 z-[100] flex items-center justify-center pointer-events-none">
-      <div className="text-center">
-
-        {/* 弹仓旋转 */}
-        {phase === 'spin' && (
-          <div className="font-pixel text-[14px] text-zinc-300 tracking-[0.5em] animate-pulse drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-            ⟳ &nbsp;弹仓旋转中…
-          </div>
-        )}
-
-        {/* 倒计时 */}
-        {phase === 'countdown' && (
-          <div className="space-y-3">
-            <div className="font-pixel text-[9px] text-zinc-400 tracking-[0.4em] drop-shadow-[0_2px_4px_black]">
-              {isPlayer ? '— 接受轮盘惩罚 —' : `— ${opponentName} 接受轮盘惩罚 —`}
-            </div>
-            <div
-              className={`font-pixel font-black leading-none tabular-nums
-                drop-shadow-[0_0_40px_currentColor]
-                ${countdown <= 1
-                  ? 'text-red-500 animate-blink text-[100px]'
-                  : countdown <= 2
-                    ? 'text-orange-400 text-[96px]'
-                    : 'text-yellow-300 text-[92px]'
-                }`}
-            >
-              {countdown}
-            </div>
-            <div className="font-pixel text-[7px] text-zinc-600 tracking-[0.6em]">
-              AUTO · FIRE
-            </div>
-          </div>
-        )}
-
-        {/* 开枪瞬间 */}
-        {phase === 'fire' && (
-          <div className={`text-[72px] leading-none drop-shadow-[0_0_24px_currentColor] ${hit ? 'text-red-500' : 'text-zinc-200'}`}>
-            {hit ? '💥' : '💨'}
-          </div>
-        )}
-
-        {/* 结果 */}
-        {phase === 'result' && (
-          <div className="space-y-4 animate-slide-up">
-            {hit ? (
-              <>
-                <div className={`
-                  font-black tracking-wider leading-tight text-[40px]
-                  drop-shadow-[0_0_30px_currentColor]
-                  ${isPlayer ? 'text-red-400' : 'text-yellow-300'}
-                `}>
-                  {isPlayer ? '💀 你中弹了！' : `🎯 ${opponentName} 中弹！`}
-                </div>
-                <div className="font-pixel text-[10px] text-zinc-400 tracking-[0.5em]">
-                  {isPlayer ? 'GAME · OVER' : 'ENEMY · ELIMINATED'}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="font-black tracking-wider leading-tight text-[38px] text-emerald-300 drop-shadow-[0_0_30px_currentColor]">
-                  {isPlayer ? '🕳 空枪！捡了一命' : `😤 ${opponentName} 侥幸存活`}
-                </div>
-                <div className="font-pixel text-[10px] text-zinc-500 tracking-[0.5em]">
-                  {isPlayer ? 'SURVIVED · CONTINUE' : 'ENEMY · LIVES · ON'}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
+    {/* 结果文字（视频播完后显示）*/}
+    {phase === 'result' && (
+      <div className="absolute inset-0 z-[100] flex items-center justify-center pointer-events-none">
+        <div className="text-center space-y-4 animate-slide-up">
+          {hit ? (
+            <>
+              <div className={`
+                font-black tracking-wider leading-tight text-[42px]
+                drop-shadow-[0_0_30px_currentColor]
+                ${isPlayer ? 'text-red-400' : 'text-yellow-300'}
+              `}>
+                {isPlayer ? '💀 你中弹了！' : `🎯 ${opponentName} 中弹！`}
+              </div>
+              <div className="font-pixel text-[10px] text-zinc-400 tracking-[0.5em]">
+                {isPlayer ? 'GAME · OVER' : 'ENEMY · ELIMINATED'}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="font-black tracking-wider leading-tight text-[38px] text-emerald-300 drop-shadow-[0_0_30px_currentColor]">
+                {isPlayer ? '🕳 空枪！捡了一命' : `😤 ${opponentName} 侥幸存活`}
+              </div>
+              <div className="font-pixel text-[10px] text-zinc-500 tracking-[0.5em]">
+                {isPlayer ? 'SURVIVED · CONTINUE' : 'ENEMY · LIVES · ON'}
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    )}
   </>
 );
 
@@ -196,7 +152,6 @@ const GameScreen: React.FC<Props> = ({
 
   // ── 轮盘状态（内嵌管理）───────────────────────────────────
   const [roulettePhase, setRoulettePhase] = useState<RoulettePhase | null>(null);
-  const [rouletteCountdown, setRouletteCountdown] = useState(3);
   const [flashWhite, setFlashWhite] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
   const rouletteDoneRef = useRef(false);
@@ -301,53 +256,56 @@ const GameScreen: React.FC<Props> = ({
     }
   }, [phase, isSubmitting, inputValue, currentIdiom, onCorrect, showErrorAndResume]);
 
-  // ═══ 轮盘状态机（由 pendingRoulette prop 驱动）════════════
+  // ═══ 轮盘状态机：pendingRoulette → 直接播视频 → 视频结束 → 结果文字 ════
   useEffect(() => {
     if (!pendingRoulette) {
       setRoulettePhase(null);
+      setFlashWhite(false);
+      setFlashRed(false);
       rouletteDoneRef.current = false;
       return;
     }
     stopTimer();
-    setRoulettePhase('spin');
-    setRouletteCountdown(3);
     rouletteDoneRef.current = false;
-    setVideoEvent('roulette-spin');
-    const t = setTimeout(() => setRoulettePhase('countdown'), 1000);
-    return () => clearTimeout(t);
+
+    const { target, hit } = pendingRoulette;
+    // 立刻切到对应结果视频
+    if (target === 'player') setVideoEvent(hit ? 'roulette-bang-player' : 'roulette-miss-player');
+    else setVideoEvent(hit ? 'roulette-bang-opponent' : 'roulette-miss-opponent');
+
+    // 视频开始时的闪光（模拟开枪瞬间）
+    setFlashWhite(true);
+    const tW = setTimeout(() => setFlashWhite(false), hit ? 400 : 150);
+    let tR: ReturnType<typeof setTimeout> | undefined;
+    if (hit) {
+      tR = setTimeout(() => setFlashRed(true), 80);
+      setTimeout(() => setFlashRed(false), 500);
+    }
+
+    setRoulettePhase('fire');
+
+    return () => {
+      clearTimeout(tW);
+      if (tR) clearTimeout(tR);
+      setFlashWhite(false);
+      setFlashRed(false);
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingRoulette]);
 
-  useEffect(() => {
-    if (roulettePhase !== 'countdown') return;
-    if (rouletteCountdown <= 0) { setRoulettePhase('fire'); return; }
-    const t = setTimeout(() => setRouletteCountdown(c => c - 1), 1000);
-    return () => clearTimeout(t);
-  }, [roulettePhase, rouletteCountdown]);
-
-  useEffect(() => {
-    if (roulettePhase !== 'fire' || !pendingRoulette) return;
-    const { target, hit } = pendingRoulette;
-    // 切换结果视频
-    if (target === 'player') setVideoEvent(hit ? 'roulette-bang-player' : 'roulette-miss-player');
-    else setVideoEvent(hit ? 'roulette-bang-opponent' : 'roulette-miss-opponent');
-    // 闪光效果
-    setFlashWhite(true);
-    setTimeout(() => setFlashWhite(false), hit ? 500 : 200);
-    if (hit) {
-      setTimeout(() => setFlashRed(true), 100);
-      setTimeout(() => { setFlashRed(false); setRoulettePhase('result'); }, 900);
-    } else {
-      setTimeout(() => setRoulettePhase('result'), 700);
+  // 视频播完 → 显示结果文字
+  const handleVideoEnded = useCallback(() => {
+    if (roulettePhase === 'fire') {
+      setRoulettePhase('result');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roulettePhase]);
 
+  // 结果文字展示 1s 后触发完成回调
   useEffect(() => {
     if (roulettePhase !== 'result' || !pendingRoulette || rouletteDoneRef.current) return;
     rouletteDoneRef.current = true;
     const { target, hit } = pendingRoulette;
-    const t = setTimeout(() => onRouletteComplete?.(target, !hit), 2500);
+    const t = setTimeout(() => onRouletteComplete?.(target, !hit), 1000);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roulettePhase, pendingRoulette]);
@@ -365,14 +323,13 @@ const GameScreen: React.FC<Props> = ({
 
       {/* ══ 全屏视频背景（z-0）══ */}
       <div className="absolute inset-0 z-0">
-        <VideoScene event={videoEvent} fill className="w-full h-full" />
+        <VideoScene event={videoEvent} fill className="w-full h-full" onEnded={handleVideoEnded} />
       </div>
 
       {/* ══ 开枪/中弹闪光（由 RouletteOverlay 渲染，z-500/499）══ */}
       {hasRoulette && (
         <RouletteOverlay
           phase={roulettePhase!}
-          countdown={rouletteCountdown}
           hit={pendingRoulette!.hit}
           isPlayer={pendingRoulette!.target === 'player'}
           opponentName={opponentName}

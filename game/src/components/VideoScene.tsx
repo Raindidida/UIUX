@@ -73,6 +73,8 @@ interface Props {
   className?: string;
   /** fill=true 时铺满父容器，不限制 16:9 比例 */
   fill?: boolean;
+  /** 非循环视频播放结束时回调 */
+  onEnded?: () => void;
 }
 
 /**
@@ -81,7 +83,7 @@ interface Props {
  * - 切换时：将新视频加载到不可见的那个槽，开始播放后交换 opacity
  * - CSS transition 实现无黑帧的淡入淡出
  */
-const VideoScene: React.FC<Props> = ({ event, className = '', fill = false }) => {
+const VideoScene: React.FC<Props> = ({ event, className = '', fill = false, onEnded }) => {
   const refA = useRef<HTMLVideoElement>(null);
   const refB = useRef<HTMLVideoElement>(null);
 
@@ -219,10 +221,12 @@ const VideoScene: React.FC<Props> = ({ event, className = '', fill = false }) =>
       )}
 
       {/* Slot A */}
-      <video ref={refA} muted playsInline style={slotStyle(activeIsA)} />
+      <video ref={refA} muted playsInline style={slotStyle(activeIsA)}
+        onEnded={activeIsA ? onEnded : undefined} />
 
       {/* Slot B */}
-      <video ref={refB} muted playsInline style={slotStyle(!activeIsA)} />
+      <video ref={refB} muted playsInline style={slotStyle(!activeIsA)}
+        onEnded={!activeIsA ? onEnded : undefined} />
 
       {/* 内边框点缀 */}
       <div
