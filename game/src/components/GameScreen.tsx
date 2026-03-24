@@ -191,7 +191,8 @@ const GameScreen: React.FC<Props> = ({
   useEffect(() => {
     setInputValue('');
     setTimeLeft(timerMax);
-    setVideoEvent('idle');
+    // 轮盘正在进行时不覆盖轮盘视频（game:state-update 与 game:roulette 几乎同时到达时的竞态保护）
+    if (!pendingRouletteRef.current) setVideoEvent('idle');
     setValidatePhase('idle');
     setValidateMsg('');
     setPhase('input');
@@ -641,4 +642,3 @@ const GameScreen: React.FC<Props> = ({
 };
 
 export default GameScreen;
-export type { PendingRoulette };

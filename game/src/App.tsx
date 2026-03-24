@@ -109,6 +109,8 @@ interface AppState {
   aiSlots: BulletSlot[];       // AI弹仓
   // 轮盘（内嵌在游戏界面展示，不跳转独立页面）
   pendingRoulette?: PendingRoulette;
+  // game:over 在轮盘动画期间到达时暂存，等动画结束再跳结果页
+  pendingGameOver?: { winner: 'you' | 'opponent' | 'draw'; reason: 'roulette' | 'opponent-left'; chainHistory: string[]; rounds: number };
   // 联网模式
   online?: OnlineState;
   onlineWinner?: 'you' | 'opponent' | 'draw';
@@ -308,15 +310,29 @@ const App: React.FC = () => {
 
     // 游戏结束
     const offOver = onGameOver((data: GameOverPayload) => {
-      setAppState(prev => ({
-        ...prev,
-        screen: 'result',
-        isVictory: data.winner === 'you',
-        chainHistory: data.stats.chainHistory,
-        round: data.stats.rounds,
-        onlineWinner: data.winner,
-        onlineEndReason: data.reason,
-      }));
+      setAppState(prev => {
+        // 如果轮盘动画正在进行，暂存结果，等动画播完再跳转
+        if (prev.pendingRoulette) {
+          return {
+            ...prev,
+            pendingGameOver: {
+              winner: data.winner,
+              reason: data.reason,
+              chainHistory: data.stats.chainHistory,
+              rounds: data.stats.rounds,
+            },
+          };
+        }
+        return {
+          ...prev,
+          screen: 'result',
+          isVictory: data.winner === 'you',
+          chainHistory: data.stats.chainHistory,
+          round: data.stats.rounds,
+          onlineWinner: data.winner,
+          onlineEndReason: data.reason,
+        };
+      });
     });
 
     // 服务端游戏状态同步
@@ -419,7 +435,24 @@ const App: React.FC = () => {
 
   // ── 联网模式：轮盘动画结束（服务端已仲裁，仅清除浮层）──
   const handleOnlineRouletteResult = useCallback((_target: 'player' | 'ai', _survived: boolean) => {
-    setAppState(prev => ({ ...prev, pendingRoulette: undefined }));
+    setAppState(prev => {
+      // 如果有暂存的 game:over，现在跳结果页
+      if (prev.pendingGameOver) {
+        const go = prev.pendingGameOver;
+        return {
+          ...prev,
+          pendingRoulette: undefined,
+          pendingGameOver: undefined,
+          screen: 'result' as const,
+          isVictory: go.winner === 'you',
+          chainHistory: go.chainHistory,
+          round: go.rounds,
+          onlineWinner: go.winner,
+          onlineEndReason: go.reason,
+        };
+      }
+      return { ...prev, pendingRoulette: undefined };
+    });
   }, []);
 
   const handlePlayerCorrect = useCallback((inputIdiom: Idiom) => {
