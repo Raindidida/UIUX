@@ -1,14 +1,13 @@
 ---
 name: polish
-description: Final quality pass before shipping. Fixes alignment, spacing, consistency, and detail issues that separate good from great.
-user-invokable: true
-args:
-  - name: target
-    description: The feature or area to polish (optional)
-    required: false
+description: Performs a final quality pass fixing alignment, spacing, consistency, and micro-detail issues before shipping. Use when the user mentions polish, finishing touches, pre-launch review, something looks off, or wants to go from good to great.
 ---
 
-**First**: Use the frontend-design skill for design principles and anti-patterns.
+## MANDATORY PREPARATION
+
+Invoke /impeccable — it contains design principles, anti-patterns, and the **Context Gathering Protocol**. Follow the protocol before proceeding — if no design context exists yet, you MUST run /impeccable teach first. Additionally gather: quality bar (MVP vs flagship).
+
+---
 
 Perform a meticulous final pass to catch all the small details that separate good work from great work. The difference between shipped and polished.
 
