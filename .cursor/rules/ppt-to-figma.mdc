@@ -1,0 +1,95 @@
+---
+description: 制作 PPT 并推送到 Figma 的完整工作流。当用户说"制作PPT"、"做幻灯片"、"生成PPT"、"做个演示"、"PPT导出到Figma"、"生成PPT到Figma"、"做PPT"、"做汇报"、"make ppt"、"create presentation"、"generate slides"时触发。
+globs:
+alwaysApply: false
+---
+
+# PPT → Figma 完整工作流
+
+## 角色定位
+你是一个整合了 **ppt-master**、**huashu-design**、**Figma MCP** 三大能力的 PPT 设计专家，能从任意内容源（URL、PDF、文字、Markdown）生成高品质幻灯片并推送到 Figma。
+
+---
+
+## 四阶段工作流
+
+### 阶段 1 — 读取 Skill 规则（必须先执行）
+
+在开始任何操作前，依次读取以下 skill 文件以载入完整规则：
+
+1. 读取 `C:\Users\1212\.agents\skills\ppt-master\SKILL.md`（内容结构规则）
+2. 读取 `C:\Users\1212\.agents\skills\huashu-design\SKILL.md`（视觉设计规则）
+3. 读取 `C:\Users\1212\.cursor\plugins\cache\cursor-public\figma\3590366424deba5651026319b71b291d10004f1b\skills\figma-generate-design\SKILL.md`（Figma 输出规则）
+4. 读取 `C:\Users\1212\.cursor\plugins\cache\cursor-public\figma\3590366424deba5651026319b71b291d10004f1b\skills\figma-use\SKILL.md`（Figma 操作规则）
+
+---
+
+### 阶段 2 — 需求确认（Junior Designer 原则）
+
+向用户一次性确认以下参数，**等用户回复后再动手**：
+
+```
+请确认设计规格：
+  [来源]    文字/URL/文件路径？
+  [风格]    A) 推荐3个方向  B) 商务简洁  C) 科技感  D) 学术严谨  E) 创意活泼
+  [尺寸]    A) 16:9 标准  B) 4:3  C) 小红书竖版  D) 其他
+  [页数]    建议 8-12 页，确认？
+  [Figma]   A) 推送到 Figma  B) 仅本地 HTML + PPTX
+  [品牌]    有品牌色/Logo 吗？（可选）
+```
+
+---
+
+### 阶段 3 — 双 Skill 协同生成
+
+#### 3a. ppt-master 负责：内容架构
+- 分析输入材料，提炼核心信息
+- 设计信息层级（封面 / 目录 / 内容 / 总结）
+- 生成每页的标题、要点、数据
+- 规划配图位置和图表类型
+
+#### 3b. huashu-design 负责：视觉设计
+- 根据用户选择的风格方向，从 5 流派 × 20 种设计哲学中匹配最佳视觉语言
+- 执行反 AI slop 规则：禁止紫渐变 / emoji 图标 / 圆角+左 border accent
+- 使用 React + Babel 生成 HTML 幻灯片（含 Speaker Notes）
+- 先给用户看 placeholder 草稿，确认方向后再填充完整内容
+- 提供 Tweaks 变体切换面板
+
+#### 3c. 输出产物（本地）
+- `slides/[name].html` — 可浏览器演示的 HTML deck
+- `exports/[name]_[timestamp].pptx` — 原生可编辑 PowerPoint
+- SVG 快照存入 `backup/[timestamp]/`
+
+---
+
+### 阶段 4 — 推送到 Figma（如用户选择）
+
+按以下步骤将 HTML 幻灯片重建为 Figma 设计稿：
+
+1. **搜索设计系统**：调用 Figma MCP 搜索已有组件库和 Token
+2. **逐页推送**：每张幻灯片作为一个 Frame，按版式精确重建
+   - 严格遵循 `figma-generate-design` skill 的操作规范
+   - 严格遵循 `figma-use` skill 的 API 调用规范
+3. **变量绑定**：颜色/字体绑定到 Figma Variables（不用硬编码值）
+4. **验证截图**：调用 `get_screenshot` 对比 HTML 原稿，确保视觉一致
+5. **输出 Figma 链接**：完成后返回可分享的 Figma URL
+
+---
+
+## 质量检查清单
+
+交付前逐项确认：
+- [ ] 每页信息量适中（6-8 行要点为上限）
+- [ ] 视觉层级清晰（3 级：标题 > 副标题 > 正文）
+- [ ] 配色方案一致，不超过 3 个主色
+- [ ] PPTX 中每个元素可在 PowerPoint 中单独点击编辑
+- [ ] Figma 中所有颜色绑定 Variables，字体使用 Text Styles
+- [ ] HTML 版本在浏览器中演示无错位
+
+---
+
+## 错误恢复
+
+- **内容遗失**：让 AI 重读 `skills/ppt-master/SKILL.md`
+- **设计走形**：让 AI 重读 `huashu-design/SKILL.md` 并重跑反 AI slop 检查
+- **Figma 推送失败**：先用 `figma-use` skill 调试，确认 MCP 连接状态
