@@ -1,0 +1,64 @@
+const SPONSOR_ROW = await figma.getNodeByIdAsync('1:78');
+const WRAP = await figma.getNodeByIdAsync('1:77');
+const OUTER = await figma.getNodeByIdAsync('1:75');
+const COORG = await figma.getNodeByIdAsync('1:146');
+if (!SPONSOR_ROW || !WRAP || !OUTER || !COORG) throw new Error('missing nodes');
+
+for (const n of [...SPONSOR_ROW.children]) {
+  if (n.name === 'OpenCheck Logo') n.remove();
+}
+
+let anim = null;
+for (const c of SPONSOR_ROW.children) {
+  if (c.name === 'Animoca Minds Logo') { anim = c; break; }
+}
+if (!anim) throw new Error('Animoca Minds Logo not found');
+
+function _b64ToBytes(b64) {
+  const g = globalThis;
+  if (typeof g.atob === 'function') {
+    const bin = g.atob(b64);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  const bytes = [];
+  let charbuf = 0, bits = 0;
+  for (let i = 0; i < b64.length; i++) {
+    const c = b64[i];
+    if (c === '=') break;
+    const v = A.indexOf(c);
+    if (v < 0) continue;
+    charbuf = (charbuf << 6) | v;
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      bytes.push((charbuf >>> bits) & 255);
+    }
+  }
+  return new Uint8Array(bytes);
+}
+
+const bytes = _b64ToBytes("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");
+const img = figma.createImage(bytes);
+const { width: iw, height: ih } = await img.getSizeAsync();
+const oc = figma.createRectangle();
+oc.name = 'OpenCheck Logo';
+const ocH = 28;
+const ocW = (iw / ih) * ocH;
+if (!Number.isFinite(ocW) || ocW <= 0) throw new Error('OpenCheck image size');
+oc.resize(ocW, ocH);
+oc.fills = [{ type: 'IMAGE', imageHash: img.hash, scaleMode: 'FIT' }];
+const gap = 20;
+oc.x = anim.x + anim.width + gap;
+oc.y = 787 + (43 - ocH) / 2;
+SPONSOR_ROW.appendChild(oc);
+
+const addW = gap + oc.width;
+SPONSOR_ROW.resize(SPONSOR_ROW.width + addW, SPONSOR_ROW.height);
+WRAP.resize(WRAP.width + addW, WRAP.height);
+OUTER.resize(OUTER.width + addW, OUTER.height);
+COORG.x += addW;
+
+return { ok: true, ocW: oc.width, addW, ocId: oc.id };
