@@ -1,0 +1,2082 @@
+[
+  {
+    "slide": 1,
+    "texts": [
+      {
+        "id": "4",
+        "text": "FLYWHEEL",
+        "frame": {
+          "left": 68,
+          "top": 70,
+          "width": 720,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "A proactive AI marketing operator for small teams.",
+        "frame": {
+          "left": 68,
+          "top": 98,
+          "width": 720,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Flywheel understands each business, spots growth opportunities, turns them into campaigns, and keeps execution moving.",
+        "frame": {
+          "left": 70,
+          "top": 198,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "8",
+        "text": "AI CMO",
+        "frame": {
+          "left": 84,
+          "top": 338,
+          "width": 82,
+          "height": 18
+        }
+      },
+      {
+        "id": "10",
+        "text": "Content",
+        "frame": {
+          "left": 208,
+          "top": 338,
+          "width": 92,
+          "height": 18
+        }
+      },
+      {
+        "id": "12",
+        "text": "Social",
+        "frame": {
+          "left": 342,
+          "top": 338,
+          "width": 84,
+          "height": 18
+        }
+      },
+      {
+        "id": "14",
+        "text": "Growth",
+        "frame": {
+          "left": 468,
+          "top": 338,
+          "width": 88,
+          "height": 18
+        }
+      },
+      {
+        "id": "15",
+        "text": "Built for SMBs and one-person companies that need marketing motion before they can hire a full team.",
+        "frame": {
+          "left": 72,
+          "top": 400,
+          "width": 560,
+          "height": 64
+        }
+      },
+      {
+        "id": "16",
+        "text": "mktflywheel.ai",
+        "frame": {
+          "left": 72,
+          "top": 514,
+          "width": 260,
+          "height": 30
+        }
+      },
+      {
+        "id": "18",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "19",
+        "text": "01",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 2,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHO FEELS THE PAIN",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 820,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "Small businesses need full-team marketing before they can hire one.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 820,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "A solo founder still needs strategy, content, SEO, social, analytics, campaigns, and decisions every week.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "8",
+        "text": "Founder owns",
+        "frame": {
+          "left": 96,
+          "top": 308,
+          "width": 184,
+          "height": 22
+        }
+      },
+      {
+        "id": "9",
+        "text": "Strategy",
+        "frame": {
+          "left": 96,
+          "top": 334,
+          "width": 184,
+          "height": 34
+        }
+      },
+      {
+        "id": "11",
+        "text": "Founder owns",
+        "frame": {
+          "left": 340,
+          "top": 308,
+          "width": 184,
+          "height": 22
+        }
+      },
+      {
+        "id": "12",
+        "text": "Content",
+        "frame": {
+          "left": 340,
+          "top": 334,
+          "width": 184,
+          "height": 34
+        }
+      },
+      {
+        "id": "14",
+        "text": "Founder owns",
+        "frame": {
+          "left": 584,
+          "top": 308,
+          "width": 184,
+          "height": 22
+        }
+      },
+      {
+        "id": "15",
+        "text": "Channels",
+        "frame": {
+          "left": 584,
+          "top": 334,
+          "width": 184,
+          "height": 34
+        }
+      },
+      {
+        "id": "17",
+        "text": "Founder owns",
+        "frame": {
+          "left": 828,
+          "top": 308,
+          "width": 184,
+          "height": 22
+        }
+      },
+      {
+        "id": "18",
+        "text": "Reporting",
+        "frame": {
+          "left": 828,
+          "top": 334,
+          "width": 184,
+          "height": 34
+        }
+      },
+      {
+        "id": "20",
+        "text": "CEO",
+        "frame": {
+          "left": 1016,
+          "top": 320,
+          "width": 132,
+          "height": 24
+        }
+      },
+      {
+        "id": "21",
+        "text": "CEO / Founder",
+        "frame": {
+          "left": 1024,
+          "top": 418,
+          "width": 118,
+          "height": 24
+        }
+      },
+      {
+        "id": "24",
+        "text": "The bottleneck is judgment",
+        "frame": {
+          "left": 106,
+          "top": 492,
+          "width": 464,
+          "height": 28
+        }
+      },
+      {
+        "id": "25",
+        "text": "The hard part is deciding the next move and turning that decision into execution.",
+        "frame": {
+          "left": 106,
+          "top": 528,
+          "width": 464,
+          "height": 58
+        }
+      },
+      {
+        "id": "28",
+        "text": "The work is continuous",
+        "frame": {
+          "left": 658,
+          "top": 492,
+          "width": 464,
+          "height": 28
+        }
+      },
+      {
+        "id": "29",
+        "text": "Search, GEO, social, content, and reporting keep moving even when there is no dedicated marketing team.",
+        "frame": {
+          "left": 658,
+          "top": 528,
+          "width": 464,
+          "height": 58
+        }
+      },
+      {
+        "id": "30",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "31",
+        "text": "02",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 3,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHY EXISTING OPTIONS BREAK",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 840,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "The founder is still left acting as the CMO.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 840,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Current tools cover pieces of marketing. The owner still connects context, chooses priorities, and pushes work forward.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "8",
+        "text": "GENERIC AI",
+        "frame": {
+          "left": 100,
+          "top": 306,
+          "width": 286,
+          "height": 18
+        }
+      },
+      {
+        "id": "9",
+        "text": "Prompt-level drafting",
+        "frame": {
+          "left": 100,
+          "top": 332,
+          "width": 286,
+          "height": 34
+        }
+      },
+      {
+        "id": "10",
+        "text": "Chat tools can write posts and brainstorm ideas. Ownership stays with the founder.",
+        "frame": {
+          "left": 100,
+          "top": 372,
+          "width": 286,
+          "height": 86
+        }
+      },
+      {
+        "id": "12",
+        "text": "MARKETING SAAS",
+        "frame": {
+          "left": 498,
+          "top": 306,
+          "width": 286,
+          "height": 18
+        }
+      },
+      {
+        "id": "13",
+        "text": "Workflow layer",
+        "frame": {
+          "left": 498,
+          "top": 332,
+          "width": 286,
+          "height": 34
+        }
+      },
+      {
+        "id": "14",
+        "text": "Dashboards, CRMs, and calendars organize activity. The founder still chooses the next move for this business.",
+        "frame": {
+          "left": 498,
+          "top": 372,
+          "width": 286,
+          "height": 86
+        }
+      },
+      {
+        "id": "16",
+        "text": "AGENCY",
+        "frame": {
+          "left": 896,
+          "top": 306,
+          "width": 286,
+          "height": 18
+        }
+      },
+      {
+        "id": "17",
+        "text": "External service",
+        "frame": {
+          "left": 896,
+          "top": 332,
+          "width": 286,
+          "height": 34
+        }
+      },
+      {
+        "id": "18",
+        "text": "Agencies add capacity, with higher cost, slower iteration, and less weekly control for early teams.",
+        "frame": {
+          "left": 896,
+          "top": 372,
+          "width": 286,
+          "height": 86
+        }
+      },
+      {
+        "id": "20",
+        "text": "Flywheel is built to be the missing marketing operator: business memory + marketing judgment + execution loop.",
+        "frame": {
+          "left": 116,
+          "top": 552,
+          "width": 1050,
+          "height": 34
+        }
+      },
+      {
+        "id": "21",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "22",
+        "text": "03",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 4,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHAT FLYWHEEL DOES",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 710,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "It turns business context into marketing work.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 710,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "The CMO makes the call. Specialist agents produce the assets. The founder reviews the moments that matter.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "10",
+        "text": "AI CMO",
+        "frame": {
+          "left": 104,
+          "top": 346,
+          "width": 284,
+          "height": 28
+        }
+      },
+      {
+        "id": "11",
+        "text": "Owns strategy, prioritization, coordination, and reporting.",
+        "frame": {
+          "left": 104,
+          "top": 382,
+          "width": 284,
+          "height": 64
+        }
+      },
+      {
+        "id": "14",
+        "text": "Content Specialist",
+        "frame": {
+          "left": 478,
+          "top": 346,
+          "width": 284,
+          "height": 28
+        }
+      },
+      {
+        "id": "15",
+        "text": "Creates and improves SEO / GEO-ready content assets.",
+        "frame": {
+          "left": 478,
+          "top": 382,
+          "width": 284,
+          "height": 64
+        }
+      },
+      {
+        "id": "18",
+        "text": "Social Media Specialist",
+        "frame": {
+          "left": 852,
+          "top": 346,
+          "width": 284,
+          "height": 28
+        }
+      },
+      {
+        "id": "19",
+        "text": "Prepares, schedules, publishes, and listens across channels.",
+        "frame": {
+          "left": 852,
+          "top": 382,
+          "width": 284,
+          "height": 64
+        }
+      },
+      {
+        "id": "22",
+        "text": "Growth Analyst",
+        "frame": {
+          "left": 478,
+          "top": 512,
+          "width": 284,
+          "height": 28
+        }
+      },
+      {
+        "id": "23",
+        "text": "Tracks market signals, competitors, and growth opportunities.",
+        "frame": {
+          "left": 478,
+          "top": 548,
+          "width": 284,
+          "height": 64
+        }
+      },
+      {
+        "id": "24",
+        "text": "A marketing team loop.",
+        "frame": {
+          "left": 76,
+          "top": 518,
+          "width": 330,
+          "height": 60
+        }
+      },
+      {
+        "id": "25",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "26",
+        "text": "04",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 5,
+    "texts": [
+      {
+        "id": "4",
+        "text": "HOW IT WORKS",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 780,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "From business memory to campaign execution.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 780,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "The scan is only the entry point. The product is the loop that keeps marketing moving.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "10",
+        "text": "SCAN",
+        "frame": {
+          "left": 114,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "11",
+        "text": "Scan",
+        "frame": {
+          "left": 86,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "12",
+        "text": "Company URL",
+        "frame": {
+          "left": 76,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "16",
+        "text": "MEM",
+        "frame": {
+          "left": 268,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "17",
+        "text": "Learn",
+        "frame": {
+          "left": 240,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "18",
+        "text": "Brand knowledge",
+        "frame": {
+          "left": 230,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "22",
+        "text": "OPP",
+        "frame": {
+          "left": 422,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "23",
+        "text": "Plan",
+        "frame": {
+          "left": 394,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "24",
+        "text": "Growth strategy",
+        "frame": {
+          "left": 384,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "28",
+        "text": "PLAN",
+        "frame": {
+          "left": 576,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "29",
+        "text": "Build",
+        "frame": {
+          "left": 548,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "30",
+        "text": "Campaign plan",
+        "frame": {
+          "left": 538,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "34",
+        "text": "WORK",
+        "frame": {
+          "left": 730,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "35",
+        "text": "Execute",
+        "frame": {
+          "left": 702,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "36",
+        "text": "Specialists",
+        "frame": {
+          "left": 692,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "40",
+        "text": "OK",
+        "frame": {
+          "left": 884,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "41",
+        "text": "Review",
+        "frame": {
+          "left": 856,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "42",
+        "text": "Founder control",
+        "frame": {
+          "left": 846,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "45",
+        "text": "LOOP",
+        "frame": {
+          "left": 1038,
+          "top": 363,
+          "width": 40,
+          "height": 16
+        }
+      },
+      {
+        "id": "46",
+        "text": "Improve",
+        "frame": {
+          "left": 1010,
+          "top": 428,
+          "width": 96,
+          "height": 18
+        }
+      },
+      {
+        "id": "47",
+        "text": "Learning loop",
+        "frame": {
+          "left": 1000,
+          "top": 450,
+          "width": 116,
+          "height": 38
+        }
+      },
+      {
+        "id": "49",
+        "text": "Website scan -> Business memory -> Growth opportunity -> Campaign plan -> Specialist execution -> Founder review -> Learning loop",
+        "frame": {
+          "left": 162,
+          "top": 566,
+          "width": 954,
+          "height": 30
+        }
+      },
+      {
+        "id": "50",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "51",
+        "text": "05",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 6,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHAT THE DEMO SHOULD SHOW",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 760,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "The demo starts with a scan and lands on work in motion.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 760,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "The audience should see Flywheel move from a company URL to CMO judgment and review-ready marketing output.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "9",
+        "text": "01",
+        "frame": {
+          "left": 94,
+          "top": 462,
+          "width": 32,
+          "height": 24
+        }
+      },
+      {
+        "id": "10",
+        "text": "Enter URL",
+        "frame": {
+          "left": 130,
+          "top": 458,
+          "width": 170,
+          "height": 26
+        }
+      },
+      {
+        "id": "11",
+        "text": "Landing input starts the scan.",
+        "frame": {
+          "left": 94,
+          "top": 494,
+          "width": 212,
+          "height": 42
+        }
+      },
+      {
+        "id": "14",
+        "text": "02",
+        "frame": {
+          "left": 386,
+          "top": 462,
+          "width": 32,
+          "height": 24
+        }
+      },
+      {
+        "id": "15",
+        "text": "Learn business",
+        "frame": {
+          "left": 422,
+          "top": 458,
+          "width": 170,
+          "height": 26
+        }
+      },
+      {
+        "id": "16",
+        "text": "Initial brand and market read.",
+        "frame": {
+          "left": 386,
+          "top": 494,
+          "width": 212,
+          "height": 42
+        }
+      },
+      {
+        "id": "19",
+        "text": "03",
+        "frame": {
+          "left": 678,
+          "top": 462,
+          "width": 32,
+          "height": 24
+        }
+      },
+      {
+        "id": "20",
+        "text": "CMO plans",
+        "frame": {
+          "left": 714,
+          "top": 458,
+          "width": 170,
+          "height": 26
+        }
+      },
+      {
+        "id": "21",
+        "text": "Strategy becomes a campaign.",
+        "frame": {
+          "left": 678,
+          "top": 494,
+          "width": 212,
+          "height": 42
+        }
+      },
+      {
+        "id": "24",
+        "text": "04",
+        "frame": {
+          "left": 970,
+          "top": 462,
+          "width": 32,
+          "height": 24
+        }
+      },
+      {
+        "id": "25",
+        "text": "Review work",
+        "frame": {
+          "left": 1006,
+          "top": 458,
+          "width": 170,
+          "height": 26
+        }
+      },
+      {
+        "id": "26",
+        "text": "Founder approves the key outputs.",
+        "frame": {
+          "left": 970,
+          "top": 494,
+          "width": 212,
+          "height": 42
+        }
+      },
+      {
+        "id": "27",
+        "text": "Viewer takeaway: the URL scan becomes the onboarding moment for an always-on AI marketing team.",
+        "frame": {
+          "left": 86,
+          "top": 586,
+          "width": 1000,
+          "height": 30
+        }
+      },
+      {
+        "id": "28",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "29",
+        "text": "06",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 7,
+    "texts": [
+      {
+        "id": "4",
+        "text": "EXECUTION AREAS",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 860,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "Built for the marketing work small teams actually need.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 860,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Flywheel focuses on the high-leverage channels where founders feel execution pressure every week.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "9",
+        "text": "SEO",
+        "frame": {
+          "left": 114,
+          "top": 324,
+          "width": 464,
+          "height": 28
+        }
+      },
+      {
+        "id": "10",
+        "text": "Improve search visibility, landing page quality, and content discoverability.",
+        "frame": {
+          "left": 114,
+          "top": 360,
+          "width": 464,
+          "height": 58
+        }
+      },
+      {
+        "id": "13",
+        "text": "GEO",
+        "frame": {
+          "left": 702,
+          "top": 324,
+          "width": 464,
+          "height": 28
+        }
+      },
+      {
+        "id": "14",
+        "text": "Prepare content for AI search, answer engines, citations, and structured visibility.",
+        "frame": {
+          "left": 702,
+          "top": 360,
+          "width": 464,
+          "height": 58
+        }
+      },
+      {
+        "id": "17",
+        "text": "Social media",
+        "frame": {
+          "left": 114,
+          "top": 488,
+          "width": 464,
+          "height": 28
+        }
+      },
+      {
+        "id": "18",
+        "text": "Prepare, schedule, publish, and listen across key channels with founder review.",
+        "frame": {
+          "left": 114,
+          "top": 524,
+          "width": 464,
+          "height": 58
+        }
+      },
+      {
+        "id": "21",
+        "text": "Ad management · upcoming",
+        "frame": {
+          "left": 702,
+          "top": 488,
+          "width": 464,
+          "height": 28
+        }
+      },
+      {
+        "id": "22",
+        "text": "Extend the same CMO-led workflow into campaign budget and paid acquisition.",
+        "frame": {
+          "left": 702,
+          "top": 524,
+          "width": 464,
+          "height": 58
+        }
+      },
+      {
+        "id": "23",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "24",
+        "text": "07",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 8,
+    "texts": [
+      {
+        "id": "4",
+        "text": "FOUNDER CONTROL",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 760,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "Proactive execution with founder control.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 760,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Flywheel moves work forward and asks for review at the moments that matter.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "9",
+        "text": "1",
+        "frame": {
+          "left": 124,
+          "top": 357,
+          "width": 32,
+          "height": 18
+        }
+      },
+      {
+        "id": "10",
+        "text": "CMO proposes direction",
+        "frame": {
+          "left": 124,
+          "top": 392,
+          "width": 176,
+          "height": 28
+        }
+      },
+      {
+        "id": "11",
+        "text": "Campaign direction and strategy are recommended before execution.",
+        "frame": {
+          "left": 124,
+          "top": 424,
+          "width": 176,
+          "height": 44
+        }
+      },
+      {
+        "id": "14",
+        "text": "2",
+        "frame": {
+          "left": 410,
+          "top": 357,
+          "width": 32,
+          "height": 18
+        }
+      },
+      {
+        "id": "15",
+        "text": "Founder confirms plan",
+        "frame": {
+          "left": 410,
+          "top": 392,
+          "width": 176,
+          "height": 28
+        }
+      },
+      {
+        "id": "16",
+        "text": "The founder stays in control of the campaign and high-risk actions.",
+        "frame": {
+          "left": 410,
+          "top": 424,
+          "width": 176,
+          "height": 44
+        }
+      },
+      {
+        "id": "19",
+        "text": "3",
+        "frame": {
+          "left": 696,
+          "top": 357,
+          "width": 32,
+          "height": 18
+        }
+      },
+      {
+        "id": "20",
+        "text": "Specialists prepare work",
+        "frame": {
+          "left": 696,
+          "top": 392,
+          "width": 176,
+          "height": 28
+        }
+      },
+      {
+        "id": "21",
+        "text": "Content, social posts, and insights are generated as review-ready outputs.",
+        "frame": {
+          "left": 696,
+          "top": 424,
+          "width": 176,
+          "height": 44
+        }
+      },
+      {
+        "id": "24",
+        "text": "4",
+        "frame": {
+          "left": 982,
+          "top": 357,
+          "width": 32,
+          "height": 18
+        }
+      },
+      {
+        "id": "25",
+        "text": "CMO reports back",
+        "frame": {
+          "left": 982,
+          "top": 392,
+          "width": 176,
+          "height": 28
+        }
+      },
+      {
+        "id": "26",
+        "text": "Results and learnings return to the next campaign loop.",
+        "frame": {
+          "left": 982,
+          "top": 424,
+          "width": 176,
+          "height": 44
+        }
+      },
+      {
+        "id": "29",
+        "text": "Default mode: proactive execution with lightweight founder review.",
+        "frame": {
+          "left": 220,
+          "top": 560,
+          "width": 858,
+          "height": 36
+        }
+      },
+      {
+        "id": "30",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "31",
+        "text": "08",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 9,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHY WE WIN",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 850,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "Vertical know-how plus proactive execution.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 850,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Generic AI can draft content. Flywheel is built around the marketing workflow small teams need to run every week.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "9",
+        "text": "Business memory",
+        "frame": {
+          "left": 116,
+          "top": 316,
+          "width": 444,
+          "height": 28
+        }
+      },
+      {
+        "id": "10",
+        "text": "Learns brand, competitors, market signals, and user preferences.",
+        "frame": {
+          "left": 116,
+          "top": 352,
+          "width": 444,
+          "height": 42
+        }
+      },
+      {
+        "id": "13",
+        "text": "Marketing judgment",
+        "frame": {
+          "left": 116,
+          "top": 448,
+          "width": 444,
+          "height": 28
+        }
+      },
+      {
+        "id": "14",
+        "text": "The CMO decides what matters and what should happen next.",
+        "frame": {
+          "left": 116,
+          "top": 484,
+          "width": 444,
+          "height": 42
+        }
+      },
+      {
+        "id": "17",
+        "text": "Execution loop",
+        "frame": {
+          "left": 116,
+          "top": 580,
+          "width": 444,
+          "height": 28
+        }
+      },
+      {
+        "id": "18",
+        "text": "Every campaign and review improves the next recommendation.",
+        "frame": {
+          "left": 116,
+          "top": 616,
+          "width": 444,
+          "height": 32
+        }
+      },
+      {
+        "id": "20",
+        "text": "Flywheel operating loop",
+        "frame": {
+          "left": 718,
+          "top": 310,
+          "width": 440,
+          "height": 28
+        }
+      },
+      {
+        "id": "21",
+        "text": "A repeatable system for deciding, producing, reviewing, and learning.",
+        "frame": {
+          "left": 718,
+          "top": 342,
+          "width": 440,
+          "height": 22
+        }
+      },
+      {
+        "id": "24",
+        "text": "01",
+        "frame": {
+          "left": 736,
+          "top": 400,
+          "width": 30,
+          "height": 12
+        }
+      },
+      {
+        "id": "27",
+        "text": "Understand the business",
+        "frame": {
+          "left": 800,
+          "top": 397,
+          "width": 190,
+          "height": 14
+        }
+      },
+      {
+        "id": "28",
+        "text": "Website, brand context, market signals",
+        "frame": {
+          "left": 800,
+          "top": 413,
+          "width": 304,
+          "height": 11
+        }
+      },
+      {
+        "id": "30",
+        "text": "02",
+        "frame": {
+          "left": 736,
+          "top": 446,
+          "width": 30,
+          "height": 12
+        }
+      },
+      {
+        "id": "33",
+        "text": "Prioritize the opportunity",
+        "frame": {
+          "left": 800,
+          "top": 443,
+          "width": 190,
+          "height": 14
+        }
+      },
+      {
+        "id": "34",
+        "text": "CMO chooses the highest-leverage move",
+        "frame": {
+          "left": 800,
+          "top": 459,
+          "width": 304,
+          "height": 11
+        }
+      },
+      {
+        "id": "36",
+        "text": "03",
+        "frame": {
+          "left": 736,
+          "top": 492,
+          "width": 30,
+          "height": 12
+        }
+      },
+      {
+        "id": "39",
+        "text": "Create review-ready work",
+        "frame": {
+          "left": 800,
+          "top": 489,
+          "width": 190,
+          "height": 14
+        }
+      },
+      {
+        "id": "40",
+        "text": "Specialists prepare content, social, SEO, insights",
+        "frame": {
+          "left": 800,
+          "top": 505,
+          "width": 304,
+          "height": 11
+        }
+      },
+      {
+        "id": "42",
+        "text": "04",
+        "frame": {
+          "left": 736,
+          "top": 538,
+          "width": 30,
+          "height": 12
+        }
+      },
+      {
+        "id": "45",
+        "text": "Review and publish",
+        "frame": {
+          "left": 800,
+          "top": 535,
+          "width": 190,
+          "height": 14
+        }
+      },
+      {
+        "id": "46",
+        "text": "Founder keeps control at key moments",
+        "frame": {
+          "left": 800,
+          "top": 551,
+          "width": 304,
+          "height": 11
+        }
+      },
+      {
+        "id": "48",
+        "text": "05",
+        "frame": {
+          "left": 736,
+          "top": 584,
+          "width": 30,
+          "height": 12
+        }
+      },
+      {
+        "id": "51",
+        "text": "Update the memory",
+        "frame": {
+          "left": 800,
+          "top": 581,
+          "width": 190,
+          "height": 14
+        }
+      },
+      {
+        "id": "52",
+        "text": "Results feed the next campaign decision",
+        "frame": {
+          "left": 800,
+          "top": 597,
+          "width": 304,
+          "height": 11
+        }
+      },
+      {
+        "id": "54",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "55",
+        "text": "09",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 10,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHO IT IS FOR",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 830,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "Founder-led businesses that need marketing motion now.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 830,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Flywheel starts with the teams that feel marketing pressure before they can justify hiring a full marketing team.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "8",
+        "text": "ONE-PERSON COMPANIES",
+        "frame": {
+          "left": 100,
+          "top": 320,
+          "width": 296,
+          "height": 18
+        }
+      },
+      {
+        "id": "9",
+        "text": "No marketing hire yet",
+        "frame": {
+          "left": 100,
+          "top": 346,
+          "width": 296,
+          "height": 34
+        }
+      },
+      {
+        "id": "10",
+        "text": "The founder owns the product, sales, support, and marketing decisions at the same time.",
+        "frame": {
+          "left": 100,
+          "top": 386,
+          "width": 296,
+          "height": 86
+        }
+      },
+      {
+        "id": "12",
+        "text": "SMBS",
+        "frame": {
+          "left": 492,
+          "top": 320,
+          "width": 296,
+          "height": 18
+        }
+      },
+      {
+        "id": "13",
+        "text": "Need repeatable growth work",
+        "frame": {
+          "left": 492,
+          "top": 346,
+          "width": 296,
+          "height": 34
+        }
+      },
+      {
+        "id": "14",
+        "text": "They need steady SEO, GEO, content, social, and campaign execution while keeping tool management low.",
+        "frame": {
+          "left": 492,
+          "top": 386,
+          "width": 296,
+          "height": 86
+        }
+      },
+      {
+        "id": "16",
+        "text": "EARLY TEAMS",
+        "frame": {
+          "left": 884,
+          "top": 320,
+          "width": 296,
+          "height": 18
+        }
+      },
+      {
+        "id": "17",
+        "text": "Too early for a full team",
+        "frame": {
+          "left": 884,
+          "top": 346,
+          "width": 296,
+          "height": 34
+        }
+      },
+      {
+        "id": "18",
+        "text": "They need a marketing operating rhythm before building a dedicated content, social, SEO, and analytics function.",
+        "frame": {
+          "left": 884,
+          "top": 386,
+          "width": 296,
+          "height": 86
+        }
+      },
+      {
+        "id": "19",
+        "text": "The first wedge: businesses with weekly marketing urgency and limited team capacity.",
+        "frame": {
+          "left": 128,
+          "top": 548,
+          "width": 1020,
+          "height": 44
+        }
+      },
+      {
+        "id": "20",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "21",
+        "text": "10",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 11,
+    "texts": [
+      {
+        "id": "4",
+        "text": "WHAT WE WANT FROM THE ROOM",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 860,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "A focused live demo and the right follow-up conversations.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 860,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "The goal: make the new category easy to understand and worth exploring.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "8",
+        "text": "DEMO",
+        "frame": {
+          "left": 106,
+          "top": 320,
+          "width": 292,
+          "height": 18
+        }
+      },
+      {
+        "id": "9",
+        "text": "Show the operator loop",
+        "frame": {
+          "left": 106,
+          "top": 346,
+          "width": 292,
+          "height": 34
+        }
+      },
+      {
+        "id": "10",
+        "text": "Start from a company URL, then move quickly to business memory, CMO planning, and one review-ready output.",
+        "frame": {
+          "left": 106,
+          "top": 386,
+          "width": 292,
+          "height": 102
+        }
+      },
+      {
+        "id": "12",
+        "text": "PARTNERS",
+        "frame": {
+          "left": 494,
+          "top": 320,
+          "width": 292,
+          "height": 18
+        }
+      },
+      {
+        "id": "13",
+        "text": "Find pilot paths",
+        "frame": {
+          "left": 494,
+          "top": 346,
+          "width": 292,
+          "height": 34
+        }
+      },
+      {
+        "id": "14",
+        "text": "Look for SMB, founder, and ecosystem partners where Flywheel can prove weekly marketing execution value.",
+        "frame": {
+          "left": 494,
+          "top": 386,
+          "width": 292,
+          "height": 102
+        }
+      },
+      {
+        "id": "16",
+        "text": "INVESTORS",
+        "frame": {
+          "left": 882,
+          "top": 320,
+          "width": 292,
+          "height": 18
+        }
+      },
+      {
+        "id": "17",
+        "text": "Earn the second meeting",
+        "frame": {
+          "left": 882,
+          "top": 346,
+          "width": 292,
+          "height": 34
+        }
+      },
+      {
+        "id": "18",
+        "text": "Make the thesis clear: small teams need a marketing operator ahead of more prompt boxes or dashboards.",
+        "frame": {
+          "left": 882,
+          "top": 386,
+          "width": 292,
+          "height": 102
+        }
+      },
+      {
+        "id": "20",
+        "text": "Desired takeaway: Flywheel can become the always-on marketing team for small businesses.",
+        "frame": {
+          "left": 190,
+          "top": 584,
+          "width": 900,
+          "height": 22
+        }
+      },
+      {
+        "id": "21",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "22",
+        "text": "11",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "slide": 12,
+    "texts": [
+      {
+        "id": "4",
+        "text": "CLOSING",
+        "frame": {
+          "left": 68,
+          "top": 58,
+          "width": 760,
+          "height": 24
+        }
+      },
+      {
+        "id": "5",
+        "text": "Every small business will need an AI marketing operator.",
+        "frame": {
+          "left": 68,
+          "top": 86,
+          "width": 760,
+          "height": 98
+        }
+      },
+      {
+        "id": "6",
+        "text": "Flywheel helps founders and small teams keep marketing moving before they hire a full marketing team.",
+        "frame": {
+          "left": 70,
+          "top": 186,
+          "width": 690,
+          "height": 76
+        }
+      },
+      {
+        "id": "9",
+        "text": "Live demo ready.",
+        "frame": {
+          "left": 104,
+          "top": 406,
+          "width": 480,
+          "height": 30
+        }
+      },
+      {
+        "id": "10",
+        "text": "Looking for pilot users, strategic partners, and follow-up conversations.",
+        "frame": {
+          "left": 104,
+          "top": 444,
+          "width": 462,
+          "height": 38
+        }
+      },
+      {
+        "id": "11",
+        "text": "Website: https://mktflywheel.ai",
+        "frame": {
+          "left": 104,
+          "top": 494,
+          "width": 420,
+          "height": 24
+        }
+      },
+      {
+        "id": "12",
+        "text": "Proactive AI CMO · Vertical marketing know-how · Campaign execution loop",
+        "frame": {
+          "left": 76,
+          "top": 586,
+          "width": 760,
+          "height": 30
+        }
+      },
+      {
+        "id": "13",
+        "text": "Flywheel go deck v0.2",
+        "frame": {
+          "left": 68,
+          "top": 678,
+          "width": 240,
+          "height": 18
+        }
+      },
+      {
+        "id": "14",
+        "text": "12",
+        "frame": {
+          "left": 1168,
+          "top": 676,
+          "width": 44,
+          "height": 20
+        }
+      }
+    ]
+  }
+]
