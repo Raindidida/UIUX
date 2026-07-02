@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Particle Morph Controls</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <main id="container" aria-label="Three.js particle morph animation"></main>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <div id="patternName" class="pattern-name">Vector Prism</div>
+    <div class="instructions">Click to cycle forms - Scroll to draw π₀.₅</div>
+
+    <aside class="control-panel" aria-label="Animation controls">
+      <header>
+        <p>Particulate Mode</p>
+        <h1>Color & Motion</h1>
+      </header>
+
+      <label class="field">
+        <span>Mouse interaction</span>
+        <select id="interactionMode">
+          <option value="blow">Blow</option>
+          <option value="gather" selected>Gather</option>
+        </select>
+      </label>
+
+      <label class="field color-field">
+        <span>Primary</span>
+        <input id="primaryColor" type="color" value="#ffffff" />
+      </label>
+
+      <label class="field color-field">
+        <span>Secondary</span>
+        <input id="secondaryColor" type="color" value="#f23872" />
+      </label>
+
+      <label class="field color-field">
+        <span>Accent</span>
+        <input id="accentColor" type="color" value="#d8d8d8" />
+      </label>
+
+      <label class="field">
+        <span>Particle shape</span>
+        <select id="particleShape">
+          <option value="0">Dot</option>
+          <option value="1">Diamond</option>
+          <option value="2">Triangle</option>
+          <option value="3">Square</option>
+          <option value="4">Spark</option>
+          <option value="5">Ring</option>
+          <option value="6">SVG Icon</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>3D depth <output id="formDepthValue">15.50</output></span>
+        <input id="formDepth" type="range" min="0" max="42" step="0.5" value="15.5" />
+      </label>
+
+      <label class="field">
+        <span>Particle density <output id="particleDensityValue">40000</output></span>
+        <input id="particleDensity" type="range" min="3000" max="40000" step="500" value="40000" />
+      </label>
+
+      <label class="field">
+        <span>Particle size <output id="particleSizeValue">1.35</output></span>
+        <input id="particleSize" type="range" min="0.35" max="3" step="0.01" value="1.35" />
+      </label>
+
+      <label class="field">
+        <span>Bloom strength <output id="bloomStrengthValue">0.11</output></span>
+        <input id="bloomStrength" type="range" min="0" max="2.2" step="0.01" value="0.11" />
+      </label>
+
+      <label class="field">
+        <span>Bloom radius <output id="bloomRadiusValue">0.21</output></span>
+        <input id="bloomRadius" type="range" min="0" max="1.2" step="0.01" value="0.21" />
+      </label>
+
+      <label class="field">
+        <span>Bloom threshold <output id="bloomThresholdValue">0.43</output></span>
+        <input id="bloomThreshold" type="range" min="0" max="1" step="0.01" value="0.43" />
+      </label>
+
+      <label class="field">
+        <span>Particle glow <output id="particleGlowValue">0.92</output></span>
+        <input id="particleGlow" type="range" min="0.35" max="2.8" step="0.01" value="0.92" />
+      </label>
+
+      <label class="field">
+        <span>Ambient glow <output id="ambientGlowValue">0.43</output></span>
+        <input id="ambientGlow" type="range" min="0" max="1" step="0.01" value="0.43" />
+      </label>
+
+      <div class="actions">
+        <button id="previousPattern" type="button">Previous</button>
+        <button id="nextPattern" type="button">Next</button>
+        <button id="resetControls" type="button">Reset</button>
+      </div>
+    </aside>
+  </body>
+</html>

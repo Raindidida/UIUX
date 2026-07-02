@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LangTown Design System Preview</title>
+  <style>
+    :root {
+      --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      --brand-primary: #ff385c;
+      --brand-primary-active: #e00b41;
+      --brand-primary-soft: #ffd9e1;
+      --brand-luxe: #460479;
+      --brand-plus: #92174d;
+
+      --surface-canvas: #ffffff;
+      --surface-soft: #f7f7f7;
+      --surface-strong: #f2f2f2;
+      --surface-warm: #fff8f6;
+
+      --ink-900: #222222;
+      --ink-700: #3f3f3f;
+      --ink-500: #6a6a6a;
+      --ink-300: #929292;
+
+      --line-default: #dddddd;
+      --line-soft: #ebebeb;
+      --line-strong: #c1c1c1;
+
+      --info-blue: #428bff;
+      --success-green: #1f9d55;
+      --warning-gold: #ffb400;
+      --error-red: #c13515;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 32px;
+      --radius-full: 999px;
+
+      --shadow-card: 0 6px 20px rgba(34, 34, 34, 0.06);
+      --shadow-hover: 0 10px 28px rgba(34, 34, 34, 0.1);
+      --shadow-focus: 0 0 0 3px rgba(34, 34, 34, 0.14);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      background:
+        radial-gradient(circle at top left, rgba(255, 56, 92, 0.08), transparent 22%),
+        radial-gradient(circle at top right, rgba(255, 180, 0, 0.08), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, #fffaf8 100%);
+      color: var(--ink-900);
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background:
+        linear-gradient(135deg, #ffb400 0%, #ff7a59 45%, #ff385c 100%);
+      position: relative;
+      box-shadow: var(--shadow-card);
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 4px;
+    }
+
+    .brand-mark::before {
+      inset: 8px 22px 8px 8px;
+    }
+
+    .brand-mark::after {
+      inset: 22px 8px 8px 22px;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .brand-copy p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--ink-500);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--line-default);
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink-900);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .pill.primary {
+      background: var(--brand-primary);
+      border-color: var(--brand-primary);
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(255, 56, 92, 0.24);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 32px;
+    }
+
+    .hero-card,
+    .hero-preview,
+    .section {
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(221, 221, 221, 0.8);
+      border-radius: 28px;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-card {
+      padding: 32px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      border-radius: var(--radius-full);
+      background: var(--surface-warm);
+      color: var(--brand-primary-active);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .hero-card h2 {
+      margin: 0;
+      font-size: 44px;
+      line-height: 1.04;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      max-width: 10ch;
+    }
+
+    .hero-card p {
+      margin: 18px 0 0;
+      max-width: 62ch;
+      color: var(--ink-700);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-preview {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .mini-browser {
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--line-soft);
+      background: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .mini-browser-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #fffdfd;
+    }
+
+    .mini-search {
+      flex: 1;
+      max-width: 320px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      border: 1px solid var(--line-default);
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      color: var(--ink-500);
+      background: #ffffff;
+    }
+
+    .mini-content {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 170px;
+      gap: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 248, 246, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .mini-rail,
+    .mini-main,
+    .mini-side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mini-rail .slot,
+    .mini-side .slot,
+    .mini-card,
+    .mini-step,
+    .token-card,
+    .type-card,
+    .button-card,
+    .component-card,
+    .form-card,
+    .meta-card {
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .slot {
+      min-height: 76px;
+      padding: 12px;
+    }
+
+    .slot.active {
+      background: #fff5f7;
+      border-color: var(--brand-primary-soft);
+    }
+
+    .mini-card {
+      padding: 18px;
+    }
+
+    .mini-card h3 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .mini-card p {
+      margin: 10px 0 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-500);
+    }
+
+    .mini-step {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .mini-step.current {
+      border-color: #ffb5c2;
+      background: #fff7f8;
+      box-shadow: 0 6px 18px rgba(255, 56, 92, 0.08);
+    }
+
+    .mini-step .step-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-strong);
+      color: var(--ink-700);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .step-dot.primary {
+      background: var(--brand-primary);
+      color: #ffffff;
+    }
+
+    .step-dot.success {
+      background: #e9f7ef;
+      color: var(--success-green);
+    }
+
+    .section {
+      padding: 28px;
+      margin-top: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .section-header h3 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .section-header p {
+      margin: 8px 0 0;
+      color: var(--ink-500);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .token-card {
+      overflow: hidden;
+    }
+
+    .swatch {
+      height: 112px;
+    }
+
+    .token-body {
+      padding: 16px;
+    }
+
+    .token-body h4,
+    .type-card h4,
+    .button-card h4,
+    .component-card h4,
+    .form-card h4,
+    .meta-card h4 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .token-body p,
+    .type-card p,
+    .button-card p,
+    .component-card p,
+    .form-card p,
+    .meta-card p {
+      margin: 8px 0 0;
+      color: var(--ink-500);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .token-meta {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--ink-700);
+      font-weight: 600;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .type-card {
+      padding: 22px;
+    }
+
+    .type-sample {
+      margin-bottom: 14px;
+    }
+
+    .display-xl {
+      font-size: 48px;
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+    }
+
+    .display-md {
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .title-md {
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .body-md {
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+
+    .caption {
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 500;
+      color: var(--ink-500);
+    }
+
+    .button-grid,
+    .component-grid,
+    .form-grid,
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .button-card,
+    .component-card,
+    .form-card,
+    .meta-card {
+      padding: 20px;
+    }
+
+    .button-row,
+    .component-preview,
+    .form-preview {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: default;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(255, 56, 92, 0.2);
+    }
+
+    .btn-primary.is-pressed {
+      background: var(--brand-primary-active);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--ink-900);
+      border-color: var(--line-default);
+    }
+
+    .btn-ghost {
+      background: var(--surface-soft);
+      color: var(--ink-700);
+    }
+
+    .btn-icon {
+      width: 48px;
+      min-width: 48px;
+      padding: 0;
+      background: var(--surface-strong);
+      color: var(--ink-900);
+      border-color: var(--line-default);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: var(--radius-full);
+      background: #fff3f5;
+      color: var(--brand-primary-active);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .lesson-card {
+      width: 100%;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, #ffffff 0%, #fffaf9 100%);
+    }
+
+    .lesson-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .lesson-card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lesson-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffe9cf 0%, #ffd2d8 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--surface-strong);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 56%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff385c 0%, #ff7a59 100%);
+    }
+
+    .input {
+      width: 100%;
+      min-height: 56px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--line-default);
+      background: #ffffff;
+      color: var(--ink-900);
+      font: inherit;
+      font-size: 15px;
+    }
+
+    .input.focus {
+      border-width: 2px;
+      border-color: var(--ink-900);
+      box-shadow: var(--shadow-focus);
+    }
+
+    .input.error {
+      border-width: 2px;
+      border-color: var(--error-red);
+      color: var(--error-red);
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 12px 14px 12px 18px;
+      border: 1px solid var(--line-default);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #ffffff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .search-orb {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .spec-list {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 10px 14px;
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .spec-list dt {
+      color: var(--ink-500);
+      font-weight: 500;
+    }
+
+    .spec-list dd {
+      margin: 0;
+      color: var(--ink-900);
+      font-weight: 500;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      color: var(--ink-500);
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .token-grid,
+      .type-grid,
+      .button-grid,
+      .component-grid,
+      .form-grid,
+      .meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .mini-content {
+        grid-template-columns: 80px minmax(0, 1fr);
+      }
+
+      .mini-side {
+        grid-column: 1 / -1;
+        flex-direction: row;
+      }
+
+      .mini-side .slot {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 20px 16px 48px;
+      }
+
+      .topbar,
+      .section-header,
+      .mini-browser-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-actions,
+      .hero-actions,
+      .button-row,
+      .component-preview,
+      .form-preview {
+        width: 100%;
+      }
+
+      .pill,
+      .btn {
+        width: 100%;
+      }
+
+      .hero-card h2 {
+        font-size: 34px;
+      }
+
+      .token-grid,
+      .type-grid,
+      .button-grid,
+      .component-grid,
+      .form-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-content {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-rail,
+      .mini-side {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <h1>LangTown Design System</h1>
+          <p>Inter typography with Airbnb-inspired color and component language</p>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <span class="pill">Preview Catalog</span>
+        <span class="pill">DESIGN.md Reference</span>
+        <span class="pill primary">Open Spec</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">Design System Preview</span>
+        <h2>Warm consumer polish for a learning product.</h2>
+        <p>
+          This preview page translates the LangTown design system into a browsable token catalog,
+          using <strong>Inter</strong> for the full type scale and borrowing the visual grammar of
+          Airbnb's design-system inspiration: warm white surfaces, rounded controls, restrained ink text,
+          and a single energetic coral accent.
+        </p>
+        <div class="hero-actions">
+          <span class="pill primary">Primary CTA</span>
+          <span class="pill">Rounded Search</span>
+          <span class="pill">Soft Cards</span>
+        </div>
+      </article>
+
+      <aside class="hero-preview">
+        <div class="mini-browser">
+          <div class="mini-browser-top">
+            <div class="pill">LangTown 6.1</div>
+            <div class="mini-search">Cafe Luz · Day 2 · 08:12</div>
+            <div class="pill">120 coins</div>
+          </div>
+          <div class="mini-content">
+            <div class="mini-rail">
+              <div class="slot active"></div>
+              <div class="slot"></div>
+              <div class="slot"></div>
+            </div>
+            <div class="mini-main">
+              <div class="mini-card">
+                <h3>Step 3/6 · Pattern</h3>
+                <p>Build one useful sentence with soft-white cards, coral focus accents, and rounded action surfaces.</p>
+              </div>
+              <div class="mini-step current">
+                <div class="step-label"><span class="step-dot primary">3</span>Current learning step</div>
+                <span class="tag">Active</span>
+              </div>
+              <div class="mini-step">
+                <div class="step-label"><span class="step-dot success">✓</span>Completed lesson</div>
+                <span class="caption">Done</span>
+              </div>
+            </div>
+            <div class="mini-side">
+              <div class="slot"></div>
+              <div class="slot"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h3>01 / Color Palette</h3>
+          <p>Coral carries all primary moments. White canvas, warm soft surfaces, and hairline greys keep the interface calm and legible.</p>
+        </div>
+      </div>
+      <div class="token-grid">
+        <article class="token-card">
+          <div class="swatch" style="background:#ff385c"></div>
+          <div class="token-body">
+            <h4>Brand Primary</h4>
+            <p>Main CTA, selected route node, active chips, search orb.</p>
+            <div class="token-meta">#FF385C</div>
+          </div>
+        </article>
+        <article class="token-card">
+          <div class="swatch" style="background:#f7f7f7"></div>
+          <div class="token-body">
+            <h4>Surface Soft</h4>
+            <p>Sub-nav hover, pill backgrounds, helper panels.</p>
+            <div class="token-meta">#F7F7F7</div>
+          </div>
+        </article>
+        <article class="token-card">
+          <div class="swatch" style="background:#222222"></div>
+          <div class="token-body">
+            <h4>Ink</h4>
+            <p>Display text, input labels, primary navigation, headings.</p>
+            <div class="token-meta" style="color:#222222">#222222</div>
+          </div>
+        </article>
+        <article class="token-card">
+          <div class="swatch" style="background:#428bff"></div>
+          <div class="token-body">
+            <h4>Info Blue</h4>
+            <p>Secondary actions, route-next state, legal/support links.</p>
+            <div class="token-meta">#428BFF</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h3>02 / Typography</h3>
+          <p>Inter is used across the full UI. Sizes stay compact, with weight and spacing doing the hierarchy work instead of oversized display type.</p>
+        </div>
+      </div>
+      <div class="type-grid">
+        <article class="type-card">
+          <div class="type-sample display-xl">Cafe Luz complete</div>
+          <h4>Display XL</h4>
+          <p>48px / 700 / 1.05 / -0.05em</p>
+        </article>
+        <article class="type-card">
+          <div class="type-sample display-md">Step 4/6 · Listen</div>
+          <h4>Display MD</h4>
+          <p>28px / 700 / 1.20 / -0.04em</p>
+        </article>
+        <article class="type-card">
+          <div class="type-sample title-md">Words to retry in this lesson</div>
+          <h4>Title MD</h4>
+          <p>20px / 600 / 1.30 / -0.02em</p>
+        </article>
+        <article class="type-card">
+          <div class="type-sample body-md">Hear Ana use today's words. The visual system should stay calm and direct while the pixel art carries character.</div>
+          <h4>Body MD</h4>
+          <p>16px / 400 / 1.60</p>
+        </article>
+        <article class="type-card">
+          <div class="type-sample caption">Route progress · 2 / 15 · review tomorrow</div>
+          <h4>Caption</h4>
+          <p>13px / 500 / 1.45</p>
+        </article>
+        <article class="type-card">
+          <div class="type-sample" style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">guest favorite / current node</div>
+          <h4>Uppercase Tag</h4>
+          <p>11px / 700 / tracking accent</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h3>03 / Buttons</h3>
+          <p>Buttons are soft, rounded, and consumer-facing. The primary action uses coral; everything else steps back into ink, grey, or quiet surface fills.</p>
+        </div>
+      </div>
+      <div class="button-grid">
+        <article class="button-card">
+          <div class="button-row">
+            <span class="btn btn-primary">Continue to Pattern</span>
+          </div>
+          <h4>Primary Pill</h4>
+          <p>Main progression CTA. Use one per screen.</p>
+        </article>
+        <article class="button-card">
+          <div class="button-row">
+            <span class="btn btn-secondary">Back to Knowledge Map</span>
+            <span class="btn btn-ghost">Mark familiar</span>
+          </div>
+          <h4>Secondary + Ghost</h4>
+          <p>Supportive actions with lower emphasis.</p>
+        </article>
+        <article class="button-card">
+          <div class="button-row">
+            <span class="btn btn-icon">←</span>
+            <span class="btn btn-icon">→</span>
+            <span class="btn btn-primary is-pressed">Search</span>
+          </div>
+          <h4>Circular Controls</h4>
+          <p>Borrowed from Airbnb's navigation and search affordance pattern.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h3>04 / Core Components</h3>
+          <p>LangTown-specific UI blocks are re-expressed with Airbnb-like warmth: white cards, hairline borders, soft gradients, and a single accent color.</p>
+        </div>
+      </div>
+      <div class="component-grid">
+        <article class="component-card">
+          <div class="component-preview">
+            <div class="lesson-card">
+              <div class="lesson-card-header">
+                <div class="lesson-card-title">
+                  <div class="lesson-icon">☕</div>
+                  <div>
+                    <div class="title-md">Word Card</div>
+                    <div class="caption">caf&eacute; · coffee</div>
+                  </div>
+                </div>
+                <span class="tag">Used</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill"></div></div>
+            </div>
+          </div>
+          <h4>Learning Card</h4>
+          <p>Large icon, light metadata, rounded container, visible progress.</p>
+        </article>
+
+        <article class="component-card">
+          <div class="component-preview" style="flex-direction:column;align-items:stretch;">
+            <div class="mini-step current">
+              <div class="step-label"><span class="step-dot primary">2</span>Memory Check</div>
+              <span class="caption">Current</span>
+            </div>
+            <div class="mini-step">
+              <div class="step-label"><span class="step-dot success">✓</span>Words</div>
+              <span class="caption">Completed</span>
+            </div>
+          </div>
+          <h4>Step List Item</h4>
+          <p>Current step gets coral tint and border. Completed uses green.</p>
+        </article>
+
+        <article class="component-card">
+          <div class="component-preview">
+            <div class="search-bar">
+              <span class="caption">Cafe Luz · Day 2 · 08:16</span>
+              <span class="search-orb">⌕</span>
+            </div>
+          </div>
+          <h4>Status / Search Pill</h4>
+          <p>Full-pill containers are a primary structural motif.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h3>05 / Forms</h3>
+          <p>Fields stay clear and neutral by default. Focus goes ink-dark with a 2px border. Errors are direct and local, not decorative.</p>
+        </div>
+      </div>
+      <div class="form-grid">
+        <article class="form-card">
+          <div class="form-preview" style="flex-direction:column;align-items:stretch;">
+            <input class="input" value="Type the Spanish word" aria-label="default field">
+          </div>
+          <h4>Default Input</h4>
+          <p>56px height, 1px hairline border, 16px text.</p>
+        </article>
+        <article class="form-card">
+          <div class="form-preview" style="flex-direction:column;align-items:stretch;">
+            <input class="input focus" value="Reply to Ana in Spanish..." aria-label="focused field">
+          </div>
+          <h4>Focus State</h4>
+          <p>2px ink outline with dark focus ring.</p>
+        </article>
+        <article class="form-card">
+          <div class="form-preview" style="flex-direction:column;align-items:stretch;">
+            <input class="input error" value="Check the spelling" aria-label="error field">
+          </div>
+          <h4>Error State</h4>
+          <p>Use explicit red only for actual validation failure.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h3>06 / System Notes</h3>
+          <p>These implementation notes keep the preview aligned with the Markdown design system while honoring the user's new direction.</p>
+        </div>
+      </div>
+      <div class="meta-grid">
+        <article class="meta-card">
+          <h4>Typography Shift</h4>
+          <p>Use <strong>Inter</strong> across every UI surface. Avoid decorative display faces in the shell.</p>
+          <dl class="spec-list">
+            <dt>Base size</dt>
+            <dd>16px</dd>
+            <dt>Display weight</dt>
+            <dd>700</dd>
+            <dt>Body weight</dt>
+            <dd>400</dd>
+          </dl>
+        </article>
+        <article class="meta-card">
+          <h4>Color Direction</h4>
+          <p>Adopt the Airbnb-inspired palette: one coral accent, warm white canvas, quiet grey hairlines.</p>
+          <dl class="spec-list">
+            <dt>Primary</dt>
+            <dd>#FF385C</dd>
+            <dt>Ink</dt>
+            <dd>#222222</dd>
+            <dt>Surface</dt>
+            <dd>#F7F7F7 / #FFFFFF</dd>
+          </dl>
+        </article>
+        <article class="meta-card">
+          <h4>Component Tone</h4>
+          <p>Keep cards friendly and rounded. Buttons should feel soft and consumer-focused, not enterprise or game-console heavy.</p>
+          <dl class="spec-list">
+            <dt>Card radius</dt>
+            <dd>20px</dd>
+            <dt>Button shape</dt>
+            <dd>Full pill</dd>
+            <dt>Shadow</dt>
+            <dd>Warm, low contrast</dd>
+          </dl>
+        </article>
+      </div>
+      <p class="footer-note">
+        Based on the visual structure of getdesign's Airbnb preview and adapted for a local LangTown design system preview.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
