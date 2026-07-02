@@ -1,12 +1,30 @@
-# Deck of Brilliance Toolkits 中文本地复刻
+# Deck of Brilliance Toolkits Local Clone
 
-打开 `index.html` 即可查看，无需本地开发服务器。
+Local static clone of:
 
-本目录只复刻 `https://deckofbrilliance.com/toolkits/` 这一页：
+https://deckofbrilliance.com/toolkits/
 
-- 页面导航、标题、toolkit 卡片和页脚
-- 7 张 toolkit 封面图
-- 原页面 logo 与 footer logo
-- 英文文案已按广告营销创意行业语境翻译为中文
+## Run
 
-原页面未在 HTML 中暴露视频资源，因此本地版本没有视频文件。
+```bash
+node server.js
+```
+
+Then open:
+
+http://127.0.0.1:4177/
+
+You can also open `index.html` directly, but the local server is closer to a normal website environment.
+
+## Included
+
+- Header and menu shell
+- Toolkits hero
+- Seven toolkit cards with downloaded cover images
+- Footer logo and copyright line
+- Local responsive CSS for desktop and narrow screens
+- Desktop and mobile preview screenshots
+
+## Removed Backend Features
+
+The login, registration, Google OAuth, cart, subscription, and payment entry points have been removed. This local version is a static content and visual clone of the public toolkits page.
